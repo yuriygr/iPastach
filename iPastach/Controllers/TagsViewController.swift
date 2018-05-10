@@ -10,7 +10,7 @@ import UIKit
 
 class TagsViewController: UIViewController {
     
-    //MARK: Properties
+    //MARK: - Properties
     lazy var tableView: UITableView = {
         let table = UITableView(frame: self.view.bounds, style: .plain)
         table.delegate = self
@@ -18,10 +18,11 @@ class TagsViewController: UIViewController {
         return table
     }()
     
-    //MARK: Data
-    var tagsList: TagsList = [
-        TagElement(id: 1, slug: "army", name: "Армия")
-    ] {
+    //MARK: - API Stuff
+    var api: ApiManager = .shared
+
+    //MARK: - Data
+    var tagsList: TagsList = [] {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -29,8 +30,7 @@ class TagsViewController: UIViewController {
         }
     }
     
-    
-    //MARK: Хуки контроллера
+    //MARK: - Хуки контроллера
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,13 +38,22 @@ class TagsViewController: UIViewController {
         setupController()
     }
     
-    //MARK: Конфигурация контроллера
+    //MARK: - Конфигурация контроллера
     func setupController() {
         navigationItem.title = "Теги"
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TagCell")
         
         view.addSubview(tableView)
+        
+        // Fetching data from API
+        api.fetch(TagsList.self, method: .tags) { (data, error) in
+            if let data = data {
+                if data.count > 0 {
+                    self.tagsList = data
+                }
+            }
+        }
     }
 }
 
@@ -56,7 +65,7 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TagCell", for: indexPath)
-        cell.textLabel?.text = self.tagsList[indexPath.row].name
+        cell.textLabel?.text = self.tagsList[indexPath.row].title
         cell.accessoryType = .disclosureIndicator
         return cell
     }

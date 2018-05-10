@@ -25,12 +25,20 @@ class MainTabBar: UITabBarController {
         tagsNavController.tabBarItem.title = "Теги"
         tagsNavController.tabBarItem.image = UIImage(named: "tags")
         
+        let randomNavController = UINavigationController(rootViewController: searchViewController)
+        randomNavController.tabBarItem.title = "Случайная"
+        randomNavController.tabBarItem.image = UIImage(named: "refresh")
+        
+        let favoritesNavController = UINavigationController(rootViewController: searchViewController)
+        favoritesNavController.tabBarItem.title = "Избранное"
+        favoritesNavController.tabBarItem.image = UIImage(named: "following")
+        
         let searchNavController = UINavigationController(rootViewController: searchViewController)
         searchNavController.tabBarItem.title = "Поиск"
         searchNavController.tabBarItem.image = UIImage(named: "search")
 
         setViewControllers([
-            pastesNavController, tagsNavController, searchNavController
+            pastesNavController, tagsNavController, randomNavController, favoritesNavController, searchNavController
         ], animated: true)
     }
 }
