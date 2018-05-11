@@ -15,6 +15,7 @@ class PastesViewController: UIViewController {
         let table = UITableView(frame: self.view.bounds, style: .plain)
         table.delegate = self
         table.dataSource = self
+        table.tableFooterView = UIView()
         return table
     }()
     
@@ -44,6 +45,9 @@ class PastesViewController: UIViewController {
     func setupController() {
         navigationItem.title = "Пасты"
         
+        let tagsButton = UIBarButtonItem(image: UIImage(named: "tags"), style: .plain, target: self, action: #selector(tagsButtonPressed))
+        navigationItem.leftBarButtonItem = tagsButton
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "PasteCell")
         
         view.addSubview(tableView)
@@ -56,6 +60,12 @@ class PastesViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    //MARK: - Actions
+    @objc
+    fileprivate func tagsButtonPressed() {
+        navigationController?.pushViewController(TagsViewController(), animated: true)
     }
 }
 

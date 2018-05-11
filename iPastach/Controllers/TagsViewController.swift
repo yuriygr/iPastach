@@ -15,6 +15,7 @@ class TagsViewController: UIViewController {
         let table = UITableView(frame: self.view.bounds, style: .plain)
         table.delegate = self
         table.dataSource = self
+        table.tableFooterView = UIView()
         return table
     }()
     
