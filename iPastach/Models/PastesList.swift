@@ -12,24 +12,24 @@ typealias PastesList = [PasteElement]
 
 struct PasteElement: Codable {
     let id: Int
-    let slug: String
     let title: String
-    let content: String
+    let time: String
+    let description: String
     let nsfw: Bool
     
     enum CodingKeys: String, CodingKey {
         case id
-        case slug
         case title
-        case content
+        case time
+        case description
         case nsfw
     }
     
-    init(id: Int, slug: String, title: String, content: String, nsfw: Bool) {
+    init(id: Int, title: String, time: String, description: String, nsfw: Bool) {
         self.id = id
-        self.slug = slug
         self.title = title
-        self.content = content
+        self.time = time
+        self.description = description
         self.nsfw = nsfw
     }
 }

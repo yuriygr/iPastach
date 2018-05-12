@@ -1,5 +1,5 @@
 //
-//  SearchViewController.swift
+//  FavoritesViewController.swift
 //  iPastach
 //
 //  Created by Юрий Гринев on 07.05.2018.
@@ -8,24 +8,24 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
-
+class FavoritesViewController: UIViewController {
+    
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Setup view controller
         setupController()
     }
     
     //MARK: - Конфигурация контроллера
     func setupController() {
-        navigationItem.title = "Поиск"
+        navigationItem.title = "Избранное"
 
         let placeholderView = PlaceholderView(frame: self.view.bounds)
-        placeholderView.image = UIImage(named: "search")
-        placeholderView.title = "Поиск не работает"
-        placeholderView.message = "Но скоро будет норм."
+        placeholderView.image = UIImage(named: "following")
+        placeholderView.title = "Избранное отсутствует"
+        placeholderView.message = "Вы можете добавить пасты в избранное, нажав соответствующую кнопку."
 
         view.addSubview(placeholderView)
     }

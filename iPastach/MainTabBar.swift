@@ -13,11 +13,13 @@ class MainTabBar: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let pastestViewController = PastesViewController()
+        let pastesViewController = PastesViewController()
         let tagsViewController = TagsViewController()
+        let randomViewController = FavoritesViewController()
+        let favoritesViewController = FavoritesViewController()
         let searchViewController = SearchViewController()
         
-        let pastesNavController = UINavigationController(rootViewController: pastestViewController)
+        let pastesNavController = UINavigationController(rootViewController: pastesViewController)
         pastesNavController.tabBarItem.title = "Пасты"
         pastesNavController.tabBarItem.image = UIImage(named: "pastes")
      
@@ -25,11 +27,11 @@ class MainTabBar: UITabBarController {
         tagsNavController.tabBarItem.title = "Теги"
         tagsNavController.tabBarItem.image = UIImage(named: "tags")
         
-        let randomNavController = UINavigationController(rootViewController: searchViewController)
+        let randomNavController = UINavigationController(rootViewController: randomViewController)
         randomNavController.tabBarItem.title = "Случайная"
         randomNavController.tabBarItem.image = UIImage(named: "refresh")
         
-        let favoritesNavController = UINavigationController(rootViewController: searchViewController)
+        let favoritesNavController = UINavigationController(rootViewController: favoritesViewController)
         favoritesNavController.tabBarItem.title = "Избранное"
         favoritesNavController.tabBarItem.image = UIImage(named: "following")
         

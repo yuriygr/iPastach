@@ -31,7 +31,7 @@ class TagsViewController: UIViewController {
         }
     }
     
-    //MARK: - Хуки контроллера
+    //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -59,7 +59,23 @@ class TagsViewController: UIViewController {
 }
 
 extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if self.tagsList.count > 0 {
+            tableView.backgroundView = nil
+            return 1
+        } else {
+            let placeholderView = PlaceholderView()
+            placeholderView.image = UIImage(named: "error")
+            placeholderView.title = "Список тегов пуст"
+            placeholderView.message = "Возможно, вы что-то сделали не так. Пожалуйста, повторите ещё раз."
 
+            tableView.backgroundView = placeholderView
+            tableView.backgroundView?.isHidden = false
+            return 0
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.tagsList.count
     }

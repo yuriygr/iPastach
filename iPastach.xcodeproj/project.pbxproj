@@ -10,6 +10,11 @@
 		133277EC20A465EA0014944E /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277EB20A465EA0014944E /* ApiManager.swift */; };
 		133277EE20A473E80014944E /* PastesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277ED20A473E80014944E /* PastesList.swift */; };
 		133277F020A562040014944E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 133277EF20A562040014944E /* README.md */; };
+		133277F220A5BEAF0014944E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F120A5BEAF0014944E /* Extensions.swift */; };
+		133277F420A5ECC70014944E /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F320A5ECC70014944E /* PlaceholderView.swift */; };
+		133277F820A61B3F0014944E /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F720A61B3F0014944E /* FavoritesViewController.swift */; };
+		133277FA20A703CF0014944E /* PasteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F920A703CF0014944E /* PasteCell.swift */; };
+		133277FC20A76F040014944E /* TableViewBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277FB20A76F040014944E /* TableViewBackgroundView.swift */; };
 		1336B5D420A0D07B002DAA6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B5D320A0D07B002DAA6E /* AppDelegate.swift */; };
 		1336B5D620A0D07B002DAA6E /* PastesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B5D520A0D07B002DAA6E /* PastesViewController.swift */; };
 		1336B5DC20A0D07B002DAA6E /* iPastach.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1336B5DA20A0D07B002DAA6E /* iPastach.xcdatamodeld */; };
@@ -44,6 +49,11 @@
 		133277EB20A465EA0014944E /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		133277ED20A473E80014944E /* PastesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastesList.swift; sourceTree = "<group>"; };
 		133277EF20A562040014944E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		133277F120A5BEAF0014944E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		133277F320A5ECC70014944E /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
+		133277F720A61B3F0014944E /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		133277F920A703CF0014944E /* PasteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteCell.swift; sourceTree = "<group>"; };
+		133277FB20A76F040014944E /* TableViewBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewBackgroundView.swift; sourceTree = "<group>"; };
 		1336B5D020A0D07B002DAA6E /* iPastach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPastach.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1336B5D320A0D07B002DAA6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1336B5D520A0D07B002DAA6E /* PastesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastesViewController.swift; sourceTree = "<group>"; };
@@ -116,8 +126,9 @@
 				1336B5D320A0D07B002DAA6E /* AppDelegate.swift */,
 				1336B60D20A0D23B002DAA6E /* MainTabBar.swift */,
 				1336B60520A0D0F3002DAA6E /* Controllers */,
-				1336B60420A0D0E9002DAA6E /* Views */,
 				1336B60620A0D0FE002DAA6E /* Models */,
+				1336B60420A0D0E9002DAA6E /* Views */,
+				133277F120A5BEAF0014944E /* Extensions.swift */,
 				1336B5DD20A0D07C002DAA6E /* Assets.xcassets */,
 				1336B5DF20A0D07C002DAA6E /* LaunchScreen.storyboard */,
 				1336B5E220A0D07C002DAA6E /* Info.plist */,
@@ -147,6 +158,9 @@
 		1336B60420A0D0E9002DAA6E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				133277F920A703CF0014944E /* PasteCell.swift */,
+				133277F320A5ECC70014944E /* PlaceholderView.swift */,
+				133277FB20A76F040014944E /* TableViewBackgroundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -156,6 +170,7 @@
 			children = (
 				1336B5D520A0D07B002DAA6E /* PastesViewController.swift */,
 				1336B60720A0D15D002DAA6E /* TagsViewController.swift */,
+				133277F720A61B3F0014944E /* FavoritesViewController.swift */,
 				1336B60920A0D1A0002DAA6E /* SearchViewController.swift */,
 			);
 			path = Controllers;
@@ -303,12 +318,17 @@
 			files = (
 				133277EC20A465EA0014944E /* ApiManager.swift in Sources */,
 				1336B60A20A0D1A0002DAA6E /* SearchViewController.swift in Sources */,
+				133277F820A61B3F0014944E /* FavoritesViewController.swift in Sources */,
 				133277EE20A473E80014944E /* PastesList.swift in Sources */,
 				1336B5D620A0D07B002DAA6E /* PastesViewController.swift in Sources */,
+				133277F420A5ECC70014944E /* PlaceholderView.swift in Sources */,
 				1336B60E20A0D23B002DAA6E /* MainTabBar.swift in Sources */,
+				133277F220A5BEAF0014944E /* Extensions.swift in Sources */,
+				133277FA20A703CF0014944E /* PasteCell.swift in Sources */,
 				1336B60C20A0D1B2002DAA6E /* TagsList.swift in Sources */,
 				1336B60820A0D15D002DAA6E /* TagsViewController.swift in Sources */,
 				1336B5DC20A0D07B002DAA6E /* iPastach.xcdatamodeld in Sources */,
+				133277FC20A76F040014944E /* TableViewBackgroundView.swift in Sources */,
 				1336B5D420A0D07B002DAA6E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
