@@ -22,10 +22,10 @@ class FavoritesViewController: UIViewController {
     func setupController() {
         navigationItem.title = "Избранное"
 
-        let placeholderView = PlaceholderView(frame: self.view.bounds)
+        let placeholderView = TableViewEmptyMessage(frame: self.view.bounds)
         placeholderView.image = UIImage(named: "following")
         placeholderView.title = "Избранное отсутствует"
-        placeholderView.message = "Вы можете добавить пасты в избранное, нажав соответствующую кнопку."
+        placeholderView.message = "Вы можете добавить пасты в избранное,\nнажав соответствующую кнопку."
 
         view.addSubview(placeholderView)
     }

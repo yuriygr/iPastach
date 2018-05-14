@@ -22,7 +22,7 @@ class SearchViewController: UIViewController {
     func setupController() {
         navigationItem.title = "Поиск"
 
-        let placeholderView = PlaceholderView(frame: self.view.bounds)
+        let placeholderView = TableViewEmptyMessage(frame: self.view.bounds)
         placeholderView.image = UIImage(named: "search")
         placeholderView.title = "Поиск не работает"
         placeholderView.message = "Но скоро будет норм."

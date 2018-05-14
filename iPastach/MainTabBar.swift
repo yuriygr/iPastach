@@ -14,7 +14,6 @@ class MainTabBar: UITabBarController {
         super.viewDidLoad()
 
         let pastesViewController = PastesViewController()
-        let tagsViewController = TagsViewController()
         let randomViewController = FavoritesViewController()
         let favoritesViewController = FavoritesViewController()
         let searchViewController = SearchViewController()
@@ -23,10 +22,6 @@ class MainTabBar: UITabBarController {
         pastesNavController.tabBarItem.title = "Пасты"
         pastesNavController.tabBarItem.image = UIImage(named: "pastes")
      
-        let tagsNavController = UINavigationController(rootViewController: tagsViewController)
-        tagsNavController.tabBarItem.title = "Теги"
-        tagsNavController.tabBarItem.image = UIImage(named: "tags")
-        
         let randomNavController = UINavigationController(rootViewController: randomViewController)
         randomNavController.tabBarItem.title = "Случайная"
         randomNavController.tabBarItem.image = UIImage(named: "refresh")
@@ -40,7 +35,7 @@ class MainTabBar: UITabBarController {
         searchNavController.tabBarItem.image = UIImage(named: "search")
 
         setViewControllers([
-            pastesNavController, tagsNavController, randomNavController, favoritesNavController, searchNavController
+            pastesNavController, randomNavController, favoritesNavController, searchNavController
         ], animated: true)
     }
 }

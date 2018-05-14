@@ -25,12 +25,7 @@ class PastesViewController: UIViewController {
     
     //MARK: - Data
     var currentTag: TagElement?
-    var pastesList: PastesList = [
-        PasteElement(id: 456, title: "Он появился ниоткуда", time: "25 Февраля 2018 в 22:24", description: "Ну давай, сложи свои три пальца на руке и покрестись. Поплачь перед ликом \"святым\". Легче стало? Он появился ниоткуда,и так же исчез. Он может все и поможет нам. Он свет и он сидит на небе в облаках. Да как? как верить в такой бред можно?...", nsfw: false),
-        PasteElement(id: 455, title: "Helfen Sie mir, bitte!", time: "25 Февраля 2018 в 21:19", description: "Так и вижу упоительную картину: тесный квадратный дворик с высокими стенами и единственной стальной дверью, клочок девственно голубого голландского неба (вот, разве что, малое облачко запуталось в спиралях колючей проволоки), чахлый подорож...", nsfw: false),
-        PasteElement(id: 454, title: "Кирилл", time: "25 Февраля 2018 в 21:00", description: "Суп /b/. Меня зовут Кирилл. Я вас всех ненавижу. Ну вот получилось невежливо. Давайте с начала? Суп, меня зовут Кирилл. Мне 17 лет, я ростом в 184 сантиметра и весом в 80 кг. У меня мышиного цвета волосы и голубые глаза. Я вощемта обычный ч...", nsfw: false),
-        PasteElement(id: 453, title: "Хочу поделиться соображениями", time: "25 Февраля 2018 в 20:57", description: "8 лет на дваче. И я хочу поделится своими соображениями. Я попал на тот самый двач в конце 2006, скажу честно, я на нем практически не сидел, потому что были и куда более приятные форумы, с более приятными людьми, правда они были не аноним...", nsfw: false)
-        ] {
+    var pastesList: PastesList = [] {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -49,15 +44,18 @@ class PastesViewController: UIViewController {
     //MARK: - Конфигурация контроллера
     func setupController() {
         navigationItem.title = "Пасты"
-        
+    
         let tagsButton = UIBarButtonItem(title: "Теги", style: .plain, target: self, action: #selector(tagsButtonPressed))
-        navigationItem.leftBarButtonItem = tagsButton
-        
+        navigationItem.rightBarButtonItem = tagsButton
+    
         tableView.register(PasteCell.self, forCellReuseIdentifier: "PasteCell")
 
         view.addSubview(tableView)
         
         // Fetching data from API
+        if let currentTag = currentTag {
+            apiParams = [ "tag": "\(currentTag.slug)" ]
+        }
         api.fetch(PastesList.self, method: .pastes, params: apiParams) { (data, error) in
             if let data = data {
                 if data.count > 0 {
@@ -72,6 +70,10 @@ class PastesViewController: UIViewController {
     fileprivate func tagsButtonPressed() {
         navigationController?.pushViewController(TagsViewController(), animated: true)
     }
+    @objc
+    fileprivate func refreshButtonPressed() {
+        
+    }
 }
 
 extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
@@ -81,12 +83,12 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
             tableView.backgroundView = nil
             return 1
         } else {
-            let placeholderView = PlaceholderView()
-            placeholderView.image = UIImage(named: "error")
-            placeholderView.title = "Список паст пуст"
-            placeholderView.message = "Возможно, вы что-то сделали не так. Пожалуйста, повторите ещё раз."
+            let tableViewEmptyMessage = TableViewEmptyMessage()
+            tableViewEmptyMessage.image = UIImage(named: "pastes")
+            tableViewEmptyMessage.title = "Список паст пуст"
+            tableViewEmptyMessage.message = "Возможно, вы что-то сделали не так.\nПожалуйста, повторите ещё раз."
 
-            tableView.backgroundView = placeholderView
+            tableView.backgroundView = tableViewEmptyMessage
             tableView.backgroundView?.isHidden = false
             return 0
         }

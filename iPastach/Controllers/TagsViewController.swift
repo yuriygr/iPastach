@@ -46,7 +46,7 @@ class TagsViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TagCell")
         
         view.addSubview(tableView)
-        
+
         // Fetching data from API
         api.fetch(TagsList.self, method: .tags) { (data, error) in
             if let data = data {
@@ -65,12 +65,12 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
             tableView.backgroundView = nil
             return 1
         } else {
-            let placeholderView = PlaceholderView()
-            placeholderView.image = UIImage(named: "error")
-            placeholderView.title = "Список тегов пуст"
-            placeholderView.message = "Возможно, вы что-то сделали не так. Пожалуйста, повторите ещё раз."
+            let tableViewEmptyMessage = TableViewEmptyMessage()
+            tableViewEmptyMessage.image = UIImage(named: "tags")
+            tableViewEmptyMessage.title = "Список тегов пуст"
+            tableViewEmptyMessage.message = "Возможно, вы что-то сделали не так.\nПожалуйста, повторите ещё раз."
 
-            tableView.backgroundView = placeholderView
+            tableView.backgroundView = tableViewEmptyMessage
             tableView.backgroundView?.isHidden = false
             return 0
         }
@@ -83,14 +83,12 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TagCell", for: indexPath)
         cell.textLabel?.text = self.tagsList[indexPath.row].title
-        cell.accessoryType = .disclosureIndicator
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let pastesViewController = PastesViewController()
-        pastesViewController.currentTag = self.tagsList[indexPath.row]
-        navigationController?.pushViewController(pastesViewController, animated: true)
+        print(self.tagsList[indexPath.row])
+        self.navigationController?.popViewController(animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

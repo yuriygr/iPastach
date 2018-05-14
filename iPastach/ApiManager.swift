@@ -76,6 +76,10 @@ class ApiManager: NSObject {
             }
         }.resume()
     }
+    
+    func pastes<T>(_ type: T.Type, completion: @escaping (T?, Error?) -> Void) where T: Decodable {
+        self.fetch(type, method: .pastes, completion: completion)
+    }
 }
 
 extension URLRequest {

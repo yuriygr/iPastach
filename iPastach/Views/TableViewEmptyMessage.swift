@@ -1,5 +1,5 @@
 //
-//  UIView.swift
+//  TableViewEmptyMessage.swift
 //  iPastach
 //
 //  Created by Юрий Гринев on 11.05.2018.
@@ -10,14 +10,16 @@ import UIKit
 
 //
 // Если будет использоваться в tableView в качестве backgroundView - ничего делать не надо
-// Если будет использоваться в качестве заглушки - надо инициализировать с фреймом
+// Если будет использоваться в качестве заглушки - надо инициализировать с фреймом. Вообще не рекомендую.
 //
-class PlaceholderView: TableViewBackgroundView {
+class TableViewEmptyMessage: UIView {
 
     //MARK: - Properties
     var image: UIImage? {
         didSet {
-            self.imageView.image = image?.resize(to: CGSize(width: 100, height: 100))
+            self.imageView.image = image?
+                .resize(to: CGSize(width: 100, height: 100))
+                .color(to: .mainGrey)
         }
     }
     var title: String? {
@@ -32,13 +34,13 @@ class PlaceholderView: TableViewBackgroundView {
     }
 
     var imageView: UIImageView = {
-        $0.frame = CGRect(x: 0, y: 0, width: 90, height: 90)
+        $0.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.contentMode = .scaleAspectFit
         return $0
     }(UIImageView())
     var titleLabel: UILabel = {
-        $0.font = UIFont.boldSystemFont(ofSize: 18)
+        $0.font = UIFont.boldSystemFont(ofSize: 20)
         $0.textColor = .mainText
         $0.numberOfLines = 0
         $0.textAlignment = .center
@@ -66,20 +68,20 @@ class PlaceholderView: TableViewBackgroundView {
     
     //MARK: - Конфигурация View
     func setupView() {
-        self.contentView.addSubview(imageView)
-        self.contentView.addSubview(titleLabel)
-        self.contentView.addSubview(messageLabel)
+        self.addSubview(imageView)
+        self.addSubview(titleLabel)
+        self.addSubview(messageLabel)
         
-        self.imageView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor).isActive = true
-        self.imageView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor).isActive = true
+        self.imageView.leftAnchor.constraint(equalTo: self.layoutMarginsGuide.leftAnchor).isActive = true
+        self.imageView.rightAnchor.constraint(equalTo: self.layoutMarginsGuide.rightAnchor).isActive = true
         self.imageView.bottomAnchor.constraint(equalTo: self.titleLabel.topAnchor, constant: -10).isActive = true
         
-        self.titleLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor).isActive = true
-        self.titleLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor).isActive = true
-        self.titleLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
+        self.titleLabel.leftAnchor.constraint(equalTo: self.layoutMarginsGuide.leftAnchor).isActive = true
+        self.titleLabel.rightAnchor.constraint(equalTo: self.layoutMarginsGuide.rightAnchor).isActive = true
+        self.titleLabel.centerYAnchor.constraint(equalTo: self.layoutMarginsGuide.centerYAnchor).isActive = true
 
         self.messageLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 10).isActive = true
-        self.messageLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor).isActive = true
-        self.messageLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor).isActive = true
+        self.messageLabel.leftAnchor.constraint(equalTo: self.layoutMarginsGuide.leftAnchor).isActive = true
+        self.messageLabel.rightAnchor.constraint(equalTo: self.layoutMarginsGuide.rightAnchor).isActive = true
     }
 }
