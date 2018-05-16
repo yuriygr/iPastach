@@ -43,6 +43,15 @@ class PasteCell: UITableViewCell {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
+    lazy var readmoreLabel: UILabel = {
+        $0.font = UIFont.systemFont(ofSize: 13)
+        $0.textColor = .mainBlue
+        $0.lineBreakMode = .byWordWrapping
+        $0.numberOfLines = 0
+        $0.text = "Читать далее..."
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(UILabel())
     
     //MARK: - Life Cycle
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -63,6 +72,7 @@ class PasteCell: UITableViewCell {
         contentView.addSubview(idLabel)
         contentView.addSubview(timeLabel)
         contentView.addSubview(descriptionLabel)
+        contentView.addSubview(readmoreLabel)
         
         var constraints = [NSLayoutConstraint]()
         
@@ -70,7 +80,8 @@ class PasteCell: UITableViewCell {
             "titleLabel" : titleLabel,
             "idLabel": idLabel,
             "timeLabel": timeLabel,
-            "descriptionLabel" : descriptionLabel
+            "descriptionLabel" : descriptionLabel,
+            "readmoreLabel": readmoreLabel
             ] as [String : Any]
         
         let metricsDict = [
@@ -78,43 +89,48 @@ class PasteCell: UITableViewCell {
         ]
         
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-[titleLabel]-[timeLabel]-[descriptionLabel]-|",
+            withVisualFormat: "V:|-padding-[titleLabel]-[timeLabel]-[descriptionLabel]-[readmoreLabel]-padding-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-[titleLabel]-[idLabel]-[descriptionLabel]-|",
+            withVisualFormat: "V:|-padding-[titleLabel]-[idLabel]-[descriptionLabel]-[readmoreLabel]-padding-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-[titleLabel]-|",
+            withVisualFormat: "H:|-padding-[titleLabel]-padding-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-[idLabel]-[timeLabel]",
+            withVisualFormat: "H:|-padding-[idLabel]-[timeLabel]",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-[descriptionLabel]-|",
+            withVisualFormat: "H:|-padding-[descriptionLabel]-padding-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
-        
+        constraints += NSLayoutConstraint.constraints(
+            withVisualFormat: "H:|-padding-[readmoreLabel]-padding-|",
+            options: [],
+            metrics: metricsDict,
+            views: viewsDict
+        )
         NSLayoutConstraint.activate(constraints)
     }
     
     func configure(with paste: PasteElement) {
         titleLabel.text = paste.title
         idLabel.text = "#\(paste.id)"
-        timeLabel.text = paste.time
+        timeLabel.text = "\(Date(timeIntervalSince1970: paste.time))"
         descriptionLabel.text = paste.description
     }
 }

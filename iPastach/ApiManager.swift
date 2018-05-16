@@ -18,22 +18,6 @@ class ApiManager: NSObject {
     /// Base path to API
     private let path: String = "https://api.pastach.ru/"
     
-    /// Methods for API request
-    ///
-    /// - Pastes: List of pastes
-    /// - Paste: Data of paste
-    /// - Tags: List of tags
-    /// - Pages: List of pages
-    /// - Page: Data of page
-    enum methods: String {
-        case pastes
-        case paste
-        case tags
-        case pages
-        case page
-    }
-    
-    /// Possible errors
     ///
     /// - invalidURL
     /// - invalidParams
@@ -52,9 +36,9 @@ class ApiManager: NSObject {
     /// - Parameter completion: Кложур для работы с данными
     ///
     /// - Returns: Nothing to return
-    func fetch<T>(_ type: T.Type, method: methods, params: [String:String] = [:], completion: @escaping (T?, Error?) -> Void) where T: Decodable {
+    private func fetch<T>(_ type: T.Type, endpoint: String, params: [String:String] = [:], completion: @escaping (T?, Error?) -> Void) where T: Decodable {
 
-        guard let url = URL(string: self.path + method.rawValue) else {
+        guard let url = URL(string: self.path + endpoint) else {
             return completion(nil, Errors.invalidURL)
         }
 
@@ -67,6 +51,7 @@ class ApiManager: NSObject {
             if error != nil {
                 return completion(nil, Errors.undefined)
             }
+
             if let data = data {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -76,9 +61,23 @@ class ApiManager: NSObject {
             }
         }.resume()
     }
+
+    //MARK: - Временные постоянные решения
+    enum pastesMethod: String {
+        case list
+        case item
+    }
+    func pastes<T>(_ type: T.Type, method: pastesMethod, params: [String:String] = [:], completion: @escaping (T?, Error?) -> Void) where T: Decodable {
+        let endproint = "pastes.\(method.rawValue)"
+        self.fetch(type, endpoint: endproint, params: params, completion: completion)
+    }
     
-    func pastes<T>(_ type: T.Type, completion: @escaping (T?, Error?) -> Void) where T: Decodable {
-        self.fetch(type, method: .pastes, completion: completion)
+    enum tagsMethod: String {
+        case list
+    }
+    func tags<T>(_ type: T.Type, method: tagsMethod, params: [String:String] = [:], completion: @escaping (T?, Error?) -> Void) where T: Decodable {
+        let endproint = "tags.\(method.rawValue)"
+        self.fetch(type, endpoint: endproint, params: params, completion: completion)
     }
 }
 

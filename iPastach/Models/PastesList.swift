@@ -13,23 +13,37 @@ typealias PastesList = [PasteElement]
 struct PasteElement: Codable {
     let id: Int
     let title: String
-    let time: String
+    let time: Double
     let description: String
+    let closed: Bool
     let nsfw: Bool
+    let views: Int
+    let tags: TagsList
     
     enum CodingKeys: String, CodingKey {
         case id
         case title
         case time
         case description
+        case closed
         case nsfw
+        case views
+        case tags
     }
+}
+
+struct PastesListPaginated: Codable {
+    let items: PastesList
+    let next: Int
+    let prev: Int
+    let total: Int
+    let current: Int
     
-    init(id: Int, title: String, time: String, description: String, nsfw: Bool) {
-        self.id = id
-        self.title = title
-        self.time = time
-        self.description = description
-        self.nsfw = nsfw
+    enum CodingKeys: String, CodingKey {
+        case items
+        case next
+        case prev
+        case total
+        case current
     }
 }

@@ -18,7 +18,7 @@ class FavoritesViewController: UIViewController {
         setupController()
     }
     
-    //MARK: - Конфигурация контроллера
+    //MARK: - Setup view
     func setupController() {
         navigationItem.title = "Избранное"
 

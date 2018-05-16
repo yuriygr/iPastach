@@ -18,7 +18,7 @@ class SearchViewController: UIViewController {
         setupController()
     }
     
-    //MARK: - Конфигурация контроллера
+    //MARK: - Setup view
     func setupController() {
         navigationItem.title = "Поиск"
 

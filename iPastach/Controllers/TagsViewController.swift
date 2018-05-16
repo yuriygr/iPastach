@@ -39,7 +39,7 @@ class TagsViewController: UIViewController {
         setupController()
     }
     
-    //MARK: - Конфигурация контроллера
+    //MARK: - Setup view
     func setupController() {
         navigationItem.title = "Теги"
 
@@ -48,7 +48,7 @@ class TagsViewController: UIViewController {
         view.addSubview(tableView)
 
         // Fetching data from API
-        api.fetch(TagsList.self, method: .tags) { (data, error) in
+        api.tags(TagsList.self, method: .list) { (data, error) in
             if let data = data {
                 if data.count > 0 {
                     self.tagsList = data
@@ -58,6 +58,7 @@ class TagsViewController: UIViewController {
     }
 }
 
+//MARK: - TableView
 extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -87,7 +88,11 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(self.tagsList[indexPath.row])
+        NotificationCenter.default.post(
+            name: Notification.Name("SelectTag"),
+            object: nil,
+            userInfo: ["tag": self.tagsList[indexPath.row]]
+        )
         self.navigationController?.popViewController(animated: true)
     }
     

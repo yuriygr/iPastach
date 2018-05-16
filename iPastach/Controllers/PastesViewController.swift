@@ -24,7 +24,13 @@ class PastesViewController: UIViewController {
     var apiParams = [String:String]()
     
     //MARK: - Data
-    var currentTag: TagElement?
+    var currentTag: TagElement? {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
     var pastesList: PastesList = [] {
         didSet {
             DispatchQueue.main.async {
@@ -37,14 +43,17 @@ class PastesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Setup notification center
+        setupNotifications()
+
         // Setup view controller
         setupController()
     }
     
-    //MARK: - Конфигурация контроллера
+    //MARK: - Setup view
     func setupController() {
         navigationItem.title = "Пасты"
-    
+
         let tagsButton = UIBarButtonItem(title: "Теги", style: .plain, target: self, action: #selector(tagsButtonPressed))
         navigationItem.rightBarButtonItem = tagsButton
     
@@ -56,7 +65,7 @@ class PastesViewController: UIViewController {
         if let currentTag = currentTag {
             apiParams = [ "tag": "\(currentTag.slug)" ]
         }
-        api.fetch(PastesList.self, method: .pastes, params: apiParams) { (data, error) in
+        api.pastes(PastesList.self, method: .list, params: apiParams) { (data, error) in
             if let data = data {
                 if data.count > 0 {
                     self.pastesList = data
@@ -70,12 +79,31 @@ class PastesViewController: UIViewController {
     fileprivate func tagsButtonPressed() {
         navigationController?.pushViewController(TagsViewController(), animated: true)
     }
+}
+
+//MARK: - Notification center
+extension PastesViewController {
+    //MARK: - Setup
+    fileprivate func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(tagSelected(notification:)),
+            name: Notification.Name("SelectTag"),
+            object: nil
+        )
+    }
+    
+    //MARK: - Notification selector
     @objc
-    fileprivate func refreshButtonPressed() {
-        
+    func tagSelected(notification: Notification) {
+        if let tag = notification.userInfo?["tag"] as? TagElement {
+            currentTag = tag
+        }
+        print(currentTag!)
     }
 }
 
+//MARK: - TableView
 extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
