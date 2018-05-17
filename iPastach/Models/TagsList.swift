@@ -27,3 +27,10 @@ struct TagElement: Codable {
         self.title = title
     }
 }
+
+
+extension Array where Element == TagsList.Element {
+    func asString() -> String {
+        return self.map({"\($0.title)"}).joined(separator: ", ")
+    }
+}

@@ -11,7 +11,7 @@ import UIKit
 class PasteCell: UITableViewCell {
     
     //MARK: - Properties
-    lazy var titleLabel: UILabel = {
+    fileprivate lazy var titleLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 18)
         $0.textColor = .mainText
         $0.lineBreakMode = .byWordWrapping
@@ -19,7 +19,8 @@ class PasteCell: UITableViewCell {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
-    lazy var idLabel: UILabel = {
+
+    fileprivate lazy var idLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 12)
         $0.textColor = .mainBlue
         $0.lineBreakMode = .byWordWrapping
@@ -27,7 +28,8 @@ class PasteCell: UITableViewCell {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
-    lazy var timeLabel: UILabel = {
+
+    fileprivate lazy var timeLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 12)
         $0.textColor = .mainGrey
         $0.lineBreakMode = .byWordWrapping
@@ -35,7 +37,17 @@ class PasteCell: UITableViewCell {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
-    lazy var descriptionLabel: UILabel = {
+    
+    fileprivate lazy var tagsLabel: UILabel = {
+        $0.font = UIFont.systemFont(ofSize: 12)
+        $0.textColor = .mainBlue
+        $0.lineBreakMode = .byWordWrapping
+        $0.numberOfLines = 0
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(UILabel())
+    
+    fileprivate lazy var descriptionLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 13)
         $0.textColor = .mainText
         $0.lineBreakMode = .byWordWrapping
@@ -43,12 +55,13 @@ class PasteCell: UITableViewCell {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
-    lazy var readmoreLabel: UILabel = {
+    
+    fileprivate lazy var readmoreLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 13)
         $0.textColor = .mainBlue
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
-        $0.text = "Читать далее..."
+        $0.text = "Читать далее"
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
@@ -71,6 +84,7 @@ class PasteCell: UITableViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(idLabel)
         contentView.addSubview(timeLabel)
+        contentView.addSubview(tagsLabel)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(readmoreLabel)
         
@@ -80,12 +94,13 @@ class PasteCell: UITableViewCell {
             "titleLabel" : titleLabel,
             "idLabel": idLabel,
             "timeLabel": timeLabel,
+            "tagsLabel": tagsLabel,
             "descriptionLabel" : descriptionLabel,
             "readmoreLabel": readmoreLabel
             ] as [String : Any]
         
         let metricsDict = [
-            "padding": 10
+            "padding": 20
         ]
         
         constraints += NSLayoutConstraint.constraints(
@@ -101,13 +116,19 @@ class PasteCell: UITableViewCell {
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
+            withVisualFormat: "V:|-padding-[titleLabel]-[tagsLabel]-[descriptionLabel]-[readmoreLabel]-padding-|",
+            options: [],
+            metrics: metricsDict,
+            views: viewsDict
+        )
+        constraints += NSLayoutConstraint.constraints(
             withVisualFormat: "H:|-padding-[titleLabel]-padding-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-padding-[idLabel]-[timeLabel]",
+            withVisualFormat: "H:|-padding-[idLabel]-[timeLabel]-[tagsLabel]",
             options: [],
             metrics: metricsDict,
             views: viewsDict
@@ -130,7 +151,22 @@ class PasteCell: UITableViewCell {
     func configure(with paste: PasteElement) {
         titleLabel.text = paste.title
         idLabel.text = "#\(paste.id)"
-        timeLabel.text = "\(Date(timeIntervalSince1970: paste.time))"
+        timeLabel.text = formatDate(with: paste.time)
         descriptionLabel.text = paste.description
+        
+        if paste.tags.count > 0 {
+            tagsLabel.text = paste.tags.asString()
+        }
+    }
+    
+    //MARK: Helpers
+    
+    func formatDate(with timestamp: Double) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy в HH:mm"
+        let dateFromTimestamp = Date(timeIntervalSince1970: timestamp)
+        
+        return dateFormatter.string(from: dateFromTimestamp)
+
     }
 }

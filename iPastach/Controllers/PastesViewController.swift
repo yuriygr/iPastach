@@ -16,7 +16,16 @@ class PastesViewController: UIViewController {
         table.delegate = self
         table.dataSource = self
         table.tableFooterView = UIView()
+        table.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return table
+    }()
+
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
+        refreshControl.tintColor = .mainBlue
+        refreshControl.attributedTitle = NSAttributedString(string: "Обновляем пасты...")
+        return refreshControl
     }()
     
     //MARK: - API Stuff
@@ -48,6 +57,9 @@ class PastesViewController: UIViewController {
 
         // Setup view controller
         setupController()
+        
+        // Fetching data from API
+        fetchDataFromAPI()
     }
     
     //MARK: - Setup view
@@ -58,18 +70,19 @@ class PastesViewController: UIViewController {
         navigationItem.rightBarButtonItem = tagsButton
     
         tableView.register(PasteCell.self, forCellReuseIdentifier: "PasteCell")
+        tableView.addSubview(refreshControl)
 
         view.addSubview(tableView)
-        
-        // Fetching data from API
+    }
+    
+    //MARK: - Request to API
+    func fetchDataFromAPI() {
         if let currentTag = currentTag {
             apiParams = [ "tag": "\(currentTag.slug)" ]
         }
         api.pastes(PastesList.self, method: .list, params: apiParams) { (data, error) in
             if let data = data {
-                if data.count > 0 {
-                    self.pastesList = data
-                }
+                self.pastesList = data
             }
         }
     }
@@ -78,6 +91,11 @@ class PastesViewController: UIViewController {
     @objc
     fileprivate func tagsButtonPressed() {
         navigationController?.pushViewController(TagsViewController(), animated: true)
+    }
+    
+    @objc
+    func handleRefresh(_ refreshControl: UIRefreshControl) {
+        refreshControl.endRefreshing()
     }
 }
 
@@ -93,13 +111,14 @@ extension PastesViewController {
         )
     }
     
-    //MARK: - Notification selector
+    //MARK: - Selectors
     @objc
     func tagSelected(notification: Notification) {
         if let tag = notification.userInfo?["tag"] as? TagElement {
             currentTag = tag
+            self.tableView.setContentOffset(.zero, animated: true)
+            fetchDataFromAPI()
         }
-        print(currentTag!)
     }
 }
 
@@ -129,13 +148,14 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PasteCell", for: indexPath) as! PasteCell
         cell.configure(with: self.pastesList[indexPath.row])
+        cell.selectionStyle = .gray
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //let pasteViewController = PasteViewController()
-        //pasteViewController.paste = self.pasteList[indexPath.row]
-        //navigationController?.pushViewController(pasteViewController, animated: true)
+        let pasteViewController = PasteViewController()
+        pasteViewController.paste = self.pastesList[indexPath.row]
+        navigationController?.pushViewController(pasteViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

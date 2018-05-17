@@ -1,14 +1,14 @@
 //
-//  TagsViewController.swift
+//  PasteViewController.swift
 //  iPastach
 //
-//  Created by Юрий Гринев on 07.05.2018.
+//  Created by Юрий Гринев on 17.05.2018.
 //  Copyright © 2018 Юрий Гринев. All rights reserved.
 //
 
 import UIKit
 
-class TagsViewController: UIViewController {
+class PasteViewController: UIViewController {
     
     //MARK: - Properties
     lazy var tableView: UITableView = {
@@ -16,14 +16,16 @@ class TagsViewController: UIViewController {
         table.delegate = self
         table.dataSource = self
         table.tableFooterView = UIView()
+        table.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return table
     }()
     
     //MARK: - API Stuff
     var api: ApiManager = .shared
-
+    var apiParams = [String:String]()
+    
     //MARK: - Data
-    var tagsList: TagsList = [] {
+    var paste: PasteElement? {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -37,15 +39,14 @@ class TagsViewController: UIViewController {
         
         // Setup view controller
         setupController()
-
+        
         // Fetching data from API
         fetchDataFromAPI()
     }
-    
+
     //MARK: - Setup view
     func setupController() {
-        navigationItem.title = "Теги"
-
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TagCell")
         
         view.addSubview(tableView)
@@ -53,52 +54,33 @@ class TagsViewController: UIViewController {
     
     //MARK: - Request to API
     func fetchDataFromAPI() {
-        api.tags(TagsList.self, method: .list) { (data, error) in
+        if let paste = paste {
+            apiParams = [ "paste_id": "\(paste.id)" ]
+        }
+        api.pastes(PasteElement.self, method: .item, params: apiParams) { (data, error) in
             if let data = data {
-                if data.count > 0 {
-                    self.tagsList = data
-                }
+                self.paste = data
             }
         }
     }
 }
-
 //MARK: - TableView
-extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
+extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if self.tagsList.count > 0 {
-            tableView.backgroundView = nil
-            return 1
-        } else {
-            let tableViewEmptyMessage = TableViewEmptyMessage()
-            tableViewEmptyMessage.image = UIImage(named: "tags")
-            tableViewEmptyMessage.title = "Список тегов пуст"
-            tableViewEmptyMessage.message = "Возможно, вы что-то сделали не так.\nПожалуйста, повторите ещё раз."
-
-            tableView.backgroundView = tableViewEmptyMessage
-            tableView.backgroundView?.isHidden = false
-            return 0
-        }
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tagsList.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TagCell", for: indexPath)
-        cell.textLabel?.text = self.tagsList[indexPath.row].title
-        return cell
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        NotificationCenter.default.post(
-            name: Notification.Name("SelectTag"),
-            object: nil,
-            userInfo: ["tag": self.tagsList[indexPath.row]]
-        )
-        self.navigationController?.popViewController(animated: true)
+
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

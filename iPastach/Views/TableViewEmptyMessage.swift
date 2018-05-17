@@ -33,13 +33,14 @@ class TableViewEmptyMessage: UIView {
         }
     }
 
-    var imageView: UIImageView = {
+    fileprivate var imageView: UIImageView = {
         $0.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.contentMode = .scaleAspectFit
         return $0
     }(UIImageView())
-    var titleLabel: UILabel = {
+    
+    fileprivate var titleLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 20)
         $0.textColor = .mainText
         $0.numberOfLines = 0
@@ -47,7 +48,8 @@ class TableViewEmptyMessage: UIView {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
-    var messageLabel: UILabel = {
+    
+    fileprivate var messageLabel: UILabel = {
         $0.textColor = .mainGrey
         $0.numberOfLines = 0
         $0.textAlignment = .center
