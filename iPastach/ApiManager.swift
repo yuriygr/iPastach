@@ -9,7 +9,7 @@
 import UIKit
 
 class ApiManager: NSObject {
-    
+      
     static let shared: ApiManager = ApiManager()
 
     // Ещё немного чего-то крутого и потрясного

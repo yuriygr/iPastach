@@ -18,6 +18,13 @@ class TagsViewController: UIViewController {
         table.tableFooterView = UIView()
         return table
     }()
+
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
+        refreshControl.tintColor = .mainBlue
+        return refreshControl
+    }()
     
     //MARK: - API Stuff
     var api: ApiManager = .shared
@@ -34,31 +41,37 @@ class TagsViewController: UIViewController {
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Setup view controller
         setupController()
-
-        // Fetching data from API
         fetchDataFromAPI()
     }
     
     //MARK: - Setup view
     func setupController() {
         navigationItem.title = "Теги"
-
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TagCell")
+        tableView.addSubview(refreshControl)
         
         view.addSubview(tableView)
     }
     
     //MARK: - Request to API
-    func fetchDataFromAPI() {
+    fileprivate func fetchDataFromAPI(completion: (() -> ())? = nil) {
         api.tags(TagsList.self, method: .list) { (data, error) in
             if let data = data {
-                if data.count > 0 {
-                    self.tagsList = data
-                }
+                self.tagsList = data
             }
+            if let completion = completion {
+                completion()
+            }
+        }
+    }
+    
+    //MARK: - Actions
+    @objc
+    func handleRefresh(_ refreshControl: UIRefreshControl) {
+        fetchDataFromAPI() {
+            refreshControl.endRefreshing()
         }
     }
 }
@@ -67,7 +80,7 @@ class TagsViewController: UIViewController {
 extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if self.tagsList.count > 0 {
+        if !self.tagsList.isEmpty {
             tableView.backgroundView = nil
             return 1
         } else {

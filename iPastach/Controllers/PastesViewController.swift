@@ -24,13 +24,14 @@ class PastesViewController: UIViewController {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
         refreshControl.tintColor = .mainBlue
-        refreshControl.attributedTitle = NSAttributedString(string: "Обновляем пасты...")
         return refreshControl
     }()
     
+    lazy var tagResetButton = UIBarButtonItem(title: "Сбросить", style: .plain, target: self, action: #selector(handleResetTag))
+    lazy var tagsSelectButton = UIBarButtonItem(title: "Теги", style: .plain, target: self, action: #selector(handleTagsSelectButton))
+    
     //MARK: - API Stuff
     var api: ApiManager = .shared
-    var apiParams = [String:String]()
     
     //MARK: - Data
     var currentTag: TagElement? {
@@ -51,24 +52,18 @@ class PastesViewController: UIViewController {
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Setup notification center
         setupNotifications()
-
-        // Setup view controller
         setupController()
-        
-        // Fetching data from API
         fetchDataFromAPI()
     }
     
     //MARK: - Setup view
-    func setupController() {
+    fileprivate func setupController() {
         navigationItem.title = "Пасты"
-
-        let tagsButton = UIBarButtonItem(title: "Теги", style: .plain, target: self, action: #selector(tagsButtonPressed))
-        navigationItem.rightBarButtonItem = tagsButton
-    
+        tagResetButton.isEnabled = false
+        navigationItem.rightBarButtonItem = tagsSelectButton
+        navigationItem.leftBarButtonItem = tagResetButton
+        
         tableView.register(PasteCell.self, forCellReuseIdentifier: "PasteCell")
         tableView.addSubview(refreshControl)
 
@@ -76,7 +71,8 @@ class PastesViewController: UIViewController {
     }
     
     //MARK: - Request to API
-    func fetchDataFromAPI() {
+    fileprivate func fetchDataFromAPI(completion: (() -> ())? = nil) {
+        var apiParams = [String:String]()
         if let currentTag = currentTag {
             apiParams = [ "tag": "\(currentTag.slug)" ]
         }
@@ -84,18 +80,32 @@ class PastesViewController: UIViewController {
             if let data = data {
                 self.pastesList = data
             }
+            if let completion = completion {
+                completion()
+            }
         }
     }
     
     //MARK: - Actions
     @objc
-    fileprivate func tagsButtonPressed() {
+    fileprivate func handleTagsSelectButton() {
         navigationController?.pushViewController(TagsViewController(), animated: true)
     }
     
     @objc
+    func handleResetTag() {
+        currentTag = nil
+        navigationItem.title = "Пасты"
+        tagResetButton.isEnabled = false
+        //tableView.setContentOffset(.zero, animated: true)
+        fetchDataFromAPI()
+    }
+    
+    @objc
     func handleRefresh(_ refreshControl: UIRefreshControl) {
-        refreshControl.endRefreshing()
+        fetchDataFromAPI() {
+            refreshControl.endRefreshing()
+        }
     }
 }
 
@@ -116,7 +126,9 @@ extension PastesViewController {
     func tagSelected(notification: Notification) {
         if let tag = notification.userInfo?["tag"] as? TagElement {
             currentTag = tag
-            self.tableView.setContentOffset(.zero, animated: true)
+            navigationItem.title = tag.title
+            tagResetButton.isEnabled = true
+            tableView.setContentOffset(.zero, animated: true)
             fetchDataFromAPI()
         }
     }
@@ -124,9 +136,13 @@ extension PastesViewController {
 
 //MARK: - TableView
 extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        if self.pastesList.count > 0 {
+        if !self.pastesList.isEmpty {
             tableView.backgroundView = nil
             return 1
         } else {

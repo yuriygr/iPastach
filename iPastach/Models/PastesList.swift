@@ -19,6 +19,7 @@ struct PasteElement: Codable {
     let nsfw: Bool
     let views: Int
     let tags: TagsList
+    let url: String?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -29,6 +30,7 @@ struct PasteElement: Codable {
         case nsfw
         case views
         case tags
+        case url
     }
 }
 

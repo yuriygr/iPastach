@@ -156,6 +156,8 @@ class PasteCell: UITableViewCell {
         
         if paste.tags.count > 0 {
             tagsLabel.text = paste.tags.asString()
+        } else {
+            tagsLabel.text = nil
         }
     }
     

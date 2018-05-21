@@ -16,13 +16,15 @@ class PasteViewController: UIViewController {
         table.delegate = self
         table.dataSource = self
         table.tableFooterView = UIView()
-        table.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        table.separatorStyle = .none
         return table
     }()
     
+    let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(handleShareButton))
+    let favoritButton = UIBarButtonItem(image: UIImage(named: "following"), style: .plain, target: self, action: #selector(handleFavoritButton))
+    
     //MARK: - API Stuff
     var api: ApiManager = .shared
-    var apiParams = [String:String]()
     
     //MARK: - Data
     var paste: PasteElement? {
@@ -36,24 +38,23 @@ class PasteViewController: UIViewController {
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Setup view controller
         setupController()
-        
-        // Fetching data from API
         fetchDataFromAPI()
     }
 
     //MARK: - Setup view
     func setupController() {
-        
+        if paste != nil {
+            navigationItem.rightBarButtonItems = [favoritButton, shareButton]
+        }
+
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TagCell")
-        
         view.addSubview(tableView)
     }
     
     //MARK: - Request to API
-    func fetchDataFromAPI() {
+    fileprivate func fetchDataFromAPI(completion: (() -> ())? = nil) {
+        var apiParams = [String:String]()
         if let paste = paste {
             apiParams = [ "paste_id": "\(paste.id)" ]
         }
@@ -61,28 +62,74 @@ class PasteViewController: UIViewController {
             if let data = data {
                 self.paste = data
             }
+            if let completion = completion {
+                completion()
+            }
         }
+    }
+    
+    //MARK: - Actions
+    
+    @objc
+    func handleShareButton() {
+        guard
+            let title = paste?.title,
+            let url = paste?.url
+            else { return }
+        let itemsToShare = [title, url] as [Any]
+        
+        let activityController = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
+        activityController.excludedActivityTypes = [
+            .airDrop,
+            .mail,
+            .copyToPasteboard,
+            .message,
+            .postToFacebook,
+            .postToTwitter
+        ]
+        activityController.popoverPresentationController?.sourceView = view
+        
+        present(activityController, animated: true, completion: nil)
+    }
+    
+    @objc
+    func handleFavoritButton() {
+        
     }
 }
 //MARK: - TableView
 extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if self.paste != nil {
+            tableView.backgroundView = nil
+            return 1
+        } else {
+            let tableViewEmptyMessage = TableViewEmptyMessage()
+            tableViewEmptyMessage.image = UIImage(named: "pastes")
+            tableViewEmptyMessage.title = "Пасты нет"
+            tableViewEmptyMessage.message = "Возможно, вы что-то сделали не так.\nПожалуйста, повторите ещё раз."
+            
+            tableView.backgroundView = tableViewEmptyMessage
+            tableView.backgroundView?.isHidden = false
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.selectionStyle = .none
+        return cell
+    }
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }

@@ -14,7 +14,7 @@ class MainTabBar: UITabBarController {
         super.viewDidLoad()
 
         let pastesViewController = PastesViewController()
-        let randomViewController = FavoritesViewController()
+        let randomViewController = PasteViewController()
         let favoritesViewController = FavoritesViewController()
         let searchViewController = SearchViewController()
         
