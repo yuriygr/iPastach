@@ -102,6 +102,9 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TagCell", for: indexPath)
         cell.textLabel?.text = self.tagsList[indexPath.row].title
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .selectedRow
+        cell.selectedBackgroundView = backgroundView
         return cell
     }
     

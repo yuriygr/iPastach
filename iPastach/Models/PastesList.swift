@@ -32,6 +32,14 @@ struct PasteElement: Codable {
         case tags
         case url
     }
+    
+    func formatedTime() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy в HH:mm"
+        let dateFromTimestamp = Date(timeIntervalSince1970: self.time)
+        
+        return dateFormatter.string(from: dateFromTimestamp)
+    }
 }
 
 struct PastesListPaginated: Codable {

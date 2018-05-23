@@ -26,6 +26,7 @@
 		1336B60C20A0D1B2002DAA6E /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60B20A0D1B2002DAA6E /* TagsList.swift */; };
 		1336B60E20A0D23B002DAA6E /* MainTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60D20A0D23B002DAA6E /* MainTabBar.swift */; };
 		1336D7B420ACC7D800ECA0CE /* PasteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */; };
+		13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		1336B60B20A0D1B2002DAA6E /* TagsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
 		1336B60D20A0D23B002DAA6E /* MainTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTabBar.swift; path = iPastach/MainTabBar.swift; sourceTree = SOURCE_ROOT; };
 		1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteViewController.swift; sourceTree = "<group>"; };
+		13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +174,7 @@
 				1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */,
 				133277F720A61B3F0014944E /* FavoritesViewController.swift */,
 				1336B60920A0D1A0002DAA6E /* SearchViewController.swift */,
+				13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 				133277FA20A703CF0014944E /* PasteCell.swift in Sources */,
 				1336B60C20A0D1B2002DAA6E /* TagsList.swift in Sources */,
 				1336B60820A0D15D002DAA6E /* TagsViewController.swift in Sources */,
+				13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */,
 				1336B5DC20A0D07B002DAA6E /* iPastach.xcdatamodeld in Sources */,
 				1336D7B420ACC7D800ECA0CE /* PasteViewController.swift in Sources */,
 				1336B5D420A0D07B002DAA6E /* AppDelegate.swift in Sources */,

@@ -17,6 +17,7 @@ class MainTabBar: UITabBarController {
         let randomViewController = PasteViewController()
         let favoritesViewController = FavoritesViewController()
         let searchViewController = SearchViewController()
+        let setingsViewController = SettingsViewController()
         
         let pastesNavController = UINavigationController(rootViewController: pastesViewController)
         pastesNavController.tabBarItem.title = "Пасты"
@@ -33,9 +34,13 @@ class MainTabBar: UITabBarController {
         let searchNavController = UINavigationController(rootViewController: searchViewController)
         searchNavController.tabBarItem.title = "Поиск"
         searchNavController.tabBarItem.image = UIImage(named: "search")
-
+        
+        let settingsNavController = UINavigationController(rootViewController: setingsViewController)
+        settingsNavController.tabBarItem.title = "Настройки"
+        settingsNavController.tabBarItem.image = UIImage(named: "settings")
+        
         setViewControllers([
-            pastesNavController, randomNavController, favoritesNavController, searchNavController
+            pastesNavController, randomNavController, favoritesNavController, searchNavController, settingsNavController
         ], animated: true)
     }
 }

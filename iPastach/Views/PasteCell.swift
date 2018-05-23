@@ -80,6 +80,9 @@ class PasteCell: UITableViewCell {
     
     //MARK: - Конфигурация ячейки
     func setupCell() {
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .selectedRow
+        self.selectedBackgroundView = backgroundView
         
         contentView.addSubview(titleLabel)
         contentView.addSubview(idLabel)
@@ -151,7 +154,7 @@ class PasteCell: UITableViewCell {
     func configure(with paste: PasteElement) {
         titleLabel.text = paste.title
         idLabel.text = "#\(paste.id)"
-        timeLabel.text = formatDate(with: paste.time)
+        timeLabel.text = paste.formatedTime()
         descriptionLabel.text = paste.description
         
         if paste.tags.count > 0 {
@@ -159,16 +162,5 @@ class PasteCell: UITableViewCell {
         } else {
             tagsLabel.text = nil
         }
-    }
-    
-    //MARK: Helpers
-    
-    func formatDate(with timestamp: Double) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy в HH:mm"
-        let dateFromTimestamp = Date(timeIntervalSince1970: timestamp)
-        
-        return dateFormatter.string(from: dateFromTimestamp)
-
     }
 }

@@ -164,7 +164,6 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PasteCell", for: indexPath) as! PasteCell
         cell.configure(with: self.pastesList[indexPath.row])
-        cell.selectionStyle = .gray
         return cell
     }
     
