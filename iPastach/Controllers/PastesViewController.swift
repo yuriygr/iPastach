@@ -12,18 +12,27 @@ class PastesViewController: UIViewController {
     
     //MARK: - Properties
     lazy var tableView: UITableView = {
-        let table = UITableView(frame: self.view.bounds, style: .plain)
-        table.delegate = self
-        table.dataSource = self
-        table.tableFooterView = UIView()
-        table.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        return table
+        let tableView = UITableView(frame: self.view.bounds, style: .plain)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.tableFooterView = loadMoarButton
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        return tableView
+    }()
+
+    lazy var loadMoarButton: UIButton = {
+        let loadMoarButton = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 45))
+        loadMoarButton.setTitle("Загрузить ещё", for: .normal)
+        loadMoarButton.setTitleColor(.mainBlue, for: .normal)
+        loadMoarButton.titleLabel?.font = .systemFont(ofSize: 13)
+        loadMoarButton.addTarget(self, action: #selector(self.handleLoadMore(_:)), for: .touchUpInside)
+        return loadMoarButton
     }()
 
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
         refreshControl.tintColor = .mainBlue
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
         return refreshControl
     }()
     
@@ -31,7 +40,7 @@ class PastesViewController: UIViewController {
     lazy var tagsSelectButton = UIBarButtonItem(title: "Теги", style: .plain, target: self, action: #selector(handleTagsSelectButton))
     
     //MARK: - API Stuff
-    var api: ApiManager = .shared
+    var api: APIManager = .shared
     
     //MARK: - Data
     var currentTag: TagElement? {
@@ -66,7 +75,7 @@ class PastesViewController: UIViewController {
         
         tableView.register(PasteCell.self, forCellReuseIdentifier: "PasteCell")
         tableView.addSubview(refreshControl)
-
+        
         view.addSubview(tableView)
     }
     
@@ -76,7 +85,7 @@ class PastesViewController: UIViewController {
         if let currentTag = currentTag {
             apiParams = [ "tag": "\(currentTag.slug)" ]
         }
-        api.pastes(PastesList.self, method: .list, params: apiParams) { (data, error) in
+        api.pastes(PastesList.self, endpoint: .list, params: apiParams) { (data, error) in
             if let data = data {
                 self.pastesList = data
             }
@@ -106,6 +115,12 @@ class PastesViewController: UIViewController {
         fetchDataFromAPI() {
             refreshControl.endRefreshing()
         }
+    }
+    
+    @objc
+    func handleLoadMore(_ sender: UIButton) {
+        sender.makeDisabled(true)
+        print("loaded!")
     }
 }
 
@@ -182,6 +197,14 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
+            return tableView.sectionHeaderHeight
+        } else {
+            return 0.01
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
             return tableView.sectionHeaderHeight
         } else {

@@ -12,22 +12,22 @@ class TagsViewController: UIViewController {
     
     //MARK: - Properties
     lazy var tableView: UITableView = {
-        let table = UITableView(frame: self.view.bounds, style: .plain)
-        table.delegate = self
-        table.dataSource = self
-        table.tableFooterView = UIView()
-        return table
+        let tableView = UITableView(frame: self.view.bounds, style: .plain)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.tableFooterView = UIView()
+        return tableView
     }()
 
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
         refreshControl.tintColor = .mainBlue
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
         return refreshControl
     }()
     
     //MARK: - API Stuff
-    var api: ApiManager = .shared
+    var api: APIManager = .shared
 
     //MARK: - Data
     var tagsList: TagsList = [] {
@@ -57,7 +57,7 @@ class TagsViewController: UIViewController {
     
     //MARK: - Request to API
     fileprivate func fetchDataFromAPI(completion: (() -> ())? = nil) {
-        api.tags(TagsList.self, method: .list) { (data, error) in
+        api.tags(TagsList.self, endpoint: .list) { (data, error) in
             if let data = data {
                 self.tagsList = data
             }

@@ -12,19 +12,19 @@ class PasteViewController: UIViewController {
     
     //MARK: - Properties
     lazy var tableView: UITableView = {
-        let table = UITableView(frame: self.view.bounds, style: .plain)
-        table.delegate = self
-        table.dataSource = self
-        table.tableFooterView = UIView()
-        table.separatorStyle = .none
-        return table
+        let tableView = UITableView(frame: self.view.bounds, style: .plain)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none
+        return tableView
     }()
     
     let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(handleShareButton))
     let favoritButton = UIBarButtonItem(image: UIImage(named: "following"), style: .plain, target: self, action: #selector(handleFavoritButton))
     
     //MARK: - API Stuff
-    var api: ApiManager = .shared
+    var api: APIManager = .shared
     
     //MARK: - Data
     var paste: PasteElement? {
@@ -44,9 +44,7 @@ class PasteViewController: UIViewController {
 
     //MARK: - Setup view
     func setupController() {
-        if paste != nil {
-            navigationItem.rightBarButtonItems = [favoritButton, shareButton]
-        }
+        navigationItem.rightBarButtonItems = [favoritButton, shareButton]
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TagCell")
         view.addSubview(tableView)
@@ -57,8 +55,11 @@ class PasteViewController: UIViewController {
         var apiParams = [String:String]()
         if let paste = paste {
             apiParams = [ "paste_id": "\(paste.id)" ]
+        } else {
+            apiParams = [ "type": "random" ]
         }
-        api.pastes(PasteElement.self, method: .item, params: apiParams) { (data, error) in
+        
+        api.pastes(PasteElement.self, endpoint: .item, params: apiParams) { (data, error) in
             if let data = data {
                 self.paste = data
             }

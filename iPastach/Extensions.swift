@@ -8,6 +8,50 @@
 
 import UIKit
 
+extension URLRequest {
+    
+    /// Populate the HTTPBody of `application/x-www-form-urlencoded` request
+    ///
+    /// - Parameter parameters:   A dictionary of keys and values to be added to the request
+    mutating func setBodyContent(_ parameters: [String : String]) {
+        let parameterArray = parameters.map { (key, value) -> String in
+            let encodedKey   = key.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed)!
+            let encodedValue = value.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed)!
+            return "\(encodedKey)=\(encodedValue)"
+        }
+        httpBody = parameterArray
+            .joined(separator: "&")
+            .data(using: .utf8)
+    }
+}
+
+extension CharacterSet {
+    
+    /// Character set containing characters allowed in query value as outlined in RFC 3986.
+    ///
+    /// RFC 3986 states that the following characters are "reserved" characters.
+    ///
+    /// - General Delimiters: ":", "#", "[", "]", "@", "?", "/"
+    /// - Sub-Delimiters: "!", "$", "&", "'", "(", ")", "*", "+", ",", ";", "="
+    ///
+    /// In RFC 3986 - Section 3.4, it states that the "?" and "/" characters should not be escaped to allow
+    /// query strings to include a URL. Therefore, all "reserved" characters with the exception of "?" and "/"
+    /// should be percent-escaped in the query string.
+    ///
+    /// - Parameter string: The string to be percent-escaped.
+    ///
+    /// - Returns: The percent-escaped string.
+    static let urlQueryValueAllowed: CharacterSet = {
+        let generalDelimitersToEncode = ":#[]@" // does not include "?" or "/" due to RFC 3986 - Section 3.4
+        let subDelimitersToEncode = "!$&'()*+,;="
+        
+        var allowed = CharacterSet.urlQueryAllowed
+        allowed.remove(charactersIn: generalDelimitersToEncode + subDelimitersToEncode)
+        
+        return allowed
+    }()
+}
+
 extension String {
     var utfData: Data? {
         return self.data(using: .utf8)
@@ -126,6 +170,14 @@ extension UIImage {
         UIGraphicsEndImageContext()
         
         return newImage!
+    }
+}
+
+extension UIButton {
+    // Очень грустный костыль, да
+    func makeDisabled(_ disabled: Bool) {
+        self.isEnabled = disabled
+        self.setTitleColor(disabled ? .mainGrey : .mainBlue, for: .normal)
     }
 }
 
