@@ -17,6 +17,7 @@ class PasteViewController: UIViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
+        tableView.allowsSelection = false
         return tableView
     }()
     
@@ -46,7 +47,7 @@ class PasteViewController: UIViewController {
     func setupController() {
         navigationItem.rightBarButtonItems = [favoritButton, shareButton]
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TagCell")
+        tableView.register(PasteFullCell.self, forCellReuseIdentifier: "PasteFullCell")
         view.addSubview(tableView)
     }
     
@@ -126,32 +127,9 @@ extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-            cell.textLabel?.text = self.paste?.title
-            cell.textLabel?.font = .boldSystemFont(ofSize: 18.0)
-            cell.textLabel?.textColor = .mainText
-            cell.textLabel?.lineBreakMode = .byWordWrapping
-
-            cell.detailTextLabel?.text = self.paste?.formatedTime()
-            cell.detailTextLabel?.font = .systemFont(ofSize: 12)
-            cell.detailTextLabel?.textColor = .mainGrey
-            cell.detailTextLabel?.lineBreakMode = .byWordWrapping
-
-            cell.selectionStyle = .none
-            return cell
-        }
-        if indexPath.row == 1 {
-            let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-            cell.textLabel?.text = self.paste?.description
-            cell.textLabel?.font = .systemFont(ofSize: 15)
-            cell.textLabel?.textColor = .mainText
-            cell.textLabel?.lineBreakMode = .byWordWrapping
-            cell.textLabel?.numberOfLines = 0
-            cell.selectionStyle = .none
-            return cell
-        }
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PasteFullCell", for: indexPath) as! PasteFullCell
+        cell.configure(with: self.paste!)
+        return cell
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -163,10 +141,10 @@ extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
-            return tableView.sectionHeaderHeight
+        if #available(iOS 11.0, *) {
+            return 0
         } else {
-            return 0.01
+            return 0.001
         }
     }
 }

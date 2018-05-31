@@ -48,7 +48,7 @@ class TagsViewController: UIViewController {
     //MARK: - Setup view
     func setupController() {
         navigationItem.title = "Теги"
-        
+        print("я родился")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TagCell")
         tableView.addSubview(refreshControl)
         

@@ -13,7 +13,7 @@
 		133277F220A5BEAF0014944E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F120A5BEAF0014944E /* Extensions.swift */; };
 		133277F420A5ECC70014944E /* TableViewEmptyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F320A5ECC70014944E /* TableViewEmptyMessage.swift */; };
 		133277F820A61B3F0014944E /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F720A61B3F0014944E /* FavoritesViewController.swift */; };
-		133277FA20A703CF0014944E /* PasteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F920A703CF0014944E /* PasteCell.swift */; };
+		133277FA20A703CF0014944E /* PasteShortCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F920A703CF0014944E /* PasteShortCell.swift */; };
 		1336B5D420A0D07B002DAA6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B5D320A0D07B002DAA6E /* AppDelegate.swift */; };
 		1336B5D620A0D07B002DAA6E /* PastesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B5D520A0D07B002DAA6E /* PastesViewController.swift */; };
 		1336B5DC20A0D07B002DAA6E /* iPastach.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1336B5DA20A0D07B002DAA6E /* iPastach.xcdatamodeld */; };
@@ -26,6 +26,7 @@
 		1336B60C20A0D1B2002DAA6E /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60B20A0D1B2002DAA6E /* TagsList.swift */; };
 		1336B60E20A0D23B002DAA6E /* MainTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60D20A0D23B002DAA6E /* MainTabBar.swift */; };
 		1336D7B420ACC7D800ECA0CE /* PasteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */; };
+		138D2F9420C0741000BF1141 /* PasteFullCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138D2F9320C0741000BF1141 /* PasteFullCell.swift */; };
 		13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,7 +54,7 @@
 		133277F120A5BEAF0014944E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		133277F320A5ECC70014944E /* TableViewEmptyMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewEmptyMessage.swift; sourceTree = "<group>"; };
 		133277F720A61B3F0014944E /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
-		133277F920A703CF0014944E /* PasteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteCell.swift; sourceTree = "<group>"; };
+		133277F920A703CF0014944E /* PasteShortCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteShortCell.swift; sourceTree = "<group>"; };
 		1336B5D020A0D07B002DAA6E /* iPastach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPastach.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1336B5D320A0D07B002DAA6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1336B5D520A0D07B002DAA6E /* PastesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastesViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +73,7 @@
 		1336B60B20A0D1B2002DAA6E /* TagsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
 		1336B60D20A0D23B002DAA6E /* MainTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTabBar.swift; path = iPastach/MainTabBar.swift; sourceTree = SOURCE_ROOT; };
 		1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteViewController.swift; sourceTree = "<group>"; };
+		138D2F9320C0741000BF1141 /* PasteFullCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullCell.swift; sourceTree = "<group>"; };
 		13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -160,8 +162,9 @@
 		1336B60420A0D0E9002DAA6E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				133277F920A703CF0014944E /* PasteCell.swift */,
 				133277F320A5ECC70014944E /* TableViewEmptyMessage.swift */,
+				133277F920A703CF0014944E /* PasteShortCell.swift */,
+				138D2F9320C0741000BF1141 /* PasteFullCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -327,10 +330,11 @@
 				133277F420A5ECC70014944E /* TableViewEmptyMessage.swift in Sources */,
 				1336B60E20A0D23B002DAA6E /* MainTabBar.swift in Sources */,
 				133277F220A5BEAF0014944E /* Extensions.swift in Sources */,
-				133277FA20A703CF0014944E /* PasteCell.swift in Sources */,
+				133277FA20A703CF0014944E /* PasteShortCell.swift in Sources */,
 				1336B60C20A0D1B2002DAA6E /* TagsList.swift in Sources */,
 				1336B60820A0D15D002DAA6E /* TagsViewController.swift in Sources */,
 				13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */,
+				138D2F9420C0741000BF1141 /* PasteFullCell.swift in Sources */,
 				1336B5DC20A0D07B002DAA6E /* iPastach.xcdatamodeld in Sources */,
 				1336D7B420ACC7D800ECA0CE /* PasteViewController.swift in Sources */,
 				1336B5D420A0D07B002DAA6E /* AppDelegate.swift in Sources */,

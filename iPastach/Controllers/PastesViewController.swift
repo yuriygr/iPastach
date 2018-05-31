@@ -15,11 +15,22 @@ class PastesViewController: UIViewController {
         let tableView = UITableView(frame: self.view.bounds, style: .plain)
         tableView.delegate = self
         tableView.dataSource = self
+        //tableView.tableHeaderView = searchController.searchBar
         tableView.tableFooterView = loadMoarButton
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return tableView
     }()
 
+    lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.placeholder = "Поиск паст"
+        searchController.searchBar.barTintColor = .white
+        return searchController
+    }()
+    
     lazy var loadMoarButton: UIButton = {
         let loadMoarButton = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 45))
         loadMoarButton.setTitle("Загрузить ещё", for: .normal)
@@ -36,8 +47,10 @@ class PastesViewController: UIViewController {
         return refreshControl
     }()
     
+    lazy var tagsViewController = TagsViewController()
+    
     lazy var tagResetButton = UIBarButtonItem(title: "Сбросить", style: .plain, target: self, action: #selector(handleResetTag))
-    lazy var tagsSelectButton = UIBarButtonItem(title: "Теги", style: .plain, target: self, action: #selector(handleTagsSelectButton))
+    lazy var tagsSelectButton = UIBarButtonItem(title: "Теги", style: .plain, target: self, action: #selector(handleTagsSelect))
     
     //MARK: - API Stuff
     var api: APIManager = .shared
@@ -73,7 +86,7 @@ class PastesViewController: UIViewController {
         navigationItem.rightBarButtonItem = tagsSelectButton
         navigationItem.leftBarButtonItem = tagResetButton
         
-        tableView.register(PasteCell.self, forCellReuseIdentifier: "PasteCell")
+        tableView.register(PasteShortCell.self, forCellReuseIdentifier: "PasteShortCell")
         tableView.addSubview(refreshControl)
         
         view.addSubview(tableView)
@@ -97,8 +110,8 @@ class PastesViewController: UIViewController {
     
     //MARK: - Actions
     @objc
-    fileprivate func handleTagsSelectButton() {
-        navigationController?.pushViewController(TagsViewController(), animated: true)
+    func handleTagsSelect() {
+        navigationController?.pushViewController(self.tagsViewController, animated: true)
     }
     
     @objc
@@ -149,6 +162,23 @@ extension PastesViewController {
     }
 }
 
+//MARK: - Search View
+extension PastesViewController: UISearchResultsUpdating, UISearchControllerDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func willPresentSearchController(_ searchController: UISearchController) {
+        self.navigationController?.navigationBar.isTranslucent = true
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        self.navigationController?.navigationBar.isTranslucent = false
+    }
+}
+
 //MARK: - TableView
 extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -177,7 +207,7 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PasteCell", for: indexPath) as! PasteCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PasteShortCell", for: indexPath) as! PasteShortCell
         cell.configure(with: self.pastesList[indexPath.row])
         return cell
     }
