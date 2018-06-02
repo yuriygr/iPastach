@@ -20,19 +20,7 @@ struct PasteElement: Codable {
     let views: Int
     let tags: TagsList
     let url: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case title
-        case time
-        case description
-        case closed
-        case nsfw
-        case views
-        case tags
-        case url
-    }
-    
+
     func formatedTime() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy в HH:mm"
@@ -43,17 +31,8 @@ struct PasteElement: Codable {
 }
 
 struct PastesListPaginated: Codable {
-    let items: PastesList
-    let next: Int
-    let prev: Int
-    let total: Int
-    let current: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case items
-        case next
-        case prev
-        case total
-        case current
-    }
+    let items: PastesList?
+    let first, before, current, last: Int?
+    let next, total_pages, total_items: Int?
+    let limit: String?
 }

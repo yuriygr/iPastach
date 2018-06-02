@@ -15,22 +15,11 @@ class PastesViewController: UIViewController {
         let tableView = UITableView(frame: self.view.bounds, style: .plain)
         tableView.delegate = self
         tableView.dataSource = self
-        //tableView.tableHeaderView = searchController.searchBar
         tableView.tableFooterView = loadMoarButton
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return tableView
     }()
 
-    lazy var searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = "Поиск паст"
-        searchController.searchBar.barTintColor = .white
-        return searchController
-    }()
-    
     lazy var loadMoarButton: UIButton = {
         let loadMoarButton = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 45))
         loadMoarButton.setTitle("Загрузить ещё", for: .normal)
@@ -63,7 +52,7 @@ class PastesViewController: UIViewController {
             }
         }
     }
-    var pastesList: PastesList = [] {
+    var pastesListPaginated: PastesListPaginated? {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -76,7 +65,7 @@ class PastesViewController: UIViewController {
         super.viewDidLoad()
         setupNotifications()
         setupController()
-        fetchDataFromAPI()
+        initialLoadFromAPI()
     }
     
     //MARK: - Setup view
@@ -93,14 +82,14 @@ class PastesViewController: UIViewController {
     }
     
     //MARK: - Request to API
-    fileprivate func fetchDataFromAPI(completion: (() -> ())? = nil) {
+    fileprivate func initialLoadFromAPI(completion: (() -> ())? = nil) {
         var apiParams = [String:String]()
         if let currentTag = currentTag {
             apiParams = [ "tag": "\(currentTag.slug)" ]
         }
-        api.pastes(PastesList.self, endpoint: .list, params: apiParams) { (data, error) in
+        api.pastes(PastesListPaginated.self, endpoint: .list, params: apiParams) { (data, error) in
             if let data = data {
-                self.pastesList = data
+                self.pastesListPaginated = data
             }
             if let completion = completion {
                 completion()
@@ -120,12 +109,12 @@ class PastesViewController: UIViewController {
         navigationItem.title = "Пасты"
         tagResetButton.isEnabled = false
         //tableView.setContentOffset(.zero, animated: true)
-        fetchDataFromAPI()
+        initialLoadFromAPI()
     }
     
     @objc
     func handleRefresh(_ refreshControl: UIRefreshControl) {
-        fetchDataFromAPI() {
+        initialLoadFromAPI() {
             refreshControl.endRefreshing()
         }
     }
@@ -157,7 +146,7 @@ extension PastesViewController {
             navigationItem.title = tag.title
             tagResetButton.isEnabled = true
             tableView.setContentOffset(.zero, animated: true)
-            fetchDataFromAPI()
+            initialLoadFromAPI()
         }
     }
 }
@@ -187,8 +176,9 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if !self.pastesList.isEmpty {
+        if let items = self.pastesListPaginated?.items, !items.isEmpty {
             tableView.backgroundView = nil
+            tableView.tableFooterView = loadMoarButton
             return 1
         } else {
             let tableViewEmptyMessage = TableViewEmptyMessage()
@@ -198,23 +188,27 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
 
             tableView.backgroundView = tableViewEmptyMessage
             tableView.backgroundView?.isHidden = false
+            tableView.tableFooterView = UIView()
             return 0
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.pastesList.count
+        guard let items = self.pastesListPaginated?.items else { return 0 }
+        return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let items = self.pastesListPaginated?.items else { return UITableViewCell() }
         let cell = tableView.dequeueReusableCell(withIdentifier: "PasteShortCell", for: indexPath) as! PasteShortCell
-        cell.configure(with: self.pastesList[indexPath.row])
+        cell.configure(with: items[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let items = self.pastesListPaginated?.items else { return }
         let pasteViewController = PasteViewController()
-        pasteViewController.paste = self.pastesList[indexPath.row]
+        pasteViewController.paste = items[indexPath.row]
         navigationController?.pushViewController(pasteViewController, animated: true)
     }
     

@@ -72,13 +72,17 @@ class APIManager: NSObject {
             if error != nil {
                 return completion(nil, Errors.undefined)
             }
-
             if let data = data {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
 
-                let decoded = try? decoder.decode(T.self, from: data)
-                return completion(decoded, nil)
+                do {
+                    let decoded = try decoder.decode(T.self, from: data)
+                    return completion(decoded, nil)
+                } catch {
+                    print(error)
+                    return completion(nil, Errors.undefined)
+                }
             }
         }.resume()
     }

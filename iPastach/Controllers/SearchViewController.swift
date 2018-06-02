@@ -68,7 +68,7 @@ class SearchViewController: UIViewController {
     }
 
     //MARK: - Request to API
-    fileprivate func fetchDataFromAPI(completion: (() -> ())? = nil) {
+    fileprivate func initialLoadFromAPI(completion: (() -> ())? = nil) {
         if let completion = completion {
             completion()
         }
@@ -77,7 +77,7 @@ class SearchViewController: UIViewController {
     //MARK: - Actions
     @objc
     func handleRefresh(_ refreshControl: UIRefreshControl) {
-        fetchDataFromAPI() {
+        initialLoadFromAPI() {
             refreshControl.endRefreshing()
         }
     }
@@ -116,16 +116,14 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-
-            let tableViewEmptyMessage = TableViewEmptyMessage()
-            tableViewEmptyMessage.image = UIImage(named: "search")
-            tableViewEmptyMessage.title = "Список паст пуст"
-            tableViewEmptyMessage.message = "Возможно, вы что-то сделали не так.\nПожалуйста, повторите ещё раз."
-            
-            tableView.backgroundView = tableViewEmptyMessage
-            tableView.backgroundView?.isHidden = false
-            return 0
+        let tableViewEmptyMessage = TableViewEmptyMessage()
+        tableViewEmptyMessage.image = UIImage(named: "search")
+        tableViewEmptyMessage.title = "Список паст пуст"
+        tableViewEmptyMessage.message = "Возможно, вы что-то сделали не так.\nПожалуйста, повторите ещё раз."
         
+        tableView.backgroundView = tableViewEmptyMessage
+        tableView.backgroundView?.isHidden = false
+        return 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

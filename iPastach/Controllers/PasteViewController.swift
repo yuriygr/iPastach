@@ -21,8 +21,8 @@ class PasteViewController: UIViewController {
         return tableView
     }()
     
-    let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(handleShareButton))
-    let favoritButton = UIBarButtonItem(image: UIImage(named: "following"), style: .plain, target: self, action: #selector(handleFavoritButton))
+    let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonPressed))
+    let favoritButton = UIBarButtonItem(image: UIImage(named: "following"), style: .plain, target: self, action: #selector(favoritButtonPressed))
     
     //MARK: - API Stuff
     var api: APIManager = .shared
@@ -40,7 +40,7 @@ class PasteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
-        fetchDataFromAPI()
+        initialLoadFromAPI()
     }
 
     //MARK: - Setup view
@@ -52,7 +52,7 @@ class PasteViewController: UIViewController {
     }
     
     //MARK: - Request to API
-    fileprivate func fetchDataFromAPI(completion: (() -> ())? = nil) {
+    fileprivate func initialLoadFromAPI(completion: (() -> ())? = nil) {
         var apiParams = [String:String]()
         if let paste = paste {
             apiParams = [ "paste_id": "\(paste.id)" ]
@@ -73,7 +73,7 @@ class PasteViewController: UIViewController {
     //MARK: - Actions
     
     @objc
-    func handleShareButton() {
+    func shareButtonPressed() {
         guard
             let title = paste?.title,
             let url = paste?.url
@@ -95,8 +95,7 @@ class PasteViewController: UIViewController {
     }
     
     @objc
-    func handleFavoritButton() {
-        
+    func favoritButtonPressed() {
     }
 }
 //MARK: - TableView

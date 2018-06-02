@@ -75,7 +75,7 @@ class PasteFullCell: UITableViewCell {
             ] as [String : UIView]
         
         let metricsDict = [
-            "padding": 14
+            "padding": 18
         ]
         
         constraints += NSLayoutConstraint.constraints(
@@ -115,11 +115,6 @@ class PasteFullCell: UITableViewCell {
         titleLabel.text = paste.title
         idLabel.text = "#\(paste.id)"
         timeLabel.text = paste.formatedTime()
-        
-        if paste.tags.count > 0 {
-            tagsLabel.text = paste.tags.asString()
-        } else {
-            tagsLabel.text = nil
-        }
+        tagsLabel.text = paste.tags.count > 0 ? paste.tags.asString() : nil
     }
 }

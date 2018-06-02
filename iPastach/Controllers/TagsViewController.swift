@@ -42,7 +42,7 @@ class TagsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
-        fetchDataFromAPI()
+        initialLoadFromAPI()
     }
     
     //MARK: - Setup view
@@ -56,7 +56,7 @@ class TagsViewController: UIViewController {
     }
     
     //MARK: - Request to API
-    fileprivate func fetchDataFromAPI(completion: (() -> ())? = nil) {
+    fileprivate func initialLoadFromAPI(completion: (() -> ())? = nil) {
         api.tags(TagsList.self, endpoint: .list) { (data, error) in
             if let data = data {
                 self.tagsList = data
@@ -70,7 +70,7 @@ class TagsViewController: UIViewController {
     //MARK: - Actions
     @objc
     func handleRefresh(_ refreshControl: UIRefreshControl) {
-        fetchDataFromAPI() {
+        initialLoadFromAPI() {
             refreshControl.endRefreshing()
         }
     }

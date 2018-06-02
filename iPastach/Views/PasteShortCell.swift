@@ -101,7 +101,7 @@ class PasteShortCell: UITableViewCell {
             ] as [String : UIView]
         
         let metricsDict = [
-            "padding": 14
+            "padding": 18
         ]
         
         constraints += NSLayoutConstraint.constraints(

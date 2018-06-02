@@ -14,20 +14,7 @@ struct TagElement: Codable {
     let id: Int
     let slug: String
     let title: String
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case slug
-        case title
-    }
-    
-    init(id: Int, slug: String, title: String) {
-        self.id = id
-        self.slug = slug
-        self.title = title
-    }
 }
-
 
 extension Array where Element == TagsList.Element {
     func asString() -> String {
