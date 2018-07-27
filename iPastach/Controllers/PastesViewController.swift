@@ -70,11 +70,12 @@ class PastesViewController: UIViewController {
     
     //MARK: - Setup view
     fileprivate func setupController() {
-        navigationItem.title = "Пасты"
-        tagResetButton.isEnabled = false
+        navigationItem.title = "Паста.ч"
         navigationItem.rightBarButtonItem = tagsSelectButton
         navigationItem.leftBarButtonItem = tagResetButton
-        
+        navigationItem.withoutNameBackButton()
+        tagResetButton.isEnabled = false
+
         tableView.register(PasteShortCell.self, forCellReuseIdentifier: "PasteShortCell")
         tableView.addSubview(refreshControl)
         
@@ -83,9 +84,9 @@ class PastesViewController: UIViewController {
     
     //MARK: - Request to API
     fileprivate func initialLoadFromAPI(completion: (() -> ())? = nil) {
-        var apiParams = [String:String]()
+        var apiParams: APIManager.APIParams = [:]
         if let currentTag = currentTag {
-            apiParams = [ "tag": "\(currentTag.slug)" ]
+            apiParams["tag"] = "\(currentTag.slug)"
         }
         api.pastes(PastesListPaginated.self, endpoint: .list, params: apiParams) { (data, error) in
             if let data = data {
@@ -96,8 +97,35 @@ class PastesViewController: UIViewController {
             }
         }
     }
+    // Мама, не бей меня
+    fileprivate func loadFromAPI(by page: Int?, completion: (() -> ())? = nil) {
+        var apiParams: APIManager.APIParams = [:]
+        if let currentTag = currentTag {
+            apiParams["tag"] = "\(currentTag.slug)"
+        }
+        if let page = page, page > 0 {
+            apiParams["page"] = "\(page)"
+        }
+        api.pastes(PastesListPaginated.self, endpoint: .list, params: apiParams) { (data, error) in
+            if let data = data {
+                self.pastesListPaginated?.items = (self.pastesListPaginated?.items)! + data.items!
+                self.pastesListPaginated?.first = data.first
+                self.pastesListPaginated?.before = data.before
+                self.pastesListPaginated?.current = data.current
+                self.pastesListPaginated?.last = data.last
+                self.pastesListPaginated?.next = data.next
+                self.pastesListPaginated?.total_pages = data.total_pages
+                self.pastesListPaginated?.total_items = data.total_items
+                self.pastesListPaginated?.limit = data.limit
+            }
+            if let completion = completion {
+                completion()
+            }
+        }
+    }
     
     //MARK: - Actions
+
     @objc
     func handleTagsSelect() {
         navigationController?.pushViewController(self.tagsViewController, animated: true)
@@ -121,8 +149,11 @@ class PastesViewController: UIViewController {
     
     @objc
     func handleLoadMore(_ sender: UIButton) {
-        sender.makeDisabled(true)
-        print("loaded!")
+        loadFromAPI(by: pastesListPaginated?.next) {
+            if self.pastesListPaginated?.current == self.pastesListPaginated?.last {
+                sender.makeDisabled(true)
+            }
+        }
     }
 }
 
@@ -174,7 +205,7 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         if let items = self.pastesListPaginated?.items, !items.isEmpty {
             tableView.backgroundView = nil

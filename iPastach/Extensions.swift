@@ -60,18 +60,23 @@ extension String {
         guard let data = self.utfData else {
             return nil
         }
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: NSNumber(value: String.Encoding.utf8.rawValue)
+        ]
         do {
-            return try NSAttributedString(
-                data: data,
-                options: [
-                    .documentType: NSAttributedString.DocumentType.html,
-                    .characterEncoding: String.Encoding.utf8.rawValue
-                ],
-                documentAttributes: nil
-            )
+            return try NSAttributedString(data: data, options: options, documentAttributes: nil)
         } catch {
             print(error.localizedDescription)
             return nil
+        }
+    }
+}
+
+extension UILabel {
+    func setHtmlText(_ html: String) {
+        if let attributedText = html.attributedHtmlString {
+            self.attributedText = attributedText
         }
     }
 }
@@ -81,14 +86,6 @@ extension UINavigationItem {
         let backButton = UIBarButtonItem()
         backButton.title = ""
         self.backBarButtonItem = backButton
-    }
-}
-
-extension UITextView {
-    func setHtmlText(_ html: String) {
-        if let attributedText = html.attributedHtmlString {
-            self.attributedText = attributedText
-        }
     }
 }
 

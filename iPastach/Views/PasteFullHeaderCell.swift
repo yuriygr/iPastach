@@ -1,5 +1,5 @@
 //
-//  PasteFullCell.swift
+//  PasteFullHeaderCell.swift
 //  iPastach
 //
 //  Created by Юрий Гринев on 31.05.2018.
@@ -8,9 +8,10 @@
 
 import UIKit
 
-class PasteFullCell: UITableViewCell {
+class PasteFullHeaderCell: UITableViewCell {
     
     //MARK: - Properties
+    
     fileprivate lazy var titleLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 20)
         $0.textColor = .mainText
@@ -49,6 +50,7 @@ class PasteFullCell: UITableViewCell {
 
     
     //MARK: - Life Cycle
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
@@ -59,6 +61,7 @@ class PasteFullCell: UITableViewCell {
     }
     
     //MARK: - Конфигурация ячейки
+    
     func setupCell() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(idLabel)

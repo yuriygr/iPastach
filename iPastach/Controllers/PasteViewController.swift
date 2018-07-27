@@ -5,6 +5,7 @@
 //  Created by Юрий Гринев on 17.05.2018.
 //  Copyright © 2018 Юрий Гринев. All rights reserved.
 //
+//TODO: https://stackoverflow.com/questions/30849030/swift-how-to-execute-an-action-when-uitabbaritem-is-pressed/30849225
 
 import UIKit
 
@@ -47,13 +48,14 @@ class PasteViewController: UIViewController {
     func setupController() {
         navigationItem.rightBarButtonItems = [favoritButton, shareButton]
 
-        tableView.register(PasteFullCell.self, forCellReuseIdentifier: "PasteFullCell")
+        tableView.register(PasteFullHeaderCell.self, forCellReuseIdentifier: "PasteFullHeaderCell")
+        tableView.register(PasteFullContentCell.self, forCellReuseIdentifier: "PasteFullContentCell")
         view.addSubview(tableView)
     }
     
     //MARK: - Request to API
     fileprivate func initialLoadFromAPI(completion: (() -> ())? = nil) {
-        var apiParams = [String:String]()
+        var apiParams: APIManager.APIParams = [:]
         if let paste = paste {
             apiParams = [ "paste_id": "\(paste.id)" ]
         } else {
@@ -126,9 +128,18 @@ extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PasteFullCell", for: indexPath) as! PasteFullCell
-        cell.configure(with: self.paste!)
-        return cell
+        guard let paste = self.paste else { return UITableViewCell() }
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PasteFullHeaderCell", for: indexPath) as! PasteFullHeaderCell
+            cell.configure(with: paste)
+            return cell
+        }
+        if indexPath.row == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PasteFullContentCell", for: indexPath) as! PasteFullContentCell
+            cell.configure(with: paste)
+            return cell
+        }
+        return UITableViewCell()
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

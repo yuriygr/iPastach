@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		132EFF2E20C5C99A001B57EA /* PasteFullContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */; };
 		133277EC20A465EA0014944E /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277EB20A465EA0014944E /* ApiManager.swift */; };
 		133277EE20A473E80014944E /* PastesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277ED20A473E80014944E /* PastesList.swift */; };
 		133277F020A562040014944E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 133277EF20A562040014944E /* README.md */; };
@@ -24,9 +25,9 @@
 		1336B60820A0D15D002DAA6E /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60720A0D15D002DAA6E /* TagsViewController.swift */; };
 		1336B60A20A0D1A0002DAA6E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60920A0D1A0002DAA6E /* SearchViewController.swift */; };
 		1336B60C20A0D1B2002DAA6E /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60B20A0D1B2002DAA6E /* TagsList.swift */; };
-		1336B60E20A0D23B002DAA6E /* MainTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60D20A0D23B002DAA6E /* MainTabBar.swift */; };
+		1336B60E20A0D23B002DAA6E /* RootTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60D20A0D23B002DAA6E /* RootTabBar.swift */; };
 		1336D7B420ACC7D800ECA0CE /* PasteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */; };
-		138D2F9420C0741000BF1141 /* PasteFullCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138D2F9320C0741000BF1141 /* PasteFullCell.swift */; };
+		138D2F9420C0741000BF1141 /* PasteFullHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */; };
 		13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullContentCell.swift; sourceTree = "<group>"; };
 		133277EB20A465EA0014944E /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		133277ED20A473E80014944E /* PastesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastesList.swift; sourceTree = "<group>"; };
 		133277EF20A562040014944E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -71,9 +73,9 @@
 		1336B60720A0D15D002DAA6E /* TagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
 		1336B60920A0D1A0002DAA6E /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		1336B60B20A0D1B2002DAA6E /* TagsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
-		1336B60D20A0D23B002DAA6E /* MainTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTabBar.swift; path = iPastach/MainTabBar.swift; sourceTree = SOURCE_ROOT; };
+		1336B60D20A0D23B002DAA6E /* RootTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RootTabBar.swift; path = iPastach/RootTabBar.swift; sourceTree = SOURCE_ROOT; };
 		1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteViewController.swift; sourceTree = "<group>"; };
-		138D2F9320C0741000BF1141 /* PasteFullCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullCell.swift; sourceTree = "<group>"; };
+		138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullHeaderCell.swift; sourceTree = "<group>"; };
 		13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,7 +130,7 @@
 			children = (
 				133277EB20A465EA0014944E /* ApiManager.swift */,
 				1336B5D320A0D07B002DAA6E /* AppDelegate.swift */,
-				1336B60D20A0D23B002DAA6E /* MainTabBar.swift */,
+				1336B60D20A0D23B002DAA6E /* RootTabBar.swift */,
 				1336B60520A0D0F3002DAA6E /* Controllers */,
 				1336B60620A0D0FE002DAA6E /* Models */,
 				1336B60420A0D0E9002DAA6E /* Views */,
@@ -164,7 +166,8 @@
 			children = (
 				133277F320A5ECC70014944E /* TableViewEmptyMessage.swift */,
 				133277F920A703CF0014944E /* PasteShortCell.swift */,
-				138D2F9320C0741000BF1141 /* PasteFullCell.swift */,
+				138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */,
+				132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -328,13 +331,14 @@
 				133277EE20A473E80014944E /* PastesList.swift in Sources */,
 				1336B5D620A0D07B002DAA6E /* PastesViewController.swift in Sources */,
 				133277F420A5ECC70014944E /* TableViewEmptyMessage.swift in Sources */,
-				1336B60E20A0D23B002DAA6E /* MainTabBar.swift in Sources */,
+				1336B60E20A0D23B002DAA6E /* RootTabBar.swift in Sources */,
 				133277F220A5BEAF0014944E /* Extensions.swift in Sources */,
 				133277FA20A703CF0014944E /* PasteShortCell.swift in Sources */,
 				1336B60C20A0D1B2002DAA6E /* TagsList.swift in Sources */,
 				1336B60820A0D15D002DAA6E /* TagsViewController.swift in Sources */,
 				13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */,
-				138D2F9420C0741000BF1141 /* PasteFullCell.swift in Sources */,
+				138D2F9420C0741000BF1141 /* PasteFullHeaderCell.swift in Sources */,
+				132EFF2E20C5C99A001B57EA /* PasteFullContentCell.swift in Sources */,
 				1336B5DC20A0D07B002DAA6E /* iPastach.xcdatamodeld in Sources */,
 				1336D7B420ACC7D800ECA0CE /* PasteViewController.swift in Sources */,
 				1336B5D420A0D07B002DAA6E /* AppDelegate.swift in Sources */,

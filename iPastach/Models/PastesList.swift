@@ -15,6 +15,7 @@ struct PasteElement: Codable {
     let title: String
     let time: Double
     let description: String
+    let content: String?
     let closed: Bool
     let nsfw: Bool
     let views: Int
@@ -31,8 +32,8 @@ struct PasteElement: Codable {
 }
 
 struct PastesListPaginated: Codable {
-    let items: PastesList?
-    let first, before, current, last: Int?
-    let next, total_pages, total_items: Int?
-    let limit: String?
+    var items: PastesList?
+    var first, before, current, last: Int?
+    var next, total_pages, total_items: Int?
+    var limit: String?
 }
