@@ -33,6 +33,7 @@
 		1377AED9210B9A970010107A /* IJProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1377AED8210B9A970010107A /* IJProgressView.swift */; };
 		138D2F9420C0741000BF1141 /* PasteFullHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */; };
 		13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */; };
+		13C044F2210E195C00C4F9AE /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C044F1210E195C00C4F9AE /* Pagination.swift */; };
 		13DD8F30210B40E100F9A370 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F2F210B40E100F9A370 /* URLRequest.swift */; };
 		13DD8F32210B410800F9A370 /* CharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F31210B410800F9A370 /* CharacterSet.swift */; };
 		13DD8F34210B413600F9A370 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F33210B413500F9A370 /* String.swift */; };
@@ -85,7 +86,6 @@
 		1336B60D20A0D23B002DAA6E /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabBarController.swift; path = iPastach/TabBarController.swift; sourceTree = SOURCE_ROOT; };
 		1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteViewController.swift; sourceTree = "<group>"; };
 		13741ACA210BA6D70037723A /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
-		13741AD2210C431B0037723A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		13741AD3210C43390037723A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		13741AD4210C43660037723A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		13741AD8210C51210037723A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -93,6 +93,7 @@
 		1377AED8210B9A970010107A /* IJProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IJProgressView.swift; sourceTree = "<group>"; };
 		138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullHeaderCell.swift; sourceTree = "<group>"; };
 		13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		13C044F1210E195C00C4F9AE /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
 		13DD8F2F210B40E100F9A370 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		13DD8F31210B410800F9A370 /* CharacterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet.swift; sourceTree = "<group>"; };
 		13DD8F33210B413500F9A370 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -214,6 +215,7 @@
 			children = (
 				133277ED20A473E80014944E /* PastesList.swift */,
 				1336B60B20A0D1B2002DAA6E /* TagsList.swift */,
+				13C044F1210E195C00C4F9AE /* Pagination.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -386,6 +388,7 @@
 				1336B60E20A0D23B002DAA6E /* TabBarController.swift in Sources */,
 				133277F220A5BEAF0014944E /* Extensions.swift in Sources */,
 				13741ACB210BA6D70037723A /* ThemeManager.swift in Sources */,
+				13C044F2210E195C00C4F9AE /* Pagination.swift in Sources */,
 				133277FA20A703CF0014944E /* PasteShortCell.swift in Sources */,
 				1336B60C20A0D1B2002DAA6E /* TagsList.swift in Sources */,
 				1336B60820A0D15D002DAA6E /* TagsViewController.swift in Sources */,
@@ -444,7 +447,6 @@
 		13741AD1210C43000037723A /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				13741AD2210C431B0037723A /* Base */,
 				13741AD3210C43390037723A /* ru */,
 				13741AD4210C43660037723A /* en */,
 			);

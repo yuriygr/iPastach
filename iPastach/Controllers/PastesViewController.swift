@@ -11,6 +11,7 @@ import UIKit
 class PastesViewController: UIViewController {
     
     //MARK: - Properties
+
     var canTransitionToLarge = false
     var canTransitionToSmall = true
 
@@ -63,36 +64,42 @@ class PastesViewController: UIViewController {
     let progress = IJProgressView.shared
     
     //MARK: - Data
-    var currentTag: TagElement? {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-    var pastesListPaginated: PastesListPaginated? {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
 
+    var currentTag: TagElement?
+    var pastes: PastesList = []
+    var pagination: Pagination = Pagination(
+        first: 0,
+        before: 0,
+        current: 0,
+        last: 0,
+        next: 0,
+        total_pages: 0,
+        total_items: 0,
+        limit: "0"
+    )
+    
     //MARK: - Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNotifications()
         setupLongPressGesture()
         setupController()
         progress.showProgressView()
-        initialLoadFromAPI() {
+        loadFromAPI() { (data, error) in
+            if let newPastes = data?.items {
+                self.pastes = newPastes
+            }
             DispatchQueue.main.async {
                 self.progress.hideProgressView()
+
+                self.tableView.reloadData()
             }
         }
     }
     
     //MARK: - Setup view
+
     fileprivate func setupController() {
         if let currentTag = currentTag {
             navigationItem.title = currentTag.title
@@ -101,6 +108,7 @@ class PastesViewController: UIViewController {
         }
         navigationItem.rightBarButtonItems = [tagsSelectButton, tagResetButton]
         
+        //TODO: Выбор темы
         refreshControl.tintColor = theme.tintColor
         loadMoarButton.setTitleColor(theme.tintColor, for: .normal)
         loadMoarButton.setTitleColor(theme.secondTintColor, for: .highlighted)
@@ -116,22 +124,8 @@ class PastesViewController: UIViewController {
     }
 
     //MARK: - Request to API
-    fileprivate func initialLoadFromAPI(completion: (() -> ())? = nil) {
-        var apiParams: APIManager.APIParams = [:]
-        if let currentTag = currentTag {
-            apiParams["tag"] = "\(currentTag.slug)"
-        }
-        api.pastes(PastesListPaginated.self, endpoint: .list, params: apiParams) { (data, error) in
-            if let data = data {
-                self.pastesListPaginated = data
-            }
-            if let completion = completion {
-                completion()
-            }
-        }
-    }
 
-    fileprivate func loadFromAPI(by page: Int?, completion: (() -> ())? = nil) {
+    fileprivate func loadFromAPI(by page: Int? = 1, completion: ((PastesListPaginated?, Error?) -> ())? = nil) {
         var apiParams: APIManager.APIParams = [:]
         if let currentTag = currentTag {
             apiParams["tag"] = "\(currentTag.slug)"
@@ -140,24 +134,30 @@ class PastesViewController: UIViewController {
             apiParams["page"] = "\(page)"
         }
         api.pastes(PastesListPaginated.self, endpoint: .list, params: apiParams) { (data, error) in
-            if let data = data {
-                self.pastesListPaginated?.items = (self.pastesListPaginated?.items)! + data.items!
-                self.pastesListPaginated?.first = data.first
-                self.pastesListPaginated?.before = data.before
-                self.pastesListPaginated?.current = data.current
-                self.pastesListPaginated?.last = data.last
-                self.pastesListPaginated?.next = data.next
-                self.pastesListPaginated?.total_pages = data.total_pages
-                self.pastesListPaginated?.total_items = data.total_items
-                self.pastesListPaginated?.limit = data.limit
+            if let error = error {
+                print(error)
             }
+            if let data = data {
+                self.pagination = Pagination(
+                    first: data.first,
+                    before: data.before,
+                    current: data.current,
+                    last: data.last,
+                    next: data.next,
+                    total_pages: data.total_pages,
+                    total_items: data.total_items,
+                    limit: data.limit
+                )
+            }
+            print(self.pagination)
             if let completion = completion {
-                completion()
+                completion(data, error)
             }
         }
     }
     
     //MARK: - Actions
+
     @objc
     func handleSelectTagPressed() {
         navigationController?.pushViewController(self.tagsViewController, animated: true)
@@ -174,7 +174,7 @@ class PastesViewController: UIViewController {
     
     @objc
     func handleRefresh(_ refreshControl: UIRefreshControl) {
-        initialLoadFromAPI() {
+        loadFromAPI() { (data, error) in
             DispatchQueue.main.async {
                 refreshControl.endRefreshing()
             }
@@ -184,18 +184,29 @@ class PastesViewController: UIViewController {
     @objc
     func handleLoadMore(_ sender: UIButton) {
         progress.showProgressView()
-        loadFromAPI(by: pastesListPaginated?.next) {
+        loadFromAPI(by: pagination.next) { (data, error) in
+            let newIndexPath = IndexPath(row: self.pastes.count, section: 0)
+            if let newPastes = data?.items {
+                self.pastes.append(contentsOf: newPastes)
+            }
             DispatchQueue.main.async {
                 self.progress.hideProgressView()
-                if self.pastesListPaginated?.current == self.pastesListPaginated?.last {
+                if self.pagination.current == self.pagination.last {
                     sender.isHidden = true
                 }
+                
+                self.tableView.reloadData()
+                //TODO: ну тут и ежу понятно
+                /*self.tableView.beginUpdates()
+                self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                self.tableView.endUpdates()*/
             }
         }
     }
 }
 
 //MARK: - Notification center
+
 extension PastesViewController {
     fileprivate func setupNotifications() {
         NotificationCenter.default.addObserver(
@@ -217,11 +228,16 @@ extension PastesViewController {
         guard let tag = notification.userInfo?["tag"] as? TagElement else { return }
         currentTag = tag
         progress.showProgressView()
-        initialLoadFromAPI() {
+        loadFromAPI() { (data, error) in
+            if let newPastes = data?.items {
+                self.pastes = newPastes
+            }
             DispatchQueue.main.async {
                 self.navigationItem.title = tag.title
                 self.tagResetButton.isHidden = false
                 self.progress.hideProgressView()
+                
+                self.tableView.reloadData()
             }
         }
     }
@@ -230,17 +246,23 @@ extension PastesViewController {
     func tagReseted(notification: Notification) {
         currentTag = nil
         progress.showProgressView()
-        initialLoadFromAPI() {
+        loadFromAPI() { (data, error) in
+            if let newPastes = data?.items {
+                self.pastes = newPastes
+            }
             DispatchQueue.main.async {
-                self.navigationItem.title = "IpApptitle".translated()
+                self.navigationItem.title = "IPApptitle".translated()
                 self.tagResetButton.isHidden = true
                 self.progress.hideProgressView()
+
+                self.tableView.reloadData()
             }
         }
     }
 }
 
 //MARK: - Gesture
+
 extension PastesViewController: UIGestureRecognizerDelegate {
     func setupLongPressGesture() {
         let longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress))
@@ -260,9 +282,8 @@ extension PastesViewController: UIGestureRecognizerDelegate {
     }
 }
 
-
-
 //MARK: - Search View
+
 extension PastesViewController: UISearchResultsUpdating, UISearchControllerDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         DispatchQueue.main.async {
@@ -279,8 +300,8 @@ extension PastesViewController: UISearchResultsUpdating, UISearchControllerDeleg
     }
 }
 
-
 //MARK: - ScrollView
+
 extension PastesViewController: UIScrollViewDelegate {
     func changeNavigationBarOnScroll(_ scrollView: UIScrollView) -> Void {
         guard let navigationBarHeight = self.navigationController?.navigationBar.bounds.height else { return }
@@ -305,10 +326,11 @@ extension PastesViewController: UIScrollViewDelegate {
 }
 
 //MARK: - TableView
+
 extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        if let items = self.pastesListPaginated?.items, !items.isEmpty {
+        if !pastes.isEmpty {
             tableView.backgroundView = nil
             tableView.tableFooterView = loadMoarButton
             return 1
@@ -326,22 +348,19 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let items = self.pastesListPaginated?.items else { return 0 }
-        return items.count
+        return pastes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let items = self.pastesListPaginated?.items else { return UITableViewCell() }
         let cell = tableView.dequeueCell(PasteShortCell.self)
-        cell.configure(with: items[indexPath.row])
+        cell.configure(with: pastes[indexPath.row])
         cell.customSelectColor(theme.selectColor)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let items = self.pastesListPaginated?.items else { return }
         let pasteViewController = PasteViewController()
-        pasteViewController.paste = items[indexPath.row]
+        pasteViewController.paste = pastes[indexPath.row]
         navigationController?.pushViewController(pasteViewController, animated: true)
     }
     

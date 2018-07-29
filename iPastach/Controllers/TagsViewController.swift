@@ -39,19 +39,17 @@ class TagsViewController: UIViewController {
     lazy var theme: Theme = ThemeManager.shared.currentTheme
 
     //MARK: - Data
-    var tagsList: TagsList = [] {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
+    var tags: TagsList = []
 
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
-        initialLoadFromAPI()
+        loadFromAPI() { (data, error) in
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
     
     //MARK: - Setup view
@@ -63,13 +61,13 @@ class TagsViewController: UIViewController {
     }
     
     //MARK: - Request to API
-    fileprivate func initialLoadFromAPI(completion: (() -> ())? = nil) {
+    fileprivate func loadFromAPI(completion: ((Decodable?, Error?) -> ())? = nil) {
         api.tags(TagsList.self, endpoint: .list) { (data, error) in
             if let data = data {
-                self.tagsList = data
+                self.tags = data
             }
             if let completion = completion {
-                completion()
+                completion(data, error)
             }
         }
     }
@@ -77,9 +75,10 @@ class TagsViewController: UIViewController {
     //MARK: - Actions
     @objc
     func handleRefresh(_ refreshControl: UIRefreshControl) {
-        initialLoadFromAPI() {
+        loadFromAPI() { (data, error) in
             DispatchQueue.main.async {
                 refreshControl.endRefreshing()
+                self.tableView.reloadData()
             }
         }
     }
@@ -89,7 +88,7 @@ class TagsViewController: UIViewController {
 extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if !self.tagsList.isEmpty {
+        if !self.tags.isEmpty {
             tableView.backgroundView = nil
             return 1
         } else {
@@ -105,12 +104,12 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tagsList.count
+        return self.tags.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TagCell", for: indexPath)
-        cell.textLabel?.text = self.tagsList[indexPath.row].title
+        cell.textLabel?.text = self.tags[indexPath.row].title
         cell.textLabel?.textColor = theme.textColor
         cell.backgroundColor = theme.backgroundColor
         cell.customSelectColor(theme.selectColor)
@@ -121,7 +120,7 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         NotificationCenter.default.post(
             name: .onSelectTag,
             object: nil,
-            userInfo: ["tag": self.tagsList[indexPath.row]]
+            userInfo: ["tag": self.tags[indexPath.row]]
         )
         self.navigationController?.popViewController(animated: true)
     }
