@@ -14,9 +14,10 @@ class PasteViewController: UIViewController {
     //MARK: - Properties
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: self.view.bounds, style: .plain)
+        tableView.backgroundColor = theme.backgroundColor
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.tableFooterView = UIView()
+        tableView.tableFooterView = nil
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
         return tableView
@@ -25,9 +26,12 @@ class PasteViewController: UIViewController {
     let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonPressed))
     let favoritButton = UIBarButtonItem(image: UIImage(named: "following"), style: .plain, target: self, action: #selector(favoritButtonPressed))
     
-    //MARK: - API Stuff
+    //MARK:  API Stuff
     var api: APIManager = .shared
     
+    //MARK:  Theme
+    lazy var theme: Theme = ThemeManager.shared.currentTheme
+
     //MARK: - Data
     var paste: PasteElement? {
         didSet {
@@ -47,9 +51,12 @@ class PasteViewController: UIViewController {
     //MARK: - Setup view
     func setupController() {
         navigationItem.rightBarButtonItems = [favoritButton, shareButton]
+        if #available(iOS 11.0, *) {
+            navigationItem.largeTitleDisplayMode = .never
+        }
 
-        tableView.register(PasteFullHeaderCell.self, forCellReuseIdentifier: "PasteFullHeaderCell")
-        tableView.register(PasteFullContentCell.self, forCellReuseIdentifier: "PasteFullContentCell")
+        tableView.registerCell(PasteFullHeaderCell.self)
+        tableView.registerCell(PasteFullContentCell.self)
         view.addSubview(tableView)
     }
     
@@ -76,11 +83,9 @@ class PasteViewController: UIViewController {
     
     @objc
     func shareButtonPressed() {
-        guard
-            let title = paste?.title,
-            let url = paste?.url
-            else { return }
-        let itemsToShare = [title, url] as [Any]
+        guard let paste = paste else { return }
+
+        let itemsToShare = [paste.title, paste.url] as [Any]
         
         let activityController = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
         activityController.excludedActivityTypes = [
@@ -94,18 +99,27 @@ class PasteViewController: UIViewController {
         activityController.popoverPresentationController?.sourceView = view
         
         present(activityController, animated: true, completion: nil)
+
+        NotificationCenter.default.post(
+            name: .onPasteShared,
+            object: nil,
+            userInfo: ["paste": paste]
+        )
     }
     
     @objc
     func favoritButtonPressed() {
+        guard let paste = paste else { return }
+        
+        NotificationCenter.default.post(
+            name: .onPasteAddToFavorite,
+            object: nil,
+            userInfo: ["paste": paste]
+        )
     }
 }
 //MARK: - TableView
 extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
-    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if self.paste != nil {
@@ -130,12 +144,12 @@ extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let paste = self.paste else { return UITableViewCell() }
         if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "PasteFullHeaderCell", for: indexPath) as! PasteFullHeaderCell
+            let cell = tableView.dequeueCell(PasteFullHeaderCell.self)
             cell.configure(with: paste)
             return cell
         }
         if indexPath.row == 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "PasteFullContentCell", for: indexPath) as! PasteFullContentCell
+            let cell = tableView.dequeueCell(PasteFullContentCell.self)
             cell.configure(with: paste)
             return cell
         }
@@ -151,10 +165,26 @@ extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if #available(iOS 11.0, *) {
-            return 0
+        if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
+            return tableView.sectionHeaderHeight
         } else {
-            return 0.001
+            if #available(iOS 11.0, *) {
+                return 0
+            } else {
+                return 0.001
+            }
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
+            return tableView.sectionFooterHeight
+        } else {
+            if #available(iOS 11.0, *) {
+                return 0
+            } else {
+                return 0.001
+            }
         }
     }
 }

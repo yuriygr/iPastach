@@ -20,11 +20,11 @@ struct PasteElement: Codable {
     let nsfw: Bool
     let views: Int
     let tags: TagsList
-    let url: String?
+    let url: String
 
     func formatedTime() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy в HH:mm"
+        dateFormatter.dateFormat = "IPDateformat".translated()
         let dateFromTimestamp = Date(timeIntervalSince1970: self.time)
         
         return dateFormatter.string(from: dateFromTimestamp)

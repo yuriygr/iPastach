@@ -9,11 +9,11 @@
 import UIKit
 
 class PasteShortCell: UITableViewCell {
-    
+
     //MARK: - Properties
     fileprivate lazy var titleLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 18)
-        $0.textColor = .mainText
+        $0.textColor = theme.textColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -22,7 +22,7 @@ class PasteShortCell: UITableViewCell {
 
     fileprivate lazy var idLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = .mainBlue
+        $0.textColor = theme.tintColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -31,7 +31,7 @@ class PasteShortCell: UITableViewCell {
 
     fileprivate lazy var timeLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = .mainGrey
+        $0.textColor = theme.secondTextColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -40,7 +40,7 @@ class PasteShortCell: UITableViewCell {
     
     fileprivate lazy var tagsLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = .mainBlue
+        $0.textColor = theme.tintColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +49,7 @@ class PasteShortCell: UITableViewCell {
     
     fileprivate lazy var descriptionLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 13)
-        $0.textColor = .mainText
+        $0.textColor = theme.textColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -58,13 +58,18 @@ class PasteShortCell: UITableViewCell {
     
     fileprivate lazy var readmoreLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 13)
-        $0.textColor = .mainBlue
+        $0.textColor = theme.tintColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
-        $0.text = "Читать далее"
+        $0.text = "IPReadmore".translated(with: "Кнопка читать далее")
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
+    
+    
+    //MARK:  Theme
+    lazy var theme: Theme = ThemeManager.shared.currentTheme
+
     
     //MARK: - Life Cycle
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -78,10 +83,9 @@ class PasteShortCell: UITableViewCell {
     
     //MARK: - Конфигурация ячейки
     func setupCell() {
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = .selectedRow
-        self.selectedBackgroundView = backgroundView
-        
+        self.backgroundColor = theme.backgroundColor
+        contentView.backgroundColor = theme.backgroundColor
+
         contentView.addSubview(titleLabel)
         contentView.addSubview(idLabel)
         contentView.addSubview(timeLabel)
@@ -101,7 +105,7 @@ class PasteShortCell: UITableViewCell {
             ] as [String : UIView]
         
         let metricsDict = [
-            "padding": 18
+            "padding": 20
         ]
         
         constraints += NSLayoutConstraint.constraints(

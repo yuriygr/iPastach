@@ -13,16 +13,18 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var themeManager: ThemeManager = .shared
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        if let window = window {
-            window.rootViewController = RootTabBar()
-            window.tintColor = .mainBlue
-            window.backgroundColor = .white
-            window.makeKeyAndVisible()
-        }
+        window?.rootViewController = TabBarController()
+        window?.makeKeyAndVisible()
+        
+        //themeManager.apply(theme: themeManager.currentTheme)
+        themeManager.currentTheme = .normal
+        themeManager.useLargeTitles()
+        
         return true
     }
 

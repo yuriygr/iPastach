@@ -1,5 +1,5 @@
 //
-//  RootTabBar.swift
+//  TabBarController.swift
 //  iPastach
 //
 //  Created by Юрий Гринев on 07.05.2018.
@@ -8,11 +8,12 @@
 
 import UIKit
 
-class RootTabBar: UITabBarController {
+class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareViews()
+        delegate = self
     }
     
     fileprivate func prepareViews() {
@@ -36,5 +37,14 @@ class RootTabBar: UITabBarController {
         viewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
         
         return viewController
-    } 
+    }
+}
+
+extension TabBarController: UITabBarControllerDelegate {
+
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if tabBarController.selectedIndex == 1 {
+            print("random")
+        }
+    }
 }

@@ -18,7 +18,7 @@ class TableViewEmptyMessage: UIView {
     var image: UIImage? {
         didSet {
             self.imageView.image = image?
-                .resize(to: CGSize(width: 100, height: 100))
+                .resize(to: CGSize(width: 100, height: 100))?
                 .color(to: .mainGrey)
         }
     }

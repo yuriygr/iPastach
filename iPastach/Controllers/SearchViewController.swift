@@ -32,7 +32,7 @@ class SearchViewController: UIViewController {
     lazy var loadMoarButton: UIButton = {
         let loadMoarButton = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 45))
         loadMoarButton.setTitle("Загрузить ещё", for: .normal)
-        loadMoarButton.setTitleColor(.mainBlue, for: .normal)
+        loadMoarButton.setTitleColor(.mainTint, for: .normal)
         loadMoarButton.titleLabel?.font = .systemFont(ofSize: 13)
         loadMoarButton.addTarget(self, action: #selector(self.handleLoadMore(_:)), for: .touchUpInside)
         return loadMoarButton
@@ -40,7 +40,7 @@ class SearchViewController: UIViewController {
     
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = .mainBlue
+        refreshControl.tintColor = .mainTint
         refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
         return refreshControl
     }()
@@ -84,7 +84,7 @@ class SearchViewController: UIViewController {
     
     @objc
     func handleLoadMore(_ sender: UIButton) {
-        sender.makeDisabled(true)
+        sender.isHidden = true
         print("loaded!")
     }
 }

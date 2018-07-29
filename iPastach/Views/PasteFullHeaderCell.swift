@@ -9,12 +9,11 @@
 import UIKit
 
 class PasteFullHeaderCell: UITableViewCell {
-    
+
     //MARK: - Properties
-    
     fileprivate lazy var titleLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 20)
-        $0.textColor = .mainText
+        $0.textColor = theme.textColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -23,7 +22,7 @@ class PasteFullHeaderCell: UITableViewCell {
 
     fileprivate lazy var idLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = .mainBlue
+        $0.textColor = theme.tintColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +31,7 @@ class PasteFullHeaderCell: UITableViewCell {
 
     fileprivate lazy var timeLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = .mainGrey
+        $0.textColor = theme.secondTextColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -41,16 +40,17 @@ class PasteFullHeaderCell: UITableViewCell {
     
     fileprivate lazy var tagsLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = .mainBlue
+        $0.textColor = theme.tintColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
 
-    
+    //MARK:  Theme
+    lazy var theme: Theme = ThemeManager.shared.currentTheme
+
     //MARK: - Life Cycle
-    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
@@ -61,8 +61,9 @@ class PasteFullHeaderCell: UITableViewCell {
     }
     
     //MARK: - Конфигурация ячейки
-    
     func setupCell() {
+        contentView.backgroundColor = theme.backgroundColor
+
         contentView.addSubview(titleLabel)
         contentView.addSubview(idLabel)
         contentView.addSubview(timeLabel)
@@ -78,7 +79,7 @@ class PasteFullHeaderCell: UITableViewCell {
             ] as [String : UIView]
         
         let metricsDict = [
-            "padding": 18
+            "padding": 20
         ]
         
         constraints += NSLayoutConstraint.constraints(

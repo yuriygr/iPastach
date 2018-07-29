@@ -12,7 +12,7 @@ class SettingsViewController: UIViewController {
 
     //MARK: - Properties
     lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: self.view.bounds, style: .grouped)
+        let tableView = UITableView(frame: self.view.bounds, style: .plain)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
