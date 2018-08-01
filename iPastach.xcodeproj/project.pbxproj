@@ -34,6 +34,7 @@
 		138D2F9420C0741000BF1141 /* PasteFullHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */; };
 		13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */; };
 		13C044F2210E195C00C4F9AE /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C044F1210E195C00C4F9AE /* Pagination.swift */; };
+		13C67A602111BC31000338F6 /* AlertsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */; };
 		13DD8F30210B40E100F9A370 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F2F210B40E100F9A370 /* URLRequest.swift */; };
 		13DD8F32210B410800F9A370 /* CharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F31210B410800F9A370 /* CharacterSet.swift */; };
 		13DD8F34210B413600F9A370 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F33210B413500F9A370 /* String.swift */; };
@@ -94,6 +95,7 @@
 		138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullHeaderCell.swift; sourceTree = "<group>"; };
 		13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		13C044F1210E195C00C4F9AE /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
+		13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsHelpers.swift; sourceTree = "<group>"; };
 		13DD8F2F210B40E100F9A370 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		13DD8F31210B410800F9A370 /* CharacterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet.swift; sourceTree = "<group>"; };
 		13DD8F33210B413500F9A370 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				133277EB20A465EA0014944E /* ApiManager.swift */,
 				13741ACA210BA6D70037723A /* ThemeManager.swift */,
 				1336B60D20A0D23B002DAA6E /* TabBarController.swift */,
+				13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */,
 				1377AED8210B9A970010107A /* IJProgressView.swift */,
 				1336B60520A0D0F3002DAA6E /* Controllers */,
 				1336B60620A0D0FE002DAA6E /* Models */,
@@ -382,6 +385,7 @@
 				1336B60A20A0D1A0002DAA6E /* SearchViewController.swift in Sources */,
 				133277F820A61B3F0014944E /* FavoritesViewController.swift in Sources */,
 				133277EE20A473E80014944E /* PastesList.swift in Sources */,
+				13C67A602111BC31000338F6 /* AlertsHelpers.swift in Sources */,
 				1336B5D620A0D07B002DAA6E /* PastesViewController.swift in Sources */,
 				133277F420A5ECC70014944E /* TableViewEmptyMessage.swift in Sources */,
 				1377AED9210B9A970010107A /* IJProgressView.swift in Sources */,

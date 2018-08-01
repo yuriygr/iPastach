@@ -9,7 +9,8 @@
 import UIKit
 
 class APIManager: NSObject {
-      
+    
+    // Singleton
     static let shared: APIManager = APIManager()
 
     // Ещё немного чего-то крутого и потрясного

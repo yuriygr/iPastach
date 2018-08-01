@@ -9,8 +9,12 @@ IPApptitle = "iPastach";
 
 IPTags = "Tags";
 IPReset = "Reset";
+IPClose = "Close";
+IPCancel = "Cancel";
 IPSearch = "Search";
 IPLoadmore = "Load more";
 IPReadmore = "Read more...";
+IPPasteAddedToFavorits = "Paste added to favorites";
+IPSelectAnAction = "Select an action";
 
 IPDateformat = "MM/dd/yyyy hh:mm a";

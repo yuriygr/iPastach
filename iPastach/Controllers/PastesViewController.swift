@@ -60,6 +60,9 @@ class PastesViewController: UIViewController {
     //MARK:  Theme
     lazy var theme: Theme = ThemeManager.shared.currentTheme
     
+    //MARK:  AlertsHelper
+    var alertsHelper: AlertsHelper = AlertsHelper.shared
+    
     //MARK:  Loading
     let progress = IJProgressView.shared
     
@@ -295,7 +298,23 @@ extension PastesViewController: UIGestureRecognizerDelegate {
         if gestureRecognizer.state == .ended {
             let touchPoint = gestureRecognizer.location(in: self.tableView)
             if let indexPath = tableView.indexPathForRow(at: touchPoint) {
-                print(indexPath)
+                let item = AlertStruct(
+                    title: "IPSelectAnAction".translated()
+                )
+                let shareAction = UIAlertAction(title: "IPShare".translated(), style: .default) { action in
+                    print(action)
+                }
+                let favoritAction = UIAlertAction(title: "IPFavorite".translated(), style: .default) { action in
+                    print(action)
+                }
+                let canceltAction = UIAlertAction(title: "IPCancel".translated(), style: .cancel) { action in
+                    print(action)
+                }
+                alertsHelper.actionOn(self, item: item, actions: [
+                    shareAction,
+                    favoritAction,
+                    canceltAction
+                ])
             }
         }
     }

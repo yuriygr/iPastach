@@ -9,8 +9,12 @@ IPApptitle = "Паста.ч";
 
 IPTags = "Теги";
 IPReset = "Сбросить";
+IPClose = "Закрыть";
+IPCancel = "Отмена";
 IPSearch = "Поиск";
 IPLoadmore = "Загрузить ещё";
 IPReadmore = "Читать далее...";
+IPPasteAddedToFavorits = "Паста добавлена в избранное";
+IPSelectAnAction = "Выберите действие";
 
 IPDateformat = "dd.MM.yyyy в HH:mm";

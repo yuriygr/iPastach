@@ -23,14 +23,17 @@ class PasteViewController: UIViewController {
         return tableView
     }()
     
-    let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonPressed))
-    let favoritButton = UIBarButtonItem(image: UIImage(named: "following"), style: .plain, target: self, action: #selector(favoritButtonPressed))
+    lazy var shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonPressed))
+    lazy var favoritButton = UIBarButtonItem(image: UIImage(named: "following"), style: .plain, target: self, action: #selector(favoritButtonPressed))
     
     //MARK:  API Stuff
     var api: APIManager = .shared
     
     //MARK:  Theme
     lazy var theme: Theme = ThemeManager.shared.currentTheme
+
+    //MARK:  AlertsHelper
+    var alertsHelper: AlertsHelper = AlertsHelper.shared
 
     //MARK: - Data
     var paste: PasteElement? {
@@ -83,23 +86,13 @@ class PasteViewController: UIViewController {
     //MARK: - Actions
     
     @objc
-    func shareButtonPressed() {
+    func shareButtonPressed(_ sender: UIButton) {
         guard let paste = paste else { return }
-
-        let itemsToShare = [paste.title, paste.url] as [Any]
-        
-        let activityController = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
-        activityController.excludedActivityTypes = [
-            .airDrop,
-            .mail,
-            .copyToPasteboard,
-            .message,
-            .postToFacebook,
-            .postToTwitter
+        let items = [
+            paste.title, paste.url
         ]
-        activityController.popoverPresentationController?.sourceView = view
-        
-        present(activityController, animated: true, completion: nil)
+    
+        alertsHelper.shareOn(self, items: items)
 
         NotificationCenter.default.post(
             name: .onPasteShared,
@@ -109,9 +102,24 @@ class PasteViewController: UIViewController {
     }
     
     @objc
-    func favoritButtonPressed() {
+    func favoritButtonPressed(_ sender: UIButton) {
         guard let paste = paste else { return }
-        
+        let item = AlertStruct(
+            title: "IPPasteAddedToFavorits".translated()
+        )
+        let closeAction = UIAlertAction(title: "IPClose".translated(), style: .default)
+        let cancelAction = UIAlertAction(title: "IPCancel".translated(), style: .destructive) { action in
+            NotificationCenter.default.post(
+                name: .onPasteRemoveFromFavorite,
+                object: nil,
+                userInfo: ["paste": paste]
+            )
+        }
+        alertsHelper.alertOn(self, item: item, actions: [
+            closeAction,
+            cancelAction
+        ])
+
         NotificationCenter.default.post(
             name: .onPasteAddToFavorite,
             object: nil,
