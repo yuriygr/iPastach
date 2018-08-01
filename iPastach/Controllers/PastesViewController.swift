@@ -92,6 +92,11 @@ class PastesViewController: UIViewController {
             }
             DispatchQueue.main.async {
                 self.progress.hideProgressView()
+                if self.pagination.current == self.pagination.last {
+                    self.loadMoarButton.isHidden = true
+                } else {
+                    self.loadMoarButton.isHidden = false
+                }
 
                 self.tableView.reloadData()
             }
@@ -107,6 +112,7 @@ class PastesViewController: UIViewController {
             navigationItem.title = "IPApptitle".translated()
         }
         navigationItem.rightBarButtonItems = [tagsSelectButton, tagResetButton]
+        extendedLayoutIncludesOpaqueBars = true
         
         //TODO: Выбор темы
         refreshControl.tintColor = theme.tintColor
@@ -116,10 +122,8 @@ class PastesViewController: UIViewController {
         tableView.separatorColor = theme.secondTextColor
         
         tagResetButton.isHidden = true
-        self.extendedLayoutIncludesOpaqueBars = true
 
         tableView.registerCell(PasteShortCell.self)
-
         view.addSubview(tableView)
     }
 
@@ -149,7 +153,6 @@ class PastesViewController: UIViewController {
                     limit: data.limit
                 )
             }
-            print(self.pagination)
             if let completion = completion {
                 completion(data, error)
             }
@@ -175,8 +178,18 @@ class PastesViewController: UIViewController {
     @objc
     func handleRefresh(_ refreshControl: UIRefreshControl) {
         loadFromAPI() { (data, error) in
+            if let newPastes = data?.items {
+                self.pastes = newPastes
+            }
             DispatchQueue.main.async {
                 refreshControl.endRefreshing()
+                if self.pagination.current == self.pagination.last {
+                    self.loadMoarButton.isHidden = true
+                } else {
+                    self.loadMoarButton.isHidden = false
+                }
+                
+                self.tableView.reloadData()
             }
         }
     }
@@ -185,7 +198,6 @@ class PastesViewController: UIViewController {
     func handleLoadMore(_ sender: UIButton) {
         progress.showProgressView()
         loadFromAPI(by: pagination.next) { (data, error) in
-            let newIndexPath = IndexPath(row: self.pastes.count, section: 0)
             if let newPastes = data?.items {
                 self.pastes.append(contentsOf: newPastes)
             }
@@ -193,13 +205,10 @@ class PastesViewController: UIViewController {
                 self.progress.hideProgressView()
                 if self.pagination.current == self.pagination.last {
                     sender.isHidden = true
+                } else {
+                    sender.isHidden = false
                 }
-                
-                self.tableView.reloadData()
-                //TODO: ну тут и ежу понятно
-                /*self.tableView.beginUpdates()
-                self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-                self.tableView.endUpdates()*/
+                self.tableView.reload()
             }
         }
     }
@@ -236,7 +245,12 @@ extension PastesViewController {
                 self.navigationItem.title = tag.title
                 self.tagResetButton.isHidden = false
                 self.progress.hideProgressView()
-                
+                if self.pagination.current == self.pagination.last {
+                    self.loadMoarButton.isHidden = true
+                } else {
+                    self.loadMoarButton.isHidden = false
+                }
+
                 self.tableView.reloadData()
             }
         }
@@ -254,7 +268,12 @@ extension PastesViewController {
                 self.navigationItem.title = "IPApptitle".translated()
                 self.tagResetButton.isHidden = true
                 self.progress.hideProgressView()
-
+                if self.pagination.current == self.pagination.last {
+                    self.loadMoarButton.isHidden = true
+                } else {
+                    self.loadMoarButton.isHidden = false
+                }
+                
                 self.tableView.reloadData()
             }
         }

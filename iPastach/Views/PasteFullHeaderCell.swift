@@ -83,19 +83,19 @@ class PasteFullHeaderCell: UITableViewCell {
         ]
         
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-padding-[titleLabel]-[timeLabel]-padding-|",
+            withVisualFormat: "V:|-padding-[titleLabel]-[timeLabel]-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-padding-[titleLabel]-[idLabel]-padding-|",
+            withVisualFormat: "V:|-padding-[titleLabel]-[idLabel]-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-padding-[titleLabel]-[tagsLabel]-padding-|",
+            withVisualFormat: "V:|-padding-[titleLabel]-[tagsLabel]-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict

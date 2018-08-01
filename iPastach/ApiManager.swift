@@ -18,11 +18,13 @@ class APIManager: NSObject {
     /// Base path to API
     private let APIBase: String = "https://api.pastach.ru/"
     
-    // Временное
+    // Endpoints
     enum APIEndpoints {
         enum pastes: String {
+            case add = "pastes.add"
             case list = "pastes.list"
             case item = "pastes.item"
+            case report = "pastes.report"
         }
         enum tags: String {
             case list = "tags.list"

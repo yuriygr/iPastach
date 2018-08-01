@@ -54,6 +54,7 @@ class PasteViewController: UIViewController {
         if #available(iOS 11.0, *) {
             navigationItem.largeTitleDisplayMode = .never
         }
+        extendedLayoutIncludesOpaqueBars = true
 
         tableView.registerCell(PasteFullHeaderCell.self)
         tableView.registerCell(PasteFullContentCell.self)

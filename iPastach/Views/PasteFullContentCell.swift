@@ -40,8 +40,8 @@ class PasteFullContentCell: UITableViewCell {
         
         textView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20).isActive = true
         textView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -20).isActive = true
-        textView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20).isActive = true
-        textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20).isActive = true
+        textView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
+        textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
     }
     
     func configure(with paste: PasteElement) {

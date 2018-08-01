@@ -47,7 +47,7 @@ class TagsViewController: UIViewController {
         setupController()
         loadFromAPI() { (data, error) in
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self.tableView.reload()
             }
         }
     }
@@ -55,8 +55,9 @@ class TagsViewController: UIViewController {
     //MARK: - Setup view
     func setupController() {
         navigationItem.title = "IPTags".translated()
+        extendedLayoutIncludesOpaqueBars = true
+    
         tableView.registerCell(UITableViewCell.self, withIdentifier: "TagCell")
-        
         view.addSubview(tableView)
     }
     
@@ -78,7 +79,7 @@ class TagsViewController: UIViewController {
         loadFromAPI() { (data, error) in
             DispatchQueue.main.async {
                 refreshControl.endRefreshing()
-                self.tableView.reloadData()
+                self.tableView.reload()
             }
         }
     }

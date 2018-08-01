@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 
+let isDarkModeKey = "isDarkMode"
 
 // Themes params
 struct Theme {
@@ -57,8 +58,6 @@ struct Theme {
         selectColor: .darkSelectColor
     )
 }
-
-let isDarkModeKey = "isDarkMode"
 
 class ThemeManager {
 

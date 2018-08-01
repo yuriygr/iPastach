@@ -119,6 +119,12 @@ extension UITableView {
         }
         return cell
     }
+    
+    public func reload() {
+        self.reloadData()
+        self.layoutIfNeeded()
+        self.setContentOffset(self.contentOffset, animated: false)
+    }
 }
 
 extension UITableViewCell {
