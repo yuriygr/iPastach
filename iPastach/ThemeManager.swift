@@ -17,6 +17,7 @@ struct Theme {
     let statusBarStyle: UIStatusBarStyle
     let barStyle: UIBarStyle
     let backgroundColor: UIColor
+    let secondBackgroundColor: UIColor
     let textColor: UIColor
     let secondTextColor: UIColor
     let tintColor: UIColor
@@ -39,6 +40,7 @@ struct Theme {
         statusBarStyle: .default,
         barStyle: .default,
         backgroundColor: .mainBackground,
+        secondBackgroundColor: .mainSecondBackground,
         textColor: .mainText,
         secondTextColor: .mainGrey,
         tintColor: .mainTint,
@@ -51,6 +53,7 @@ struct Theme {
         statusBarStyle: .lightContent,
         barStyle: .black,
         backgroundColor: .darkBackground,
+        secondBackgroundColor: .darkSecondBackground,
         textColor: .darkText,
         secondTextColor: .darkGrey,
         tintColor: .darkTint,
@@ -59,8 +62,8 @@ struct Theme {
     )
 }
 
-class ThemeManager {
-
+class ThemeManager: NSObject {
+    
     static let shared: ThemeManager = ThemeManager()
     
     var currentTheme: Theme {
@@ -78,11 +81,21 @@ class ThemeManager {
         }
     }
     
+    override init() {
+        super.init()
+        print("PANIC")
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(changeTheme(notification:)),
+            name: .onThemeChanging,
+            object: nil
+        )
+    }
+    
     func apply(theme: Theme) {
+
         let sharedApplication = UIApplication.shared
-        sharedApplication.delegate?.window??.tintColor = theme.tintColor
         sharedApplication.delegate?.window??.backgroundColor = theme.backgroundColor
-        
         sharedApplication.statusBarStyle = theme.statusBarStyle
         
         // Navigation bar
@@ -92,6 +105,9 @@ class ThemeManager {
         UINavigationBar.appearance().backgroundColor = theme.backgroundColor
         UINavigationBar.appearance().tintColor = theme.textColor
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: theme.textColor]
+        if #available(iOS 11.0, *) {
+            UINavigationBar.appearance().largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: theme.textColor]
+        }
         
         // Navigation bar item
         UIBarButtonItem.appearance().tintColor = theme.tintColor
@@ -105,7 +121,12 @@ class ThemeManager {
     func useLargeTitles() {
         if #available(iOS 11.0, *) {
             UINavigationBar.appearance().prefersLargeTitles = true
-            UINavigationBar.appearance().largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: currentTheme.textColor]
         }
+    }
+    
+    @objc
+    func changeTheme(notification: Notification) {
+        guard let status = notification.userInfo?["status"] as? Bool else { return }
+        self.currentTheme = status ? Theme.darkmode : Theme.normal
     }
 }

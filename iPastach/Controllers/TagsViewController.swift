@@ -16,18 +16,15 @@ class TagsViewController: UIViewController {
 
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: self.view.bounds, style: .plain)
-        tableView.backgroundColor = theme.backgroundColor
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         tableView.refreshControl = refreshControl
-        tableView.separatorColor = theme.secondTextColor
         return tableView
     }()
 
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = theme.tintColor
         refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
         return refreshControl
     }()
@@ -56,7 +53,13 @@ class TagsViewController: UIViewController {
     func setupController() {
         navigationItem.title = "IPTags".translated()
         extendedLayoutIncludesOpaqueBars = true
-    
+        
+        //TODO: Выбор темы
+        view.backgroundColor = theme.backgroundColor
+        refreshControl.tintColor = theme.tintColor
+        tableView.backgroundColor = theme.backgroundColor
+        tableView.separatorColor = theme.secondTextColor
+        
         tableView.registerCell(UITableViewCell.self, withIdentifier: "TagCell")
         view.addSubview(tableView)
     }

@@ -25,8 +25,6 @@ class AlertsHelper: NSObject {
         }
         vc.present(alertController, animated: true, completion: nil)
     }
-
-    func confirmOn(_ vc: UIViewController, item: AlertStruct, actions: [UIAlertAction] = []) -> Void {}
     
     func actionOn(_ vc: UIViewController, item: AlertStruct, actions: [UIAlertAction] = []) -> Void {
         let alertController = UIAlertController(title: item.title, message: item.message, preferredStyle: .actionSheet)
@@ -36,6 +34,8 @@ class AlertsHelper: NSObject {
         vc.present(alertController, animated: true, completion: nil)
     }
     
+    func confirmOn(_ vc: UIViewController, item: AlertStruct, actions: [UIAlertAction] = []) -> Void {}
+
     func shareOn(_ vc: UIViewController, items itemsToShare: [Any]) -> Void {
         let activityController = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
         activityController.excludedActivityTypes = [

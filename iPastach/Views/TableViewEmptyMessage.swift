@@ -42,7 +42,6 @@ class TableViewEmptyMessage: UIView {
     
     fileprivate var titleLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 20)
-        $0.textColor = .mainText
         $0.numberOfLines = 0
         $0.textAlignment = .center
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -50,12 +49,14 @@ class TableViewEmptyMessage: UIView {
     }(UILabel())
     
     fileprivate var messageLabel: UILabel = {
-        $0.textColor = .mainGrey
         $0.numberOfLines = 0
         $0.textAlignment = .center
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
+
+    //MARK:  Theme
+    lazy var theme: Theme = ThemeManager.shared.currentTheme
 
     //MARK: - Life Cycle
     override init(frame: CGRect) {
@@ -70,6 +71,10 @@ class TableViewEmptyMessage: UIView {
     
     //MARK: - Конфигурация View
     func setupView() {
+        //TODO: Выбор темы
+        titleLabel.textColor = theme.textColor
+        messageLabel.textColor = theme.secondTextColor
+    
         self.addSubview(imageView)
         self.addSubview(titleLabel)
         self.addSubview(messageLabel)

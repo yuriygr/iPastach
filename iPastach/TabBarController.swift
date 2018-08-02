@@ -12,8 +12,14 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNotifications()
         prepareViews()
         delegate = self
+    }
+    
+    func setupNotifications() -> Void {
+        NotificationCenter.default.addObserver(self, selector: #selector(didSendOnPasteAddToFavorite), name: .onPasteAddToFavorite, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didSendOnPasteRemoveFromFavorite), name: .onPasteRemoveFromFavorite, object: nil)
     }
     
     fileprivate func prepareViews() {
@@ -37,6 +43,18 @@ class TabBarController: UITabBarController {
         viewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
         
         return viewController
+    }
+
+    //MARK: - Notification handler
+    
+    @objc
+    fileprivate func didSendOnPasteAddToFavorite(notification: Notification) {
+        self.tabBar.items?[2].badgeValue = "1"
+    }
+    
+    @objc
+    fileprivate func didSendOnPasteRemoveFromFavorite(notification: Notification) {
+        self.tabBar.items?[2].badgeValue = nil
     }
 }
 

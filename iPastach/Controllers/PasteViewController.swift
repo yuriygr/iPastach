@@ -14,10 +14,9 @@ class PasteViewController: UIViewController {
     //MARK: - Properties
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: self.view.bounds, style: .plain)
-        tableView.backgroundColor = theme.backgroundColor
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.tableFooterView = nil
+        tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
         return tableView
@@ -59,6 +58,10 @@ class PasteViewController: UIViewController {
         }
         extendedLayoutIncludesOpaqueBars = true
 
+        //TODO: Выбор темы
+        view.backgroundColor = theme.backgroundColor
+        tableView.backgroundColor = theme.backgroundColor
+        
         tableView.registerCell(PasteFullHeaderCell.self)
         tableView.registerCell(PasteFullContentCell.self)
         view.addSubview(tableView)
@@ -108,7 +111,7 @@ class PasteViewController: UIViewController {
             title: "IPPasteAddedToFavorits".translated()
         )
         let closeAction = UIAlertAction(title: "IPClose".translated(), style: .default)
-        let cancelAction = UIAlertAction(title: "IPCancel".translated(), style: .destructive) { action in
+        let cancelAction = UIAlertAction(title: "IPCancel".translated(), style: .default) { action in
             NotificationCenter.default.post(
                 name: .onPasteRemoveFromFavorite,
                 object: nil,

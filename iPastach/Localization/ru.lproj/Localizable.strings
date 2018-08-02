@@ -16,5 +16,7 @@ IPLoadmore = "Загрузить ещё";
 IPReadmore = "Читать далее...";
 IPPasteAddedToFavorits = "Паста добавлена в избранное";
 IPSelectAnAction = "Выберите действие";
+IPAddPaste = "Добавить пасту";
+IPPreferences = "Настройки";
 
 IPDateformat = "dd.MM.yyyy в HH:mm";

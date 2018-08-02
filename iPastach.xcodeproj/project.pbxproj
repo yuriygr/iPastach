@@ -35,6 +35,7 @@
 		13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */; };
 		13C044F2210E195C00C4F9AE /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C044F1210E195C00C4F9AE /* Pagination.swift */; };
 		13C67A602111BC31000338F6 /* AlertsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */; };
+		13C67A622113144E000338F6 /* AddPasteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C67A612113144E000338F6 /* AddPasteViewController.swift */; };
 		13DD8F30210B40E100F9A370 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F2F210B40E100F9A370 /* URLRequest.swift */; };
 		13DD8F32210B410800F9A370 /* CharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F31210B410800F9A370 /* CharacterSet.swift */; };
 		13DD8F34210B413600F9A370 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F33210B413500F9A370 /* String.swift */; };
@@ -96,6 +97,7 @@
 		13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		13C044F1210E195C00C4F9AE /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
 		13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsHelpers.swift; sourceTree = "<group>"; };
+		13C67A612113144E000338F6 /* AddPasteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPasteViewController.swift; sourceTree = "<group>"; };
 		13DD8F2F210B40E100F9A370 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		13DD8F31210B410800F9A370 /* CharacterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet.swift; sourceTree = "<group>"; };
 		13DD8F33210B413500F9A370 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				1336B5D520A0D07B002DAA6E /* PastesViewController.swift */,
+				13C67A612113144E000338F6 /* AddPasteViewController.swift */,
 				1336B60720A0D15D002DAA6E /* TagsViewController.swift */,
 				1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */,
 				133277F720A61B3F0014944E /* FavoritesViewController.swift */,
@@ -397,6 +400,7 @@
 				1336B60C20A0D1B2002DAA6E /* TagsList.swift in Sources */,
 				1336B60820A0D15D002DAA6E /* TagsViewController.swift in Sources */,
 				13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */,
+				13C67A622113144E000338F6 /* AddPasteViewController.swift in Sources */,
 				138D2F9420C0741000BF1141 /* PasteFullHeaderCell.swift in Sources */,
 				13DD8F38210B419400F9A370 /* UIImage.swift in Sources */,
 				132EFF2E20C5C99A001B57EA /* PasteFullContentCell.swift in Sources */,

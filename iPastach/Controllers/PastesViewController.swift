@@ -25,15 +25,6 @@ class PastesViewController: UIViewController {
         return tableView
     }()
 
-    lazy var searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = "IPSearch".translated()
-        return searchController
-    }()
-
     lazy var loadMoarButton: UIButton = {
         let loadMoarButton = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 45))
         loadMoarButton.setTitle("IPLoadmore".translated(), for: .normal)
@@ -49,8 +40,10 @@ class PastesViewController: UIViewController {
     }()
     
     lazy var tagsViewController = TagsViewController()
+    lazy var addPasteViewController = UINavigationController(rootViewController: AddPasteViewController())
     
     //MARK:  Navigation buttons
+    lazy var addPasteButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleAddPastePressed))
     lazy var tagResetButton = UIBarButtonItem(title: "IPReset".translated(), style: .plain, target: self, action: #selector(handleResetTagPressed))
     lazy var tagsSelectButton = UIBarButtonItem(title: "IPTags".translated(), style: .plain, target: self, action: #selector(handleSelectTagPressed))
     
@@ -88,6 +81,7 @@ class PastesViewController: UIViewController {
         setupNotifications()
         setupLongPressGesture()
         setupController()
+        applyTheme()
         progress.showProgressView()
         loadFromAPI() { (data, error) in
             if let newPastes = data?.items {
@@ -109,20 +103,10 @@ class PastesViewController: UIViewController {
     //MARK: - Setup view
 
     fileprivate func setupController() {
-        if let currentTag = currentTag {
-            navigationItem.title = currentTag.title
-        } else {
-            navigationItem.title = "IPApptitle".translated()
-        }
+        navigationItem.title = currentTag?.title ?? "IPApptitle".translated()
+        navigationItem.leftBarButtonItem = addPasteButton
         navigationItem.rightBarButtonItems = [tagsSelectButton, tagResetButton]
         extendedLayoutIncludesOpaqueBars = true
-        
-        //TODO: Выбор темы
-        refreshControl.tintColor = theme.tintColor
-        loadMoarButton.setTitleColor(theme.tintColor, for: .normal)
-        loadMoarButton.setTitleColor(theme.secondTintColor, for: .highlighted)
-        tableView.backgroundColor = theme.backgroundColor
-        tableView.separatorColor = theme.secondTextColor
         
         tagResetButton.isHidden = true
 
@@ -161,12 +145,27 @@ class PastesViewController: UIViewController {
             }
         }
     }
+
+    @objc
+    fileprivate func applyTheme() {
+        view.backgroundColor = theme.backgroundColor
+        refreshControl.tintColor = theme.tintColor
+        loadMoarButton.setTitleColor(theme.tintColor, for: .normal)
+        loadMoarButton.setTitleColor(theme.secondTintColor, for: .highlighted)
+        tableView.backgroundColor = theme.backgroundColor
+        tableView.separatorColor = theme.secondTextColor
+    }
     
     //MARK: - Actions
 
     @objc
+    func handleAddPastePressed() {
+        present(addPasteViewController, animated: true, completion: nil)
+    }
+    
+    @objc
     func handleSelectTagPressed() {
-        navigationController?.pushViewController(self.tagsViewController, animated: true)
+        navigationController?.pushViewController(tagsViewController, animated: true)
     }
     
     @objc
@@ -231,6 +230,12 @@ extension PastesViewController {
             self,
             selector: #selector(tagReseted(notification:)),
             name: .onResetTag,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applyTheme),
+            name: .onThemeChanging,
             object: nil
         )
     }

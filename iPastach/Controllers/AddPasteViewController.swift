@@ -1,96 +1,87 @@
 //
-//  SettingsViewController.swift
+//  AddPasteViewController.swift
 //  iPastach
 //
-//  Created by Юрий Гринев on 21.05.2018.
+//  Created by Юрий Гринев on 02.08.2018.
 //  Copyright © 2018 Юрий Гринев. All rights reserved.
 //
 
 import UIKit
 
-class SettingsViewController: UIViewController {
-
+class AddPasteViewController: UIViewController {
+    
     //MARK: - Properties
+    
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: self.view.bounds, style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none
         tableView.allowsSelection = false
         return tableView
     }()
 
+    //MARK:  Navigation buttons
+    lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(handleCancelPressed))
+    
     //MARK:  Theme
     lazy var theme: Theme = ThemeManager.shared.currentTheme
 
-    //MARK: - Sections
+    //MARK:  Sections
     var sections = [
-        "Внешний вид", "Контент"
+        "Название", "История"
     ]
-    
+
     //MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
     }
     
     //MARK: - Setup view
-    func setupController() {
-        navigationItem.title = "IPPreferences".translated()
+    
+    fileprivate func setupController() {
+        navigationItem.title = "IPAddPaste".translated()
+        navigationItem.leftBarButtonItem = cancelButton
         extendedLayoutIncludesOpaqueBars = true
-
+        
         //TODO: Выбор темы
         view.backgroundColor = theme.backgroundColor
         tableView.backgroundColor = theme.secondBackgroundColor
         tableView.separatorColor = theme.backgroundColor
     
-        tableView.registerCell(UITableViewCell.self, withIdentifier: "yourcellIdentifire")
         view.addSubview(tableView)
     }
-
+    
     @objc
-    func switchChanged(_ sender: UISwitch){
-        NotificationCenter.default.post(
-            name: .onThemeChanging,
-            object: nil,
-            userInfo: ["status": sender.isOn]
-        )
+    func handleCancelPressed() {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
 //MARK: - TableView
-extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
+
+extension AddPasteViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.sections.count
+        return 2
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
             return self.sections[section]
         }
         return nil
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "yourcellIdentifire", for: indexPath) as! UITableViewCell
-        
-        //here is programatically switch make to the table view
-        let switchView = UISwitch(frame: .zero)
-        switchView.setOn(true, animated: true)
-        switchView.tag = indexPath.row // for detect which row switch Changed
-        switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
-        cell.accessoryView = switchView
-        
-        cell.textLabel?.text = "Dark mode"
-        cell.textLabel?.textColor = theme.textColor
-        cell.backgroundColor = theme.backgroundColor
-        cell.customSelectColor(theme.selectColor)
-        return cell
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -39,7 +39,8 @@ extension UIBarButtonItem {
 
 extension UIColor {
     
-    static let mainBackground = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    static let mainBackground = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    static let mainSecondBackground = #colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1)
     static let mainText = #colorLiteral(red: 0.1803921569, green: 0.2392156863, blue: 0.2823529412, alpha: 1)
     public static let mainSelectColor = #colorLiteral(red: 0.9333333333, green: 0.9333333333, blue: 0.9333333333, alpha: 1)
     static let mainGrey = #colorLiteral(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
@@ -50,6 +51,7 @@ extension UIColor {
     static let mainGreen = #colorLiteral(red: 0.2509803922, green: 0.5921568627, blue: 0.2117647059, alpha: 1)
     
     static let darkBackground = #colorLiteral(red: 0.06666666667, green: 0.06666666667, blue: 0.06666666667, alpha: 1)
+    static let darkSecondBackground = #colorLiteral(red: 0.1294117647, green: 0.1294117647, blue: 0.1294117647, alpha: 1)
     static let darkText = #colorLiteral(red: 1, green: 0.9882352941, blue: 0.9176470588, alpha: 1)
     public static let darkSelectColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
     static let darkGrey = #colorLiteral(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
@@ -145,4 +147,5 @@ extension Notification.Name {
     static let onPasteAddToFavorite = Notification.Name("onPasteAddToFavorite")
     static let onPasteRemoveFromFavorite = Notification.Name("onPasteRemoveFromFavorite")
     static let onPasteShared = Notification.Name("onPasteShared")
+    static let onThemeChanging = Notification.Name("onThemeChanging")
 }

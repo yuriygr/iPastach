@@ -66,11 +66,9 @@ class PasteShortCell: UITableViewCell {
         return $0
     }(UILabel())
     
-    
     //MARK:  Theme
     lazy var theme: Theme = ThemeManager.shared.currentTheme
 
-    
     //MARK: - Life Cycle
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

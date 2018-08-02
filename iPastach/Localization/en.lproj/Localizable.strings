@@ -16,5 +16,7 @@ IPLoadmore = "Load more";
 IPReadmore = "Read more...";
 IPPasteAddedToFavorits = "Paste added to favorites";
 IPSelectAnAction = "Select an action";
+IPAddPaste = "Add paste";
+IPPreferences = "Preferences";
 
 IPDateformat = "MM/dd/yyyy hh:mm a";

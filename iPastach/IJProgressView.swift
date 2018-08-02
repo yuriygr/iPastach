@@ -5,7 +5,7 @@
 //  Created by Isuru Nanayakkara on 1/14/15.
 //  Copyright (c) 2015 Appex. All rights reserved.
 //
-
+// https://stackoverflow.com/questions/28785715/how-to-display-an-activity-indicator-with-text-on-ios-8-with-swift
 import UIKit
 
 open class IJProgressView {
