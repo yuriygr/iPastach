@@ -26,7 +26,7 @@ class TabBarController: UITabBarController {
         var viewsArray: [UIViewController] = []
         viewsArray.append(setupView(for: PastesViewController(), image: "pastes"))
         viewsArray.append(setupView(for: PasteViewController(), image: "refresh"))
-        viewsArray.append(setupView(for: FavoritesViewController(), image: "following"))
+        viewsArray.append(setupView(for: FavoritesViewController(), image: "star"))
         viewsArray.append(setupView(for: SearchViewController(), image: "search"))
         viewsArray.append(setupView(for: SettingsViewController(), image: "settings"))
         

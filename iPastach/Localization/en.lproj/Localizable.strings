@@ -6,17 +6,21 @@
   Copyright © 2018 Юрий Гринев. All rights reserved.
 */
 IPApptitle = "iPastach";
+IPPreferences = "Preferences";
 
 IPTags = "Tags";
 IPReset = "Reset";
 IPClose = "Close";
 IPCancel = "Cancel";
 IPSearch = "Search";
+IPAddPaste = "Add paste";
 IPLoadmore = "Load more";
 IPReadmore = "Read more...";
+IPShare = "Share";
+IPFavorite = "Add to favorites";
+IPLike = "Like";
+
 IPPasteAddedToFavorits = "Paste added to favorites";
 IPSelectAnAction = "Select an action";
-IPAddPaste = "Add paste";
-IPPreferences = "Preferences";
 
 IPDateformat = "MM/dd/yyyy hh:mm a";

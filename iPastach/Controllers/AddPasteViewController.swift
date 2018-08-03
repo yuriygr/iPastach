@@ -50,7 +50,6 @@ class AddPasteViewController: UIViewController {
         //TODO: Выбор темы
         view.backgroundColor = theme.backgroundColor
         tableView.backgroundColor = theme.secondBackgroundColor
-        tableView.separatorColor = theme.backgroundColor
     
         view.addSubview(tableView)
     }

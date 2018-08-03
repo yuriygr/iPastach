@@ -17,11 +17,13 @@ class SettingsViewController: UIViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         tableView.allowsSelection = false
+        tableView.separatorStyle = .none
         return tableView
     }()
 
     //MARK:  Theme
     lazy var theme: Theme = ThemeManager.shared.currentTheme
+    lazy var themeManager: ThemeManager = ThemeManager.shared
 
     //MARK: - Sections
     var sections = [
@@ -32,24 +34,39 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
+        applyTheme()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applyTheme),
+            name: .onThemeChanging,
+            object: nil
+        )
     }
     
     //MARK: - Setup view
     func setupController() {
         navigationItem.title = "IPPreferences".translated()
         extendedLayoutIncludesOpaqueBars = true
-
-        //TODO: Выбор темы
-        view.backgroundColor = theme.backgroundColor
-        tableView.backgroundColor = theme.secondBackgroundColor
-        tableView.separatorColor = theme.backgroundColor
     
         tableView.registerCell(UITableViewCell.self, withIdentifier: "yourcellIdentifire")
         view.addSubview(tableView)
     }
 
+    //MARK: - Actions
+    
     @objc
-    func switchChanged(_ sender: UISwitch){
+    fileprivate func applyTheme() {
+        view.backgroundColor = theme.backgroundColor
+        tableView.backgroundColor = theme.secondBackgroundColor
+        
+        self.view.setNeedsLayout()
+    }
+    
+    
+    @objc
+    func switchChanged(_ sender: UISwitch) {
+        themeManager.currentTheme = sender.isOn ? .darkmode : .normal
         NotificationCenter.default.post(
             name: .onThemeChanging,
             object: nil,
@@ -81,7 +98,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         
         //here is programatically switch make to the table view
         let switchView = UISwitch(frame: .zero)
-        switchView.setOn(true, animated: true)
+        switchView.setOn(theme == .darkmode, animated: true)
         switchView.tag = indexPath.row // for detect which row switch Changed
         switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell.accessoryView = switchView

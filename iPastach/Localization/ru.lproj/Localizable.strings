@@ -6,17 +6,21 @@
   Copyright © 2018 Юрий Гринев. All rights reserved.
 */
 IPApptitle = "Паста.ч";
+IPPreferences = "Настройки";
 
 IPTags = "Теги";
 IPReset = "Сбросить";
 IPClose = "Закрыть";
 IPCancel = "Отмена";
 IPSearch = "Поиск";
+IPAddPaste = "Добавить пасту";
 IPLoadmore = "Загрузить ещё";
 IPReadmore = "Читать далее...";
+IPShare = "Поделиться";
+IPFavorite = "Добавить в избранное";
+IPLike = "Нравится";
+
 IPPasteAddedToFavorits = "Паста добавлена в избранное";
 IPSelectAnAction = "Выберите действие";
-IPAddPaste = "Добавить пасту";
-IPPreferences = "Настройки";
 
 IPDateformat = "dd.MM.yyyy в HH:mm";

@@ -23,7 +23,7 @@ class PasteViewController: UIViewController {
     }()
     
     lazy var shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonPressed))
-    lazy var favoritButton = UIBarButtonItem(image: UIImage(named: "following"), style: .plain, target: self, action: #selector(favoritButtonPressed))
+    lazy var favoritButton = UIBarButtonItem(image: UIImage(named: "star"), style: .plain, target: self, action: #selector(favoritButtonPressed))
     
     //MARK:  API Stuff
     var api: APIManager = .shared

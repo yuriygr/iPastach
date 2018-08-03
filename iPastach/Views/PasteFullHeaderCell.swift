@@ -12,7 +12,7 @@ class PasteFullHeaderCell: UITableViewCell {
 
     //MARK: - Properties
     fileprivate lazy var titleLabel: UILabel = {
-        $0.font = UIFont.boldSystemFont(ofSize: 20)
+        $0.font = UIFont.boldSystemFont(ofSize: 22)
         $0.textColor = theme.textColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
@@ -69,50 +69,22 @@ class PasteFullHeaderCell: UITableViewCell {
         contentView.addSubview(timeLabel)
         contentView.addSubview(tagsLabel)
         
-        var constraints = [NSLayoutConstraint]()
         
-        let viewsDict = [
-            "titleLabel" : titleLabel,
-            "idLabel": idLabel,
-            "timeLabel": timeLabel,
-            "tagsLabel": tagsLabel
-            ] as [String : UIView]
+        titleLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
+        titleLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8).isActive = true
+
+        idLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+        idLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
+        idLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
+    
+        timeLabel.leftAnchor.constraint(equalTo: idLabel.rightAnchor, constant: 8).isActive = true
+        timeLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
+        timeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
         
-        let metricsDict = [
-            "padding": 20
-        ]
-        
-        constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-padding-[titleLabel]-[timeLabel]-|",
-            options: [],
-            metrics: metricsDict,
-            views: viewsDict
-        )
-        constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-padding-[titleLabel]-[idLabel]-|",
-            options: [],
-            metrics: metricsDict,
-            views: viewsDict
-        )
-        constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-padding-[titleLabel]-[tagsLabel]-|",
-            options: [],
-            metrics: metricsDict,
-            views: viewsDict
-        )
-        constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-padding-[titleLabel]-padding-|",
-            options: [],
-            metrics: metricsDict,
-            views: viewsDict
-        )
-        constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-padding-[idLabel]-[timeLabel]-[tagsLabel]",
-            options: [],
-            metrics: metricsDict,
-            views: viewsDict
-        )
-        NSLayoutConstraint.activate(constraints)
+        tagsLabel.leftAnchor.constraint(equalTo: timeLabel.rightAnchor, constant: 8).isActive = true
+        tagsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
+        tagsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
     }
     
     func configure(with paste: PasteElement) {

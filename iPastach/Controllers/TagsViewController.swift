@@ -58,7 +58,7 @@ class TagsViewController: UIViewController {
         view.backgroundColor = theme.backgroundColor
         refreshControl.tintColor = theme.tintColor
         tableView.backgroundColor = theme.backgroundColor
-        tableView.separatorColor = theme.secondTextColor
+        tableView.separatorColor = theme.separatorColor
         
         tableView.registerCell(UITableViewCell.self, withIdentifier: "TagCell")
         view.addSubview(tableView)

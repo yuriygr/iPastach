@@ -16,13 +16,18 @@ struct Theme {
     let identifier: String
     let statusBarStyle: UIStatusBarStyle
     let barStyle: UIBarStyle
+
     let backgroundColor: UIColor
     let secondBackgroundColor: UIColor
+    
     let textColor: UIColor
     let secondTextColor: UIColor
+    
     let tintColor: UIColor
     let secondTintColor: UIColor
+    
     let selectColor: UIColor
+    let separatorColor: UIColor
     
     static func by(string: String) -> Theme {
         switch string {
@@ -39,27 +44,43 @@ struct Theme {
         identifier: "Normal",
         statusBarStyle: .default,
         barStyle: .default,
+        
         backgroundColor: .mainBackground,
         secondBackgroundColor: .mainSecondBackground,
+        
         textColor: .mainText,
         secondTextColor: .mainGrey,
+
         tintColor: .mainTint,
         secondTintColor: .mainSecondTint,
-        selectColor: .mainSelectColor
+
+        selectColor: .mainSelectColor,
+        separatorColor: .mainSeparatorColor
     )
     
     static let darkmode = Theme(
         identifier: "Darkmode",
         statusBarStyle: .lightContent,
         barStyle: .black,
+
         backgroundColor: .darkBackground,
         secondBackgroundColor: .darkSecondBackground,
+        
         textColor: .darkText,
         secondTextColor: .darkGrey,
+        
         tintColor: .darkTint,
         secondTintColor: .darkSecondTint,
-        selectColor: .darkSelectColor
+        
+        selectColor: .darkSelectColor,
+        separatorColor: .darkSeparatorColor
     )
+}
+
+extension Theme: Equatable {
+    static func == (lhs: Theme, rhs: Theme) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
 }
 
 class ThemeManager: NSObject {
@@ -80,18 +101,7 @@ class ThemeManager: NSObject {
             ThemeManager.shared.apply(theme: newValue)
         }
     }
-    
-    override init() {
-        super.init()
-        print("PANIC")
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(changeTheme(notification:)),
-            name: .onThemeChanging,
-            object: nil
-        )
-    }
-    
+
     func apply(theme: Theme) {
 
         let sharedApplication = UIApplication.shared
@@ -122,11 +132,5 @@ class ThemeManager: NSObject {
         if #available(iOS 11.0, *) {
             UINavigationBar.appearance().prefersLargeTitles = true
         }
-    }
-    
-    @objc
-    func changeTheme(notification: Notification) {
-        guard let status = notification.userInfo?["status"] as? Bool else { return }
-        self.currentTheme = status ? Theme.darkmode : Theme.normal
     }
 }

@@ -21,7 +21,7 @@ class PastesViewController: UIViewController {
         tableView.dataSource = self
         tableView.tableFooterView = loadMoarButton
         tableView.refreshControl = refreshControl
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         return tableView
     }()
 
@@ -153,7 +153,9 @@ class PastesViewController: UIViewController {
         loadMoarButton.setTitleColor(theme.tintColor, for: .normal)
         loadMoarButton.setTitleColor(theme.secondTintColor, for: .highlighted)
         tableView.backgroundColor = theme.backgroundColor
-        tableView.separatorColor = theme.secondTextColor
+        tableView.separatorColor = theme.separatorColor
+        
+        self.view.setNeedsLayout()
     }
     
     //MARK: - Actions
@@ -300,7 +302,7 @@ extension PastesViewController: UIGestureRecognizerDelegate {
 
     @objc
     func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
-        if gestureRecognizer.state == .ended {
+        if gestureRecognizer.state == .began {
             let touchPoint = gestureRecognizer.location(in: self.tableView)
             if let indexPath = tableView.indexPathForRow(at: touchPoint) {
                 let item = AlertStruct(
@@ -312,12 +314,16 @@ extension PastesViewController: UIGestureRecognizerDelegate {
                 let favoritAction = UIAlertAction(title: "IPFavorite".translated(), style: .default) { action in
                     print(action)
                 }
+                let likeAction = UIAlertAction(title: "IPLike".translated(), style: .default) { action in
+                    print(action)
+                }
                 let canceltAction = UIAlertAction(title: "IPCancel".translated(), style: .cancel) { action in
                     print(action)
                 }
                 alertsHelper.actionOn(self, item: item, actions: [
                     shareAction,
                     favoritAction,
+                    likeAction,
                     canceltAction
                 ])
             }

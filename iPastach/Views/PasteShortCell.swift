@@ -103,7 +103,7 @@ class PasteShortCell: UITableViewCell {
             ] as [String : UIView]
         
         let metricsDict = [
-            "padding": 20
+            "padding": 16
         ]
         
         constraints += NSLayoutConstraint.constraints(
@@ -113,7 +113,7 @@ class PasteShortCell: UITableViewCell {
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-padding-[titleLabel]-[idLabel]-[descriptionLabel]-[readmoreLabel]-padding-|",
+            withVisualFormat: "V:|-padding-[titleLabel]-[idLabel]-[descriptionLabel]-[readmoreLabel]-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
@@ -125,25 +125,25 @@ class PasteShortCell: UITableViewCell {
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-padding-[titleLabel]-padding-|",
+            withVisualFormat: "H:|-[titleLabel]-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-padding-[idLabel]-[timeLabel]-[tagsLabel]",
+            withVisualFormat: "H:|-[idLabel]-[timeLabel]-[tagsLabel]",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-padding-[descriptionLabel]-padding-|",
+            withVisualFormat: "H:|-[descriptionLabel]-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-padding-[readmoreLabel]-padding-|",
+            withVisualFormat: "H:|-[readmoreLabel]-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
