@@ -33,13 +33,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         switch shortcutItem.type {
-        case "gr.yuriygr.openFavorites":
+        case "gr.yuriy.iPastach.openFavorites":
             guard let navController = rootTabBar.viewControllers?[1] as? UINavigationController else { break }
             navController.popToRootViewController(animated: false)
             rootTabBar.selectedIndex = 1
             completionHandler(true)
             break
-        case "gr.yuriygr.addPaste":
+        case "gr.yuriy.iPastach.addPaste":
             guard let navController = rootTabBar.viewControllers?[0] as? UINavigationController else { break }
             navController.popToRootViewController(animated: false)
             rootTabBar.selectedIndex = 0

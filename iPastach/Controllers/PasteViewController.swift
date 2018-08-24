@@ -234,6 +234,27 @@ extension PasteViewController: ToolbarItemsFactoryDelegate {
     }
 }
 
+//MARK: - ScrollView Delegate
+
+extension PasteViewController: UIScrollViewDelegate {
+    func changeNavigationBarOnScroll(_ scrollView: UIScrollView) -> Void {
+        guard let navigationBarHeight = self.navigationController?.navigationBar.bounds.height else { return }
+        if scrollView.contentOffset.y <= 0 - navigationBarHeight {
+            UIView.animate(withDuration: 0.5) {
+                self.navigationController?.navigationBar.isTranslucent = false
+            }
+        }
+        else if scrollView.contentOffset.y > 0 - navigationBarHeight {
+            UIView.animate(withDuration: 0.5) {
+                self.navigationController?.navigationBar.isTranslucent = true
+            }
+        }
+    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        changeNavigationBarOnScroll(scrollView)
+    }
+}
+
 //MARK: - TableView Delegate
 
 extension PasteViewController: UITableViewDelegate, UITableViewDataSource {

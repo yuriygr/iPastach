@@ -124,6 +124,7 @@ class PastesViewController: UIViewController {
         navigationItem.title = currentTag?.title ?? (isFavorites ? "IPFavorites".translated() : "IPApptitle".translated())
         navigationItem.leftBarButtonItems = [addPasteButton, searchPasteButton]
         navigationItem.rightBarButtonItems = [tagsSelectButton, tagResetButton]
+        navigationItem.withoutNameBackButton()
         extendedLayoutIncludesOpaqueBars = true
         tagResetButton.isHidden = true
         view.addSubview(tableView)
@@ -362,7 +363,7 @@ extension PastesViewController: UISearchResultsUpdating, UISearchControllerDeleg
     }
 }
 
-//MARK: - ScrollView
+//MARK: - ScrollView Delegate
 
 extension PastesViewController: UIScrollViewDelegate {
     func changeNavigationBarOnScroll(_ scrollView: UIScrollView) -> Void {
@@ -387,7 +388,7 @@ extension PastesViewController: UIScrollViewDelegate {
     }
 }
 
-//MARK: - TableView
+//MARK: - TableView Delegate
 
 extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
 
