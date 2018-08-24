@@ -9,11 +9,10 @@
 /* Begin PBXBuildFile section */
 		132EFF2E20C5C99A001B57EA /* PasteFullContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */; };
 		133277EC20A465EA0014944E /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277EB20A465EA0014944E /* ApiManager.swift */; };
-		133277EE20A473E80014944E /* PastesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277ED20A473E80014944E /* PastesList.swift */; };
+		133277EE20A473E80014944E /* Paste.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277ED20A473E80014944E /* Paste.swift */; };
 		133277F020A562040014944E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 133277EF20A562040014944E /* README.md */; };
 		133277F220A5BEAF0014944E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F120A5BEAF0014944E /* Extensions.swift */; };
 		133277F420A5ECC70014944E /* TableViewEmptyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F320A5ECC70014944E /* TableViewEmptyMessage.swift */; };
-		133277F820A61B3F0014944E /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F720A61B3F0014944E /* FavoritesViewController.swift */; };
 		133277FA20A703CF0014944E /* PasteShortCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F920A703CF0014944E /* PasteShortCell.swift */; };
 		1336B5D420A0D07B002DAA6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B5D320A0D07B002DAA6E /* AppDelegate.swift */; };
 		1336B5D620A0D07B002DAA6E /* PastesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B5D520A0D07B002DAA6E /* PastesViewController.swift */; };
@@ -23,24 +22,32 @@
 		1336B5EC20A0D07C002DAA6E /* iPastachTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B5EB20A0D07C002DAA6E /* iPastachTests.swift */; };
 		1336B5F720A0D07C002DAA6E /* iPastachUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B5F620A0D07C002DAA6E /* iPastachUITests.swift */; };
 		1336B60820A0D15D002DAA6E /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60720A0D15D002DAA6E /* TagsViewController.swift */; };
-		1336B60A20A0D1A0002DAA6E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60920A0D1A0002DAA6E /* SearchViewController.swift */; };
-		1336B60C20A0D1B2002DAA6E /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60B20A0D1B2002DAA6E /* TagsList.swift */; };
+		1336B60C20A0D1B2002DAA6E /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60B20A0D1B2002DAA6E /* Tag.swift */; };
 		1336B60E20A0D23B002DAA6E /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336B60D20A0D23B002DAA6E /* TabBarController.swift */; };
 		1336D7B420ACC7D800ECA0CE /* PasteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */; };
+		134A9C7C211CCDB600A895E4 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134A9C7B211CCDB600A895E4 /* UILabel.swift */; };
+		135D8F8F21234E200032C841 /* PasteTableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135D8F8E21234E200032C841 /* PasteTableSection.swift */; };
 		13741ACB210BA6D70037723A /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13741ACA210BA6D70037723A /* ThemeManager.swift */; };
 		13741ACF210C43000037723A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 13741AD1210C43000037723A /* Localizable.strings */; };
 		13741AD7210C51210037723A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 13741AD9210C51210037723A /* InfoPlist.strings */; };
 		1377AED9210B9A970010107A /* IJProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1377AED8210B9A970010107A /* IJProgressView.swift */; };
+		13873AB721305043001617F6 /* TabBarItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13873AB621305043001617F6 /* TabBarItemsFactory.swift */; };
+		13873AB92130506F001617F6 /* ToolbarItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13873AB82130506F001617F6 /* ToolbarItemsFactory.swift */; };
 		138D2F9420C0741000BF1141 /* PasteFullHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */; };
-		13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */; };
+		13A2092220B5EE4E00FA2428 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A2092120B5EE4E00FA2428 /* MenuViewController.swift */; };
+		13C029AB2115A051003FA91A /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C029AA2115A051003FA91A /* Theme.swift */; };
 		13C044F2210E195C00C4F9AE /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C044F1210E195C00C4F9AE /* Pagination.swift */; };
 		13C67A602111BC31000338F6 /* AlertsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */; };
 		13C67A622113144E000338F6 /* AddPasteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C67A612113144E000338F6 /* AddPasteViewController.swift */; };
+		13D83BB2212ABF1A0057B322 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D83BB1212ABF1A0057B322 /* UserSettings.swift */; };
+		13D83BB4212C68770057B322 /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D83BB3212C68770057B322 /* Pages.swift */; };
 		13DD8F30210B40E100F9A370 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F2F210B40E100F9A370 /* URLRequest.swift */; };
 		13DD8F32210B410800F9A370 /* CharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F31210B410800F9A370 /* CharacterSet.swift */; };
 		13DD8F34210B413600F9A370 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F33210B413500F9A370 /* String.swift */; };
 		13DD8F36210B415500F9A370 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F35210B415500F9A370 /* UIImageView.swift */; };
 		13DD8F38210B419400F9A370 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F37210B419400F9A370 /* UIImage.swift */; };
+		13F432362127453000D9A7C7 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F432352127453000D9A7C7 /* TableSection.swift */; };
+		13FC72E3212042BF00FFEC07 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FC72E2212042BF00FFEC07 /* UIDevice.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,11 +70,10 @@
 /* Begin PBXFileReference section */
 		132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullContentCell.swift; sourceTree = "<group>"; };
 		133277EB20A465EA0014944E /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
-		133277ED20A473E80014944E /* PastesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastesList.swift; sourceTree = "<group>"; };
+		133277ED20A473E80014944E /* Paste.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paste.swift; sourceTree = "<group>"; };
 		133277EF20A562040014944E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		133277F120A5BEAF0014944E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		133277F320A5ECC70014944E /* TableViewEmptyMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewEmptyMessage.swift; sourceTree = "<group>"; };
-		133277F720A61B3F0014944E /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		133277F920A703CF0014944E /* PasteShortCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteShortCell.swift; sourceTree = "<group>"; };
 		1336B5D020A0D07B002DAA6E /* iPastach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPastach.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1336B5D320A0D07B002DAA6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -83,26 +89,34 @@
 		1336B5F620A0D07C002DAA6E /* iPastachUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPastachUITests.swift; sourceTree = "<group>"; };
 		1336B5F820A0D07C002DAA6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1336B60720A0D15D002DAA6E /* TagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
-		1336B60920A0D1A0002DAA6E /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		1336B60B20A0D1B2002DAA6E /* TagsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
-		1336B60D20A0D23B002DAA6E /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabBarController.swift; path = iPastach/TabBarController.swift; sourceTree = SOURCE_ROOT; };
+		1336B60B20A0D1B2002DAA6E /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
+		1336B60D20A0D23B002DAA6E /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabBarController.swift; path = iPastach/Controllers/TabBarController.swift; sourceTree = SOURCE_ROOT; };
 		1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteViewController.swift; sourceTree = "<group>"; };
+		134A9C7B211CCDB600A895E4 /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
+		135D8F8E21234E200032C841 /* PasteTableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteTableSection.swift; sourceTree = "<group>"; };
 		13741ACA210BA6D70037723A /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		13741AD3210C43390037723A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		13741AD4210C43660037723A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		13741AD8210C51210037723A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		13741ADA210C51230037723A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1377AED8210B9A970010107A /* IJProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IJProgressView.swift; sourceTree = "<group>"; };
+		13873AB621305043001617F6 /* TabBarItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemsFactory.swift; sourceTree = "<group>"; };
+		13873AB82130506F001617F6 /* ToolbarItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarItemsFactory.swift; sourceTree = "<group>"; };
 		138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullHeaderCell.swift; sourceTree = "<group>"; };
-		13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		13A2092120B5EE4E00FA2428 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		13C029AA2115A051003FA91A /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		13C044F1210E195C00C4F9AE /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
 		13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsHelpers.swift; sourceTree = "<group>"; };
 		13C67A612113144E000338F6 /* AddPasteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPasteViewController.swift; sourceTree = "<group>"; };
+		13D83BB1212ABF1A0057B322 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		13D83BB3212C68770057B322 /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
 		13DD8F2F210B40E100F9A370 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		13DD8F31210B410800F9A370 /* CharacterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet.swift; sourceTree = "<group>"; };
 		13DD8F33210B413500F9A370 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		13DD8F35210B415500F9A370 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		13DD8F37210B419400F9A370 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		13F432352127453000D9A7C7 /* TableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSection.swift; sourceTree = "<group>"; };
+		13FC72E2212042BF00FFEC07 /* UIDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,9 +171,11 @@
 				1336B5D320A0D07B002DAA6E /* AppDelegate.swift */,
 				133277EB20A465EA0014944E /* ApiManager.swift */,
 				13741ACA210BA6D70037723A /* ThemeManager.swift */,
-				1336B60D20A0D23B002DAA6E /* TabBarController.swift */,
+				13D83BB1212ABF1A0057B322 /* UserSettings.swift */,
 				13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */,
 				1377AED8210B9A970010107A /* IJProgressView.swift */,
+				13873AB621305043001617F6 /* TabBarItemsFactory.swift */,
+				13873AB82130506F001617F6 /* ToolbarItemsFactory.swift */,
 				1336B60520A0D0F3002DAA6E /* Controllers */,
 				1336B60620A0D0FE002DAA6E /* Models */,
 				1336B60420A0D0E9002DAA6E /* Views */,
@@ -205,13 +221,12 @@
 		1336B60520A0D0F3002DAA6E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1336B60D20A0D23B002DAA6E /* TabBarController.swift */,
 				1336B5D520A0D07B002DAA6E /* PastesViewController.swift */,
 				13C67A612113144E000338F6 /* AddPasteViewController.swift */,
 				1336B60720A0D15D002DAA6E /* TagsViewController.swift */,
 				1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */,
-				133277F720A61B3F0014944E /* FavoritesViewController.swift */,
-				1336B60920A0D1A0002DAA6E /* SearchViewController.swift */,
-				13A2092120B5EE4E00FA2428 /* SettingsViewController.swift */,
+				13A2092120B5EE4E00FA2428 /* MenuViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -219,9 +234,12 @@
 		1336B60620A0D0FE002DAA6E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				133277ED20A473E80014944E /* PastesList.swift */,
-				1336B60B20A0D1B2002DAA6E /* TagsList.swift */,
+				13F432352127453000D9A7C7 /* TableSection.swift */,
+				135D8F8E21234E200032C841 /* PasteTableSection.swift */,
+				133277ED20A473E80014944E /* Paste.swift */,
+				1336B60B20A0D1B2002DAA6E /* Tag.swift */,
 				13C044F1210E195C00C4F9AE /* Pagination.swift */,
+				13D83BB3212C68770057B322 /* Pages.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -238,7 +256,10 @@
 		13DD8F2E210B40B300F9A370 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				13C029AA2115A051003FA91A /* Theme.swift */,
+				134A9C7B211CCDB600A895E4 /* UILabel.swift */,
 				13DD8F2F210B40E100F9A370 /* URLRequest.swift */,
+				13FC72E2212042BF00FFEC07 /* UIDevice.swift */,
 				13DD8F31210B410800F9A370 /* CharacterSet.swift */,
 				13DD8F33210B413500F9A370 /* String.swift */,
 				13DD8F35210B415500F9A370 /* UIImageView.swift */,
@@ -385,29 +406,36 @@
 				13DD8F36210B415500F9A370 /* UIImageView.swift in Sources */,
 				13DD8F32210B410800F9A370 /* CharacterSet.swift in Sources */,
 				133277EC20A465EA0014944E /* ApiManager.swift in Sources */,
-				1336B60A20A0D1A0002DAA6E /* SearchViewController.swift in Sources */,
-				133277F820A61B3F0014944E /* FavoritesViewController.swift in Sources */,
-				133277EE20A473E80014944E /* PastesList.swift in Sources */,
+				133277EE20A473E80014944E /* Paste.swift in Sources */,
 				13C67A602111BC31000338F6 /* AlertsHelpers.swift in Sources */,
 				1336B5D620A0D07B002DAA6E /* PastesViewController.swift in Sources */,
 				133277F420A5ECC70014944E /* TableViewEmptyMessage.swift in Sources */,
 				1377AED9210B9A970010107A /* IJProgressView.swift in Sources */,
+				13D83BB2212ABF1A0057B322 /* UserSettings.swift in Sources */,
+				13F432362127453000D9A7C7 /* TableSection.swift in Sources */,
 				1336B60E20A0D23B002DAA6E /* TabBarController.swift in Sources */,
+				13873AB92130506F001617F6 /* ToolbarItemsFactory.swift in Sources */,
+				134A9C7C211CCDB600A895E4 /* UILabel.swift in Sources */,
 				133277F220A5BEAF0014944E /* Extensions.swift in Sources */,
+				135D8F8F21234E200032C841 /* PasteTableSection.swift in Sources */,
 				13741ACB210BA6D70037723A /* ThemeManager.swift in Sources */,
+				13C029AB2115A051003FA91A /* Theme.swift in Sources */,
 				13C044F2210E195C00C4F9AE /* Pagination.swift in Sources */,
 				133277FA20A703CF0014944E /* PasteShortCell.swift in Sources */,
-				1336B60C20A0D1B2002DAA6E /* TagsList.swift in Sources */,
+				1336B60C20A0D1B2002DAA6E /* Tag.swift in Sources */,
 				1336B60820A0D15D002DAA6E /* TagsViewController.swift in Sources */,
-				13A2092220B5EE4E00FA2428 /* SettingsViewController.swift in Sources */,
+				13A2092220B5EE4E00FA2428 /* MenuViewController.swift in Sources */,
+				13873AB721305043001617F6 /* TabBarItemsFactory.swift in Sources */,
 				13C67A622113144E000338F6 /* AddPasteViewController.swift in Sources */,
 				138D2F9420C0741000BF1141 /* PasteFullHeaderCell.swift in Sources */,
 				13DD8F38210B419400F9A370 /* UIImage.swift in Sources */,
 				132EFF2E20C5C99A001B57EA /* PasteFullContentCell.swift in Sources */,
 				1336B5DC20A0D07B002DAA6E /* iPastach.xcdatamodeld in Sources */,
+				13FC72E3212042BF00FFEC07 /* UIDevice.swift in Sources */,
 				13DD8F30210B40E100F9A370 /* URLRequest.swift in Sources */,
 				1336D7B420ACC7D800ECA0CE /* PasteViewController.swift in Sources */,
 				1336B5D420A0D07B002DAA6E /* AppDelegate.swift in Sources */,
+				13D83BB4212C68770057B322 /* Pages.swift in Sources */,
 				13DD8F34210B413600F9A370 /* String.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

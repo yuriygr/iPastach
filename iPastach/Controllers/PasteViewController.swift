@@ -11,7 +11,15 @@ import UIKit
 
 class PasteViewController: UIViewController {
     
+    private var api: APIManager = .shared
+    private var theme = UserSettings.shared.currentTheme
+    private let activity = NSUserActivity(activityType: "gr.yuriy.iPastach.openPastePage")
+    private let toolbarFactory = ToolbarItemsFactory(items: [
+        .like, .favorites, .random, .copy, .report
+    ])
+
     //MARK: - Properties
+
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: self.view.bounds, style: .plain)
         tableView.delegate = self
@@ -19,83 +27,110 @@ class PasteViewController: UIViewController {
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
+        tableView.registerCell(PasteFullHeaderCell.self)
+        tableView.registerCell(PasteFullContentCell.self)
         return tableView
     }()
     
     lazy var shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonPressed))
-    lazy var favoritButton = UIBarButtonItem(image: UIImage(named: "star"), style: .plain, target: self, action: #selector(favoritButtonPressed))
-    
-    //MARK:  API Stuff
-    var api: APIManager = .shared
-    
-    //MARK:  Theme
-    lazy var theme: Theme = ThemeManager.shared.currentTheme
-
-    //MARK:  AlertsHelper
-    var alertsHelper: AlertsHelper = AlertsHelper.shared
 
     //MARK: - Data
-    var paste: PasteElement? {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
+
+    var paste: Paste?
     
     //MARK: - Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
-        initialLoadFromAPI()
+        loadFromAPI() { (data, error) in
+            DispatchQueue.main.async {
+                self.tableView.reload()
+            }
+        }
     }
 
-    //MARK: - Setup view
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        setupActivity()
+        setupTheme()
+        setupToolbar()
+        navigationController?.setToolbarHidden(false, animated: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        activity.invalidate()
+        navigationController?.setToolbarHidden(true, animated: true)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+    }
+    
+    //MARK: - Setup's
+
     func setupController() {
-        navigationItem.rightBarButtonItems = [favoritButton, shareButton]
+        navigationItem.rightBarButtonItem = shareButton
         if #available(iOS 11.0, *) {
             navigationItem.largeTitleDisplayMode = .never
         }
         extendedLayoutIncludesOpaqueBars = true
-
-        //TODO: Выбор темы
-        view.backgroundColor = theme.backgroundColor
-        tableView.backgroundColor = theme.backgroundColor
-        
-        tableView.registerCell(PasteFullHeaderCell.self)
-        tableView.registerCell(PasteFullContentCell.self)
         view.addSubview(tableView)
     }
     
-    //MARK: - Request to API
-    fileprivate func initialLoadFromAPI(completion: (() -> ())? = nil) {
-        var apiParams: APIManager.APIParams = [:]
+    private func loadFromAPI(completion: ((Paste?, Error?) -> ())? = nil) {
+        var apiParams: APIParams = [:]
         if let paste = paste {
             apiParams = [ "paste_id": "\(paste.id)" ]
-        } else {
-            apiParams = [ "type": "random" ]
         }
         
-        api.pastes(PasteElement.self, endpoint: .item, params: apiParams) { (data, error) in
+        api.pastes(Paste.self, endpoint: .item, params: apiParams) { (data, error) in
+            if let error = error {
+                print(error)
+            }
             if let data = data {
                 self.paste = data
             }
             if let completion = completion {
-                completion()
+                completion(data, error)
             }
         }
+    }
+    
+    private func setupActivity() {
+        guard let url = URL(string: paste!.url) else { return }
+        activity.webpageURL = url
+        activity.isEligibleForHandoff = true
+        activity.isEligibleForSearch = true
+        activity.isEligibleForPublicIndexing = true
+        userActivity = activity
+    }
+
+    private func setupTheme() {
+        view.backgroundColor = theme.backgroundColor
+        tableView.backgroundColor = theme.backgroundColor
+    }
+    
+    private func setupToolbar() {
+        toolbarFactory.delegate = self
+        let items = toolbarFactory.makeBarItems()
+        setToolbarItems(items, animated: false)
     }
     
     //MARK: - Actions
     
     @objc
     func shareButtonPressed(_ sender: UIButton) {
-        guard let paste = paste else { return }
+        guard
+            let paste = paste,
+            let url = URL(string: paste.url) else { return }
         let items = [
-            paste.title, paste.url
-        ]
+            paste.title, url
+        ] as [Any]
     
-        alertsHelper.shareOn(self, items: items)
+        AlertsHelper.shared.shareOn(self, items: items)
 
         NotificationCenter.default.post(
             name: .onPasteShared,
@@ -104,8 +139,20 @@ class PasteViewController: UIViewController {
         )
     }
     
-    @objc
-    func favoritButtonPressed(_ sender: UIButton) {
+    func likeButtonTapped(_ sender: UIBarButtonItem) {
+        guard let paste = paste else { return }
+
+        api.pastes(APIResponse.self, endpoint: .like, params: [ "paste_id": "\(paste.id)" ]) { (data, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            if let data = data {
+                print(data)
+            }
+        }
+    }
+
+    func favoritButtonTapped(_ sender: UIBarButtonItem) {
         guard let paste = paste else { return }
         let item = AlertStruct(
             title: "IPPasteAddedToFavorits".translated()
@@ -118,7 +165,7 @@ class PasteViewController: UIViewController {
                 userInfo: ["paste": paste]
             )
         }
-        alertsHelper.alertOn(self, item: item, actions: [
+        AlertsHelper.shared.alertOn(self, item: item, actions: [
             closeAction,
             cancelAction
         ])
@@ -129,8 +176,65 @@ class PasteViewController: UIViewController {
             userInfo: ["paste": paste]
         )
     }
+
+    func randomButtonTapped(_ sender: UIBarButtonItem) {
+        IJProgressView.shared.showProgressView()
+        api.pastes(Paste.self, endpoint: .random) { (data, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            if let data = data {
+                self.paste = data
+            }
+            DispatchQueue.main.async {
+                IJProgressView.shared.hideProgressView()
+            }
+        }
+    }
+    
+    func copyButtonTapped(_ sender: UIBarButtonItem) {
+        guard let paste = paste else { return }
+        UIPasteboard.general.string = paste.content
+    }
+
+    func reportButtonTapped(_ sender: UIBarButtonItem) {
+        guard let paste = paste else { return }
+    
+        api.pastes(APIResponse.self, endpoint: .report, params: [ "paste_id": "\(paste.id)" ]) { (data, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            if let data = data {
+                print(data)
+            }
+        }
+    }
 }
-//MARK: - TableView
+
+//MARK: - Toolbar Delegate
+
+extension PasteViewController: ToolbarItemsFactoryDelegate {
+    
+    func itemTapped(_ sender: ToolbarItemsFactory, item: ToolbarItem, barItem: UIBarButtonItem) {
+        switch item {
+        case .like:
+            likeButtonTapped(barItem)
+        case .favorites:
+            favoritButtonTapped(barItem)
+        case .random:
+            randomButtonTapped(barItem)
+        case .copy:
+            copyButtonTapped(barItem)
+        case .report:
+            reportButtonTapped(barItem)
+        default:
+            break
+        }
+    }
+}
+
+//MARK: - TableView Delegate
+
 extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -155,17 +259,16 @@ extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let paste = self.paste else { return UITableViewCell() }
-        if indexPath.row == 0 {
+        switch PasteTableSection(rawValue: indexPath.row) {
+        case .header?:
             let cell = tableView.dequeueCell(PasteFullHeaderCell.self)
             cell.configure(with: paste)
             return cell
-        }
-        if indexPath.row == 1 {
+        case .content?, nil:
             let cell = tableView.dequeueCell(PasteFullContentCell.self)
             cell.configure(with: paste)
             return cell
         }
-        return UITableViewCell()
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

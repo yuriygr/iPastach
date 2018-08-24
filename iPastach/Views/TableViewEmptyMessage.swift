@@ -14,7 +14,10 @@ import UIKit
 //
 class TableViewEmptyMessage: UIView {
 
+    lazy var theme: Theme = UserSettings.shared.currentTheme
+    
     //MARK: - Properties
+
     var image: UIImage? {
         didSet {
             self.imageView.image = image?
@@ -55,10 +58,8 @@ class TableViewEmptyMessage: UIView {
         return $0
     }(UILabel())
 
-    //MARK:  Theme
-    lazy var theme: Theme = ThemeManager.shared.currentTheme
-
     //MARK: - Life Cycle
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupView()

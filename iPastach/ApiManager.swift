@@ -8,49 +8,54 @@
 
 import UIKit
 
-class APIManager: NSObject {
-    
-    // Singleton
-    static let shared: APIManager = APIManager()
+struct APIResponse: Codable {
+    let success, error: String
+}
 
-    // Ещё немного чего-то крутого и потрясного
+typealias APIParams = [String: String]
+
+enum APIEndpoints {
+    enum pastes: String {
+        case add = "pastes.add"
+        case list = "pastes.list"
+        case item = "pastes.item"
+        case like = "pastes.like"
+        case report = "pastes.report"
+        case random = "pastes.random"
+    }
+    enum tags: String {
+        case list = "tags.list"
+    }
+    enum pages: String {
+        case list = "pages.list"
+        case item = "pages.item"
+    }
+}
+
+/// API Errors
+/// - invalidURL
+/// - invalidParams
+/// - undefined
+enum APIErrors: Error {
+    case invalidURL
+    case invalidParams
+    case undefined
+}
+
+class APIManager: NSObject {
+
+    static let shared = APIManager()
+
     private let URLSession: URLSession = .shared
     
-    /// Base path to API
     private let APIBase: String = "https://api.pastach.ru/"
-    
-    // Endpoints
-    enum APIEndpoints {
-        enum pastes: String {
-            case add = "pastes.add"
-            case list = "pastes.list"
-            case item = "pastes.item"
-            case report = "pastes.report"
-        }
-        enum tags: String {
-            case list = "tags.list"
-        }
-    }
-    
-    // Алиас для параметров
-    typealias APIParams = [String: String]
-    
+
     /// HTTP Methods
     enum HTTPMethods: String {
         case POST
         case GET
         case PUT
         case DELETE
-    }
-
-    /// Errors
-    /// - invalidURL
-    /// - invalidParams
-    /// - undefined
-    enum Errors: Error {
-        case invalidURL
-        case invalidParams
-        case undefined
     }
     
     /// Получение данных путём POST запроса с параметрами
@@ -64,7 +69,7 @@ class APIManager: NSObject {
     private func fetch<T>(_ type: T.Type, endpoint: String, params: APIParams = [:], method: HTTPMethods = .POST, completion: @escaping (T?, Error?) -> Void) where T: Decodable {
 
         guard let url = URL(string: APIBase + endpoint) else {
-            return completion(nil, Errors.invalidURL)
+            return completion(nil, APIErrors.invalidURL)
         }
 
         var request = URLRequest(url: url)
@@ -73,7 +78,7 @@ class APIManager: NSObject {
 
         URLSession.dataTask(with: request) { (data, response, error) in
             if error != nil {
-                return completion(nil, Errors.undefined)
+                return completion(nil, APIErrors.undefined)
             }
             if let data = data {
                 let decoder = JSONDecoder()
@@ -84,7 +89,7 @@ class APIManager: NSObject {
                     return completion(decoded, nil)
                 } catch {
                     print(error)
-                    return completion(nil, Errors.undefined)
+                    return completion(nil, APIErrors.undefined)
                 }
             }
         }.resume()
@@ -96,6 +101,10 @@ class APIManager: NSObject {
     }
 
     func tags<T>(_ type: T.Type, endpoint: APIEndpoints.tags, params: APIParams = [:], completion: @escaping (T?, Error?) -> Void) where T: Decodable {
+        fetch(type, endpoint: endpoint.rawValue, params: params, completion: completion)
+    }
+
+    func pages<T>(_ type: T.Type, endpoint: APIEndpoints.pages, params: APIParams = [:], completion: @escaping (T?, Error?) -> Void) where T: Decodable {
         fetch(type, endpoint: endpoint.rawValue, params: params, completion: completion)
     }
 }

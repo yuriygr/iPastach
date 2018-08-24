@@ -1,5 +1,5 @@
 //
-//  PastesList.swift
+//  Paste.swift
 //  iPastach
 //
 //  Created by Юрий Гринев on 10.05.2018.
@@ -8,9 +8,7 @@
 
 import UIKit
 
-typealias PastesList = [PasteElement]
-
-struct PasteElement: Codable {
+struct Paste: Codable {
     let id: Int
     let title: String
     let time: Double
@@ -19,7 +17,7 @@ struct PasteElement: Codable {
     let closed: Bool
     let nsfw: Bool
     let views: Int
-    let tags: TagsList
+    let tags: [Tag]
     let url: String
 
     func formatedTime() -> String {
@@ -32,7 +30,7 @@ struct PasteElement: Codable {
 }
 
 struct PastesListPaginated: Codable {
-    var items: PastesList?
+    var items: [Paste]?
     var first, before, current, last: Int?
     var next, total_pages, total_items: Int?
     var limit: String?

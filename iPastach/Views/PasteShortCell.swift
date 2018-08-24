@@ -10,7 +10,10 @@ import UIKit
 
 class PasteShortCell: UITableViewCell {
 
+    lazy var theme: Theme = UserSettings.shared.currentTheme
+
     //MARK: - Properties
+
     fileprivate lazy var titleLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 18)
         $0.textColor = theme.textColor
@@ -66,10 +69,9 @@ class PasteShortCell: UITableViewCell {
         return $0
     }(UILabel())
     
-    //MARK:  Theme
-    lazy var theme: Theme = ThemeManager.shared.currentTheme
 
     //MARK: - Life Cycle
+
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
@@ -80,6 +82,7 @@ class PasteShortCell: UITableViewCell {
     }
     
     //MARK: - Конфигурация ячейки
+
     func setupCell() {
         self.backgroundColor = theme.backgroundColor
         contentView.backgroundColor = theme.backgroundColor
@@ -107,13 +110,13 @@ class PasteShortCell: UITableViewCell {
         ]
         
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-padding-[titleLabel]-[timeLabel]-[descriptionLabel]-[readmoreLabel]-padding-|",
+            withVisualFormat: "V:|-padding-[titleLabel]-[idLabel]-[descriptionLabel]-[readmoreLabel]-padding-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
         )
         constraints += NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-padding-[titleLabel]-[idLabel]-[descriptionLabel]-[readmoreLabel]-|",
+            withVisualFormat: "V:|-padding-[titleLabel]-[timeLabel]-[descriptionLabel]-[readmoreLabel]-padding-|",
             options: [],
             metrics: metricsDict,
             views: viewsDict
@@ -151,7 +154,7 @@ class PasteShortCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func configure(with paste: PasteElement) {
+    func configure(with paste: Paste) {
         titleLabel.text = paste.title
         idLabel.text = "#\(paste.id)"
         timeLabel.text = paste.formatedTime()

@@ -1,6 +1,5 @@
 //
 //  AlertsHelpers.swift
-//  iPastach
 //
 //  Created by Юрий Гринев on 01.08.2018.
 //  Copyright © 2018 Юрий Гринев. All rights reserved.
@@ -14,9 +13,8 @@ struct AlertStruct {
 }
 
 class AlertsHelper: NSObject {
-    
-    // Singleton
-    static let shared: AlertsHelper = AlertsHelper()
+
+    static let shared = AlertsHelper()
     
     func alertOn(_ vc: UIViewController, item: AlertStruct, actions: [UIAlertAction] = []) -> Void {
         let alertController = UIAlertController(title: item.title, message: item.message, preferredStyle: .alert)

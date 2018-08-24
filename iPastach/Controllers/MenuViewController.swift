@@ -1,0 +1,249 @@
+//
+//  MenuViewController.swift
+//  iPastach
+//
+//  Created by Юрий Гринев on 21.05.2018.
+//  Copyright © 2018 Юрий Гринев. All rights reserved.
+//
+
+import UIKit
+
+class MenuViewController: UIViewController {
+
+    private var api: APIManager = .shared
+    private var theme = UserSettings.shared.currentTheme
+    
+    //MARK: - Properties
+
+    lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: self.view.bounds, style: .grouped)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.refreshControl = refreshControl
+        tableView.registerCell(UITableViewCell.self, withIdentifier: "settingCell")
+        tableView.registerCell(UITableViewCell.self, withIdentifier: "informationCell")
+        tableView.registerCell(UITableViewCell.self, withIdentifier: "applicationCell")
+        return tableView
+    }()
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
+        return refreshControl
+    }()
+
+    //MARK: - Data
+
+    var sections: [TableSection] = [
+        TableSection(header: "Внешний вид", content: nil, footer: "Требуется перезагрузка приложения"),
+        TableSection(header: "Помощь", content: nil, footer: "По любым другим вопросам обращаться на info@pastach.ru"),
+        TableSection(header: "Приложение", content: nil, footer: nil)
+    ]
+    var pages = [Page]()
+    var application: [String] = [
+        "IPVersion".translated() + ": " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String),
+        UIDevice.modelName
+    ]
+    
+    //MARK: - Life Cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupController()
+        api.pages([Page].self, endpoint: .list) { (data, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            if let data = data {
+                self.pages = data
+            }
+            DispatchQueue.main.async {
+                self.tableView.reload(section: 1, with: .none)
+            }
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        setupTheme()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+    }
+    
+    //MARK: - Setup's
+
+    private func setupController() {
+        navigationItem.title = "IPMenu".translated()
+        extendedLayoutIncludesOpaqueBars = true
+        view.addSubview(tableView)
+    }
+    
+    private func setupTheme() {
+        view.backgroundColor = theme.backgroundColor
+        tableView.backgroundColor = theme.secondBackgroundColor
+        tableView.separatorColor = theme.separatorColor
+        refreshControl.tintColor = theme.secondTextColor
+    }
+    
+    @objc
+    func switchChanged(_ sender: UISwitch) {
+        if sender.tag == 0 {
+            UserSettings.shared.currentTheme = sender.isOn ? .darkmode : .normal
+        }
+        if sender.tag == 1 {
+            UserSettings.shared.showTitlesOnTabbar = sender.isOn
+        }
+    }
+
+    @objc
+    func handleRefresh(_ refreshControl: UIRefreshControl) {
+        api.pages([Page].self, endpoint: .list) { (data, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            if let data = data {
+                self.pages = data
+            }
+            DispatchQueue.main.async {
+                refreshControl.endRefreshing()
+                self.tableView.reload(section: 1, with: .none)
+            }
+        }
+    }
+}
+
+//MARK: - TableView
+
+extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return self.sections.count
+    }
+
+    func isNotEmptySection(_ tableView: UITableView, _ section: Int) -> Bool {
+        return self.tableView(tableView, numberOfRowsInSection: section) > 0
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return 2
+        }
+        if section == 1 {
+            return self.pages.count
+        }
+        if section == 2 {
+            return self.application.count
+        }
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
+            return self.sections[section].header
+        }
+        return nil
+    }
+
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
+            return self.sections[section].footer
+        }
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.section == 0 {
+            let cell = UITableViewCell(style: .default, reuseIdentifier: "settingCell")
+
+            let switchView = UISwitch(frame: .zero)
+            switchView.tag = indexPath.row
+            switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
+        
+            if indexPath.row == 0 {
+                switchView.setOn(theme == .darkmode, animated: false)
+                cell.textLabel?.text = "Dark mode"
+            }
+            if indexPath.row == 1 {
+                switchView.setOn(UserSettings.shared.showTitlesOnTabbar, animated: false)
+                cell.textLabel?.text = "Show titles on tabbar"
+            }
+            cell.textLabel?.textColor = theme.textColor
+            cell.backgroundColor = theme.backgroundColor
+            cell.accessoryView = switchView
+            cell.selectionStyle = .none
+            return cell
+        }
+        if indexPath.section == 1 {
+            let cell = UITableViewCell(style: .default, reuseIdentifier: "informationCell")
+            cell.textLabel?.text = self.pages[indexPath.row].title
+            cell.textLabel?.textColor = theme.textColor
+            cell.backgroundColor = theme.backgroundColor
+            cell.customSelectColor(theme.selectColor)
+            return cell
+        }
+        
+        if indexPath.section == 2 {
+            let cell = UITableViewCell(style: .default, reuseIdentifier: "applicationCell")
+            cell.textLabel?.text = self.application[indexPath.row]
+            cell.textLabel?.textColor = theme.secondTextColor
+            cell.backgroundColor = theme.backgroundColor
+            cell.selectionStyle = .none
+            return cell
+        }
+        return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+    }
+    
+    // Norm koroche tak sdelat'
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableView.rowHeight
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if self.isNotEmptySection(tableView, section) {
+            return tableView.sectionHeaderHeight
+        } else {
+            if #available(iOS 11.0, *) {
+                return 0.0
+            } else {
+                return 0.001
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if self.isNotEmptySection(tableView, section) {
+            return tableView.sectionFooterHeight
+        } else {
+            if #available(iOS 11.0, *) {
+                return 0.0
+            } else {
+                return 0.001
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
+    }
+}

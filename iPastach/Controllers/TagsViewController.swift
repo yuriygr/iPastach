@@ -10,7 +10,11 @@ import UIKit
 
 class TagsViewController: UIViewController {
 
+    private var api: APIManager = .shared
+    private var theme = UserSettings.shared.currentTheme
+    
     //MARK: - Properties
+
     var canTransitionToLarge = false
     var canTransitionToSmall = true
 
@@ -28,17 +32,13 @@ class TagsViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
         return refreshControl
     }()
-    
-    //MARK:  API Stuff
-    var api: APIManager = .shared
-    
-    //MARK:  Theme
-    lazy var theme: Theme = ThemeManager.shared.currentTheme
 
     //MARK: - Data
-    var tags: TagsList = []
+
+    var tags: [Tag] = []
 
     //MARK: - Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
@@ -48,25 +48,45 @@ class TagsViewController: UIViewController {
             }
         }
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        setupTheme()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+    }
     
     //MARK: - Setup view
-    func setupController() {
+
+    fileprivate func setupController() {
         navigationItem.title = "IPTags".translated()
         extendedLayoutIncludesOpaqueBars = true
-        
-        //TODO: Выбор темы
-        view.backgroundColor = theme.backgroundColor
-        refreshControl.tintColor = theme.tintColor
-        tableView.backgroundColor = theme.backgroundColor
-        tableView.separatorColor = theme.separatorColor
         
         tableView.registerCell(UITableViewCell.self, withIdentifier: "TagCell")
         view.addSubview(tableView)
     }
     
+    fileprivate func setupTheme() {
+        view.backgroundColor = theme.backgroundColor
+        refreshControl.tintColor = theme.tintColor
+        tableView.backgroundColor = theme.backgroundColor
+        tableView.separatorColor = theme.separatorColor
+    }
+    
     //MARK: - Request to API
-    fileprivate func loadFromAPI(completion: ((Decodable?, Error?) -> ())? = nil) {
-        api.tags(TagsList.self, endpoint: .list) { (data, error) in
+
+    fileprivate func loadFromAPI(completion: (([Tag]?, Error?) -> ())? = nil) {
+        api.tags([Tag].self, endpoint: .list) { (data, error) in
+            if let error = error {
+                print(error)
+            }
             if let data = data {
                 self.tags = data
             }
@@ -112,7 +132,7 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TagCell", for: indexPath)
+        let cell = tableView.dequeueCell(withIdentifier: "TagCell")
         cell.textLabel?.text = self.tags[indexPath.row].title
         cell.textLabel?.textColor = theme.textColor
         cell.backgroundColor = theme.backgroundColor

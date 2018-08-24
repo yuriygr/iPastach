@@ -13,7 +13,6 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var themeManager: ThemeManager = .shared
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
@@ -21,10 +20,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = TabBarController()
         window?.makeKeyAndVisible()
         
-        themeManager.apply(theme: themeManager.currentTheme)
-        themeManager.useLargeTitles()
-        
+        ThemeManager.shared.apply(theme: UserSettings.shared.currentTheme)
+        ThemeManager.shared.useLargeTitles()
+
         return true
+    }
+
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        guard let rootTabBar = window?.rootViewController as? UITabBarController else {
+            completionHandler(false)
+            return
+        }
+        
+        switch shortcutItem.type {
+        case "gr.yuriygr.openFavorites":
+            guard let navController = rootTabBar.viewControllers?[1] as? UINavigationController else { break }
+            navController.popToRootViewController(animated: false)
+            rootTabBar.selectedIndex = 1
+            completionHandler(true)
+            break
+        case "gr.yuriygr.addPaste":
+            guard let navController = rootTabBar.viewControllers?[0] as? UINavigationController else { break }
+            navController.popToRootViewController(animated: false)
+            rootTabBar.selectedIndex = 0
+            completionHandler(true)
+            break
+        default:
+            break
+        }
+        
+        completionHandler(false)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -50,6 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
     }
+
 
     // MARK: - Core Data stack
 

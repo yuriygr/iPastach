@@ -1,5 +1,5 @@
 //
-//  TagsList.swift
+//  Tag.swift
 //  iPastach
 //
 //  Created by Юрий Гринев on 07.05.2018.
@@ -8,15 +8,13 @@
 
 import UIKit
 
-typealias TagsList = [TagElement]
-
-struct TagElement: Codable {
+struct Tag: Codable {
     let id: Int
     let slug: String
     let title: String
 }
 
-extension Array where Element == TagsList.Element {
+extension Array where Element == Tag {
     func asString() -> String {
         return self.map({"\($0.title)"}).joined(separator: ", ")
     }

@@ -10,7 +10,10 @@ import UIKit
 
 class PasteFullHeaderCell: UITableViewCell {
 
+    lazy var theme: Theme = UserSettings.shared.currentTheme
+    
     //MARK: - Properties
+
     fileprivate lazy var titleLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 22)
         $0.textColor = theme.textColor
@@ -47,10 +50,8 @@ class PasteFullHeaderCell: UITableViewCell {
         return $0
     }(UILabel())
 
-    //MARK:  Theme
-    lazy var theme: Theme = ThemeManager.shared.currentTheme
-
     //MARK: - Life Cycle
+
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
@@ -61,6 +62,7 @@ class PasteFullHeaderCell: UITableViewCell {
     }
     
     //MARK: - Конфигурация ячейки
+
     func setupCell() {
         contentView.backgroundColor = theme.backgroundColor
 
@@ -87,7 +89,7 @@ class PasteFullHeaderCell: UITableViewCell {
         tagsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
     }
     
-    func configure(with paste: PasteElement) {
+    func configure(with paste: Paste) {
         titleLabel.text = paste.title
         idLabel.text = "#\(paste.id)"
         timeLabel.text = paste.formatedTime()

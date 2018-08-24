@@ -6,7 +6,9 @@
   Copyright © 2018 Юрий Гринев. All rights reserved.
 */
 IPApptitle = "Паста.ч";
-IPPreferences = "Настройки";
+IPPastes = "Пасты";
+IPMenu = "Меню";
+IPFavorites = "Избранное";
 
 IPTags = "Теги";
 IPReset = "Сбросить";
@@ -24,3 +26,4 @@ IPPasteAddedToFavorits = "Паста добавлена в избранное";
 IPSelectAnAction = "Выберите действие";
 
 IPDateformat = "dd.MM.yyyy в HH:mm";
+IPVersion = "Версия";

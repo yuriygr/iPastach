@@ -10,6 +10,9 @@ import UIKit
 
 class AddPasteViewController: UIViewController {
     
+    private var api: APIManager = .shared
+    private var theme = UserSettings.shared.currentTheme
+    
     //MARK: - Properties
     
     lazy var tableView: UITableView = {
@@ -17,41 +20,53 @@ class AddPasteViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
-        tableView.separatorStyle = .none
         tableView.allowsSelection = false
         return tableView
     }()
-
-    //MARK:  Navigation buttons
     lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(handleCancelPressed))
-    
-    //MARK:  Theme
-    lazy var theme: Theme = ThemeManager.shared.currentTheme
 
-    //MARK:  Sections
-    var sections = [
-        "Название", "История"
+    //MARK: - Data
+
+    var sections: [TableSection] = [
+        TableSection(header: "Название", content: nil, footer: nil),
+        TableSection(header: "История", content: nil, footer: "Мы оставляем за собой право переработки и правки Ваших историй с максимально возможным сохранением сюжета. Фамилии, адреса, названия компаний, вероятно, исчезнут из текста.")
     ]
-
+    
     //MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        setupTheme()
+    }
     
-    //MARK: - Setup view
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+    }
+    
+    //MARK: - Setup's
     
     fileprivate func setupController() {
         navigationItem.title = "IPAddPaste".translated()
         navigationItem.leftBarButtonItem = cancelButton
         extendedLayoutIncludesOpaqueBars = true
-        
-        //TODO: Выбор темы
-        view.backgroundColor = theme.backgroundColor
-        tableView.backgroundColor = theme.secondBackgroundColor
     
         view.addSubview(tableView)
+    }
+    
+    fileprivate func setupTheme() {
+        view.backgroundColor = theme.backgroundColor
+        tableView.backgroundColor = theme.secondBackgroundColor
+        tableView.separatorColor = theme.separatorColor
     }
     
     @objc
@@ -74,11 +89,18 @@ extension AddPasteViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
-            return self.sections[section]
+            return self.sections[section].header
         }
         return nil
     }
 
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
+            return self.sections[section].footer
+        }
+        return nil
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return UITableViewCell()
     }
@@ -86,6 +108,8 @@ extension AddPasteViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
     }
+    
+    // Tak norm delat'
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension

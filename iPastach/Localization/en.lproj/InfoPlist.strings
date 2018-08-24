@@ -8,3 +8,5 @@
 
 CFBundleDisplayName = "iPastach";
 CFBundleName = "iPastach";
+CFNewPasteTitle = "Add paste";
+CFFavoritesTitle = "Faforites";

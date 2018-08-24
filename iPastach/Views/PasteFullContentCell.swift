@@ -21,7 +21,7 @@ class PasteFullContentCell: UITableViewCell {
     }()
     
     //MARK:  Theme
-    lazy var theme: Theme = ThemeManager.shared.currentTheme
+    lazy var theme: Theme = UserSettings.shared.currentTheme
 
     //MARK: - Life Cycle
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -44,7 +44,7 @@ class PasteFullContentCell: UITableViewCell {
         textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16).isActive = true
     }
     
-    func configure(with paste: PasteElement) {
+    func configure(with paste: Paste) {
         if let content = paste.content {
             self.textView.setHtmlText(content)
             self.textView.font = .systemFont(ofSize: 15)
