@@ -188,6 +188,7 @@ class PasteViewController: UIViewController {
             }
             DispatchQueue.main.async {
                 IJProgressView.shared.hideProgressView()
+                self.tableView.reload()
             }
         }
     }

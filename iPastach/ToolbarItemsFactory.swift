@@ -16,11 +16,11 @@ class ToolbarItemsFactory: NSObject {
     private let items: [ToolbarItem]
     
     private static let icons: [ToolbarItem: UIImage] = [
-        .like: #imageLiteral(resourceName: "heart"),
-        .favorites: #imageLiteral(resourceName: "favorites"),
-        .random: #imageLiteral(resourceName: "refresh"),
-        .copy: #imageLiteral(resourceName: "copy"),
-        .report: #imageLiteral(resourceName: "attention")
+        .like: #imageLiteral(resourceName: "b_like"),
+        .favorites: #imageLiteral(resourceName: "b_favorites"),
+        .random: #imageLiteral(resourceName: "b_random"),
+        .copy: #imageLiteral(resourceName: "b_copy"),
+        .report: #imageLiteral(resourceName: "b_attention")
     ]
     
     private var barItems: [ToolbarItem: UIBarButtonItem] = [:]
