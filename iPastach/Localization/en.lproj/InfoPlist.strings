@@ -10,3 +10,5 @@ CFBundleDisplayName = "iPastach";
 CFBundleName = "iPastach";
 CFNewPasteTitle = "Add paste";
 CFFavoritesTitle = "Faforites";
+
+CFAPIEndpoint = "API Endpoint";

@@ -15,6 +15,9 @@ class MenuViewController: UIViewController {
     
     //MARK: - Properties
 
+    var canTransitionToLarge = false
+    var canTransitionToSmall = true
+    
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: self.view.bounds, style: .grouped)
         tableView.delegate = self
@@ -28,7 +31,7 @@ class MenuViewController: UIViewController {
     
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: .valueChanged)
         return refreshControl
     }()
 
@@ -41,7 +44,7 @@ class MenuViewController: UIViewController {
     ]
     var pages = [Page]()
     var application: [String] = [
-        "IPVersion".translated() + ": " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String),
+        "IPVersion".localized + ": " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String),
         UIDevice.modelName
     ]
     
@@ -80,13 +83,17 @@ class MenuViewController: UIViewController {
     //MARK: - Setup's
 
     private func setupController() {
-        navigationItem.title = "IPMenu".translated()
+        navigationItem.title = "IPMenu".localized
+        if #available(iOS 11.0, *) {
+            navigationItem.largeTitleDisplayMode = .never
+        }
+        navigationItem.withoutTitleOnBackBarButton = true
         extendedLayoutIncludesOpaqueBars = true
         view.addSubview(tableView)
     }
     
     private func setupTheme() {
-        view.backgroundColor = theme.backgroundColor
+        view.backgroundColor = theme.secondBackgroundColor
         tableView.backgroundColor = theme.secondBackgroundColor
         tableView.separatorColor = theme.separatorColor
         refreshControl.tintColor = theme.secondTextColor
@@ -119,7 +126,16 @@ class MenuViewController: UIViewController {
     }
 }
 
-//MARK: - TableView
+//MARK: - ScrollView Delegate
+
+extension MenuViewController: UIScrollViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+
+    }
+}
+
+//MARK: - TableView Delegate
 
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -133,7 +149,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 2
+            return 3
         }
         if section == 1 {
             return self.pages.count
@@ -162,22 +178,29 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 0 {
             let cell = UITableViewCell(style: .default, reuseIdentifier: "settingCell")
-
-            let switchView = UISwitch(frame: .zero)
-            switchView.tag = indexPath.row
-            switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         
             if indexPath.row == 0 {
+                let switchView = UISwitch(frame: .zero)
+                switchView.tag = indexPath.row
+                switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
                 switchView.setOn(theme == .darkmode, animated: false)
-                cell.textLabel?.text = "Dark mode"
+                cell.accessoryView = switchView
+                cell.textLabel?.text = "Dark mode".localized
             }
             if indexPath.row == 1 {
+                let switchView = UISwitch(frame: .zero)
+                switchView.tag = indexPath.row
+                switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
                 switchView.setOn(UserSettings.shared.showTitlesOnTabbar, animated: false)
-                cell.textLabel?.text = "Show titles on tabbar"
+                cell.accessoryView = switchView
+                cell.textLabel?.text = "Show titles on tabbar".localized
+            }
+            if indexPath.row == 2 {
+                cell.accessoryView = nil
+                cell.textLabel?.text = "Размер шрифта".localized
             }
             cell.textLabel?.textColor = theme.textColor
             cell.backgroundColor = theme.backgroundColor
-            cell.accessoryView = switchView
             cell.selectionStyle = .none
             return cell
         }
@@ -202,7 +225,12 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        if  indexPath.section == 1 {
+            let pageViewController = PageViewController()
+            pageViewController.page = pages[indexPath.row]
+            pageViewController.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(pageViewController, animated: true)
+        }
     }
     
     // Norm koroche tak sdelat'

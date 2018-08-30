@@ -11,7 +11,7 @@ import UIKit
 class PastesViewController: UIViewController {
     
     private var api: APIManager = .shared
-    private lazy var theme = UserSettings.shared.currentTheme
+    private var theme = UserSettings.shared.currentTheme
     
     //MARK: - Properties
 
@@ -19,7 +19,7 @@ class PastesViewController: UIViewController {
     var canTransitionToSmall = true
 
     lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: self.view.bounds, style: .plain)
+        let tableView = UITableView(frame: self.view.bounds, style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = loadMoarButton
@@ -28,33 +28,26 @@ class PastesViewController: UIViewController {
         tableView.registerCell(PasteShortCell.self)
         return tableView
     }()
-    lazy var searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = "IPSearch".translated()
-        searchController.searchBar.delegate = self
-        searchController.searchBar.sizeToFit()
-        return searchController
-    }()
-    lazy var loadMoarButton: UIButton = {
-        let loadMoarButton = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 45))
-        loadMoarButton.setTitle("IPLoadmore".translated(), for: .normal)
+
+    lazy var loadMoarButton: LoadMoreButton = {
+        let loadMoarButton = LoadMoreButton(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50))
+        loadMoarButton.setTitle("IPLoadmore".localized, for: .normal)
         loadMoarButton.titleLabel?.font = .systemFont(ofSize: 13)
-        loadMoarButton.addTarget(self, action: #selector(self.handleLoadMore(_:)), for: .touchUpInside)
+        loadMoarButton.addTarget(self, action: #selector(handleLoadMore(_:)), for: .touchUpInside)
         return loadMoarButton
     }()
+    
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: .valueChanged)
         return refreshControl
     }()
 
     lazy var addPasteButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleAddPastePressed))
-    lazy var searchPasteButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleSearchPressed))
-    lazy var tagResetButton = UIBarButtonItem(title: "IPReset".translated(), style: .plain, target: self, action: #selector(handleResetTagPressed))
-    lazy var tagsSelectButton = UIBarButtonItem(title: "IPTags".translated(), style: .plain, target: self, action: #selector(handleSelectTagPressed))
+
+    lazy var tagResetButton = UIBarButtonItem(title: "IPReset".localized, style: .plain, target: self, action: #selector(handleResetTagPressed))
+
+    lazy var tagsSelectButton = UIBarButtonItem(title: "IPTags".localized, style: .plain, target: self, action: #selector(handleSelectTagPressed))
 
     lazy var tagsViewController = TagsViewController()
     lazy var addPasteViewController = UINavigationController(rootViewController: AddPasteViewController())
@@ -73,10 +66,6 @@ class PastesViewController: UIViewController {
         total_items: 0,
         limit: "0"
     )
-    var isFavorites = false
-    private var isSearching: Bool {
-        return searchController.isActive && !(searchController.searchBar.text ?? "").isEmpty
-    }
     
     //MARK: - Life Cycle
 
@@ -93,9 +82,9 @@ class PastesViewController: UIViewController {
             DispatchQueue.main.async {
                 IJProgressView.shared.hideProgressView()
                 if self.pagination.current == self.pagination.last {
-                    self.loadMoarButton.isHidden = true
+                    self.tableView.tableFooterView = UIView()
                 } else {
-                    self.loadMoarButton.isHidden = false
+                    self.tableView.tableFooterView = self.loadMoarButton
                 }
 
                 self.tableView.reload()
@@ -110,7 +99,6 @@ class PastesViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        searchController.isActive = false
     }
 
     override func viewDidLayoutSubviews() {
@@ -121,24 +109,23 @@ class PastesViewController: UIViewController {
     //MARK: - Setup's
 
     private func setupController() {
-        navigationItem.title = currentTag?.title ?? (isFavorites ? "IPFavorites".translated() : "IPApptitle".translated())
-        navigationItem.leftBarButtonItems = [addPasteButton, searchPasteButton]
+        navigationItem.title = currentTag?.title ?? "IPApptitle".localized
+        navigationItem.leftBarButtonItems = [addPasteButton]
         navigationItem.rightBarButtonItems = [tagsSelectButton, tagResetButton]
-        navigationItem.withoutNameBackButton()
+        navigationItem.withoutTitleOnBackBarButton = true
         extendedLayoutIncludesOpaqueBars = true
         tagResetButton.isHidden = true
         view.addSubview(tableView)
     }
 
     private func setupTheme() {
-        view.backgroundColor = theme.backgroundColor
-        refreshControl.tintColor = theme.tintColor
+        view.backgroundColor = theme.secondBackgroundColor
         loadMoarButton.setTitleColor(theme.tintColor, for: .normal)
         loadMoarButton.setTitleColor(theme.secondTintColor, for: .highlighted)
-        tableView.backgroundColor = theme.backgroundColor
+        loadMoarButton.setIndicatorColor(theme.secondTextColor)
+        tableView.backgroundColor = theme.secondBackgroundColor
         tableView.separatorColor = theme.separatorColor
-        searchController.searchBar.backgroundImage = UIImage()
-        searchController.searchBar.backgroundColor = theme.backgroundColor
+        refreshControl.tintColor = theme.secondTextColor
     }
     
     //MARK: - Request to API
@@ -179,13 +166,7 @@ class PastesViewController: UIViewController {
     func handleAddPastePressed() {
         present(addPasteViewController, animated: true, completion: nil)
     }
-    
-    @objc
-    func handleSearchPressed() {
-        searchController.searchBar.keyboardType = .asciiCapable
-        present(searchController, animated: true, completion: nil)
-    }
-    
+
     @objc
     func handleSelectTagPressed() {
         navigationController?.pushViewController(tagsViewController, animated: true)
@@ -220,14 +201,14 @@ class PastesViewController: UIViewController {
     }
     
     @objc
-    func handleLoadMore(_ sender: UIButton) {
-        IJProgressView.shared.showProgressView()
+    func handleLoadMore(_ sender: LoadMoreButton) {
+        sender.showLoading()
         loadFromAPI(by: pagination.next) { (data, error) in
             if let newPastes = data?.items {
                 self.pastes.append(contentsOf: newPastes)
             }
             DispatchQueue.main.async {
-                IJProgressView.shared.hideProgressView()
+                sender.hideLoading()
                 if self.pagination.current == self.pagination.last {
                     sender.isHidden = true
                 } else {
@@ -275,7 +256,7 @@ extension PastesViewController {
                 } else {
                     self.loadMoarButton.isHidden = false
                 }
-                self.tableView.scrollsToTop = true
+                self.tableView.scrollToTop()
                 self.tableView.reload()
             }
         }
@@ -290,7 +271,7 @@ extension PastesViewController {
                 self.pastes = newPastes
             }
             DispatchQueue.main.async {
-                self.navigationItem.title = "IPApptitle".translated()
+                self.navigationItem.title = "IPApptitle".localized
                 self.tagResetButton.isHidden = true
                 IJProgressView.shared.hideProgressView()
                 if self.pagination.current == self.pagination.last {
@@ -298,7 +279,7 @@ extension PastesViewController {
                 } else {
                     self.loadMoarButton.isHidden = false
                 }
-                self.tableView.scrollsToTop = true
+                self.tableView.scrollToTop()
                 self.tableView.reload()
             }
         }
@@ -308,8 +289,9 @@ extension PastesViewController {
 //MARK: - Gesture
 
 extension PastesViewController: UIGestureRecognizerDelegate {
+    
     func setupLongPressGesture() {
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress))
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         longPressGesture.minimumPressDuration = 1.0
         longPressGesture.delegate = self
         tableView.addGestureRecognizer(longPressGesture)
@@ -320,71 +302,40 @@ extension PastesViewController: UIGestureRecognizerDelegate {
         if gestureRecognizer.state == .began {
             let touchPoint = gestureRecognizer.location(in: self.tableView)
             guard let indexPath = tableView.indexPathForRow(at: touchPoint) else { return }
-            let item = AlertStruct(
-                title: "IPSelectAnAction".translated()
-            )
-            let shareAction = UIAlertAction(title: "IPShare".translated(), style: .default) { action in
+ 
+            let shareAction = UIAlertAction(title: "IPShare".localized, style: .default) { action in
                 print(indexPath)
             }
-            let favoritAction = UIAlertAction(title: "IPFavorite".translated(), style: .default) { action in
+            let likeAction = UIAlertAction(title: "IPLike".localized, style: .default) { action in
                 print(indexPath)
             }
-            let likeAction = UIAlertAction(title: "IPLike".translated(), style: .default) { action in
+            let favoritAction = UIAlertAction(title: "IPFavorite".localized, style: .default) { action in
                 print(indexPath)
             }
-            let cancelAction = UIAlertAction(title: "IPCancel".translated(), style: .cancel) { action in
+            let complaintAction = UIAlertAction(title: "IPСomplaint".localized, style: .default) { action in
                 print(indexPath)
             }
-            AlertsHelper.shared.actionOn(self, item: item, actions: [
+            let cancelAction = UIAlertAction(title: "IPCancel".localized, style: .cancel) { action in
+                print(indexPath)
+            }
+            AlertsHelper.shared.actionOn(self, actions: [
                 shareAction,
-                favoritAction,
                 likeAction,
+                favoritAction,
+                complaintAction,
                 cancelAction
             ])
         }
     }
 }
 
-//MARK: - Search View
-
-extension PastesViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
-    func updateSearchResults(for searchController: UISearchController) {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
-    
-    func willPresentSearchController(_ searchController: UISearchController) {
-        self.navigationController?.navigationBar.isTranslucent = true
-    }
-    
-    func willDismissSearchController(_ searchController: UISearchController) {
-        self.navigationController?.navigationBar.isTranslucent = false
-    }
-}
 
 //MARK: - ScrollView Delegate
 
 extension PastesViewController: UIScrollViewDelegate {
-    func changeNavigationBarOnScroll(_ scrollView: UIScrollView) -> Void {
-        guard let navigationBarHeight = self.navigationController?.navigationBar.bounds.height else { return }
-        if canTransitionToLarge && scrollView.contentOffset.y <= 0 - navigationBarHeight {
-            UIView.animate(withDuration: 0.5) {
-                self.navigationController?.navigationBar.isTranslucent = false
-            }
-            canTransitionToLarge = false
-            canTransitionToSmall = true
-        }
-        else if canTransitionToSmall && scrollView.contentOffset.y > 0 - navigationBarHeight {
-            UIView.animate(withDuration: 0.5) {
-                self.navigationController?.navigationBar.isTranslucent = true
-            }
-            canTransitionToLarge = true
-            canTransitionToSmall = false
-        }
-    }
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        changeNavigationBarOnScroll(scrollView)
+
     }
 }
 
@@ -396,42 +347,43 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
         if !pastes.isEmpty {
             tableView.backgroundView = nil
             tableView.tableFooterView = loadMoarButton
-            return 1
+            return pastes.count
         } else {
             let tableViewEmptyMessage = TableViewEmptyMessage()
-            if isFavorites {
-                tableViewEmptyMessage.image = UIImage(named: "following")
-                tableViewEmptyMessage.title = "Избранное отсутствует"
-                tableViewEmptyMessage.message = "Вы можете добавить пасты в избранное,\nнажав соответствующую кнопку."
-            } else {
                 tableViewEmptyMessage.image = UIImage(named: "pastes")
                 tableViewEmptyMessage.title = "Список паст пуст"
                 tableViewEmptyMessage.message = "Возможно, вы что-то сделали не так.\nПожалуйста, повторите ещё раз."
-            }
             tableView.backgroundView = tableViewEmptyMessage
             tableView.backgroundView?.isHidden = false
             tableView.tableFooterView = UIView()
             return 0
         }
     }
+
+    func isNotEmptySection(_ tableView: UITableView, _ section: Int) -> Bool {
+        return self.tableView(tableView, numberOfRowsInSection: section) > 0
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pastes.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(PasteShortCell.self)
-        cell.configure(with: pastes[indexPath.row])
+        cell.configure(with: pastes[indexPath.section])
         cell.customSelectColor(theme.selectColor)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let pasteViewController = PasteViewController()
-        pasteViewController.paste = pastes[indexPath.row]
+        pasteViewController.paste = pastes[indexPath.section]
         pasteViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(pasteViewController, animated: true)
     }
+    
+    
+    // Norm koroche tak sdelat'
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
@@ -442,18 +394,31 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0.0
+        if self.isNotEmptySection(tableView, section) {
+            return tableView.sectionHeaderHeight
+        } else {
+            if #available(iOS 11.0, *) {
+                return 0.0
+            } else {
+                return 0.001
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return UIView()
+        return nil
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.0
+        if #available(iOS 11.0, *) {
+            return 0.0
+        } else {
+            return 0.001
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
+        return nil
     }
 }
+

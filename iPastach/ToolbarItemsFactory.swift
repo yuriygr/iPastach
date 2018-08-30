@@ -9,7 +9,7 @@
 import UIKit
 
 enum ToolbarItem: Int {
-    case none, like, favorites, random, copy, report
+    case none, like, favorites, random, copy, complaint
 }
 
 class ToolbarItemsFactory: NSObject {
@@ -20,7 +20,7 @@ class ToolbarItemsFactory: NSObject {
         .favorites: #imageLiteral(resourceName: "b_favorites"),
         .random: #imageLiteral(resourceName: "b_random"),
         .copy: #imageLiteral(resourceName: "b_copy"),
-        .report: #imageLiteral(resourceName: "b_attention")
+        .complaint: #imageLiteral(resourceName: "b_attention")
     ]
     
     private var barItems: [ToolbarItem: UIBarButtonItem] = [:]

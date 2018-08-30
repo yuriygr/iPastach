@@ -19,9 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = TabBarController()
         window?.makeKeyAndVisible()
-        
+    
+        APIManager.shared.setBase(Bundle.main.infoDictionary?["CFAPIEndpoint"] as! String)
         ThemeManager.shared.apply(theme: UserSettings.shared.currentTheme)
-        ThemeManager.shared.useLargeTitles()
 
         return true
     }

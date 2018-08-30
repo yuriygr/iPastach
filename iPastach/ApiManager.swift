@@ -9,7 +9,12 @@
 import UIKit
 
 struct APIResponse: Codable {
-    let success, error: String
+    let success: Bool?
+    let error: APIResponseError?
+    
+    struct APIResponseError: Codable {
+        let errorType, errorMessage: String?
+    }
 }
 
 typealias APIParams = [String: String]
@@ -20,7 +25,7 @@ enum APIEndpoints {
         case list = "pastes.list"
         case item = "pastes.item"
         case like = "pastes.like"
-        case report = "pastes.report"
+        case complaint = "pastes.complaint"
         case random = "pastes.random"
     }
     enum tags: String {
@@ -48,7 +53,7 @@ class APIManager: NSObject {
 
     private let URLSession: URLSession = .shared
     
-    private let APIBase: String = "https://api.pastach.ru/"
+    private var APIBase: String = ""
 
     /// HTTP Methods
     enum HTTPMethods: String {
@@ -56,6 +61,10 @@ class APIManager: NSObject {
         case GET
         case PUT
         case DELETE
+    }
+    
+    func setBase(_ base: String) {
+        APIBase = base
     }
     
     /// Получение данных путём POST запроса с параметрами
@@ -83,7 +92,6 @@ class APIManager: NSObject {
             if let data = data {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
-
                 do {
                     let decoded = try decoder.decode(T.self, from: data)
                     return completion(decoded, nil)

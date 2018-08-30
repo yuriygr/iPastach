@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		131A8E182135DD6A00267CC5 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131A8E172135DD6A00267CC5 /* PageViewController.swift */; };
 		132EFF2E20C5C99A001B57EA /* PasteFullContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */; };
 		133277EC20A465EA0014944E /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277EB20A465EA0014944E /* ApiManager.swift */; };
 		133277EE20A473E80014944E /* Paste.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277ED20A473E80014944E /* Paste.swift */; };
@@ -35,6 +36,8 @@
 		13873AB92130506F001617F6 /* ToolbarItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13873AB82130506F001617F6 /* ToolbarItemsFactory.swift */; };
 		138D2F9420C0741000BF1141 /* PasteFullHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */; };
 		13A2092220B5EE4E00FA2428 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A2092120B5EE4E00FA2428 /* MenuViewController.swift */; };
+		13AD6B132138366A00162DC3 /* LoadMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AD6B122138366A00162DC3 /* LoadMoreButton.swift */; };
+		13AD6B192138593400162DC3 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13AD6B182138593300162DC3 /* Info.plist */; };
 		13C029AB2115A051003FA91A /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C029AA2115A051003FA91A /* Theme.swift */; };
 		13C044F2210E195C00C4F9AE /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C044F1210E195C00C4F9AE /* Pagination.swift */; };
 		13C67A602111BC31000338F6 /* AlertsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */; };
@@ -68,6 +71,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		131A8E172135DD6A00267CC5 /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullContentCell.swift; sourceTree = "<group>"; };
 		133277EB20A465EA0014944E /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		133277ED20A473E80014944E /* Paste.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paste.swift; sourceTree = "<group>"; };
@@ -81,7 +85,6 @@
 		1336B5DB20A0D07B002DAA6E /* iPastach.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = iPastach.xcdatamodel; sourceTree = "<group>"; };
 		1336B5DD20A0D07C002DAA6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1336B5E020A0D07C002DAA6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		1336B5E220A0D07C002DAA6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1336B5E720A0D07C002DAA6E /* iPastachTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iPastachTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1336B5EB20A0D07C002DAA6E /* iPastachTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPastachTests.swift; sourceTree = "<group>"; };
 		1336B5ED20A0D07C002DAA6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -104,6 +107,8 @@
 		13873AB82130506F001617F6 /* ToolbarItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarItemsFactory.swift; sourceTree = "<group>"; };
 		138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullHeaderCell.swift; sourceTree = "<group>"; };
 		13A2092120B5EE4E00FA2428 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		13AD6B122138366A00162DC3 /* LoadMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreButton.swift; sourceTree = "<group>"; };
+		13AD6B182138593300162DC3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13C029AA2115A051003FA91A /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		13C044F1210E195C00C4F9AE /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
 		13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsHelpers.swift; sourceTree = "<group>"; };
@@ -176,14 +181,15 @@
 				1377AED8210B9A970010107A /* IJProgressView.swift */,
 				13873AB621305043001617F6 /* TabBarItemsFactory.swift */,
 				13873AB82130506F001617F6 /* ToolbarItemsFactory.swift */,
+				13AD6B122138366A00162DC3 /* LoadMoreButton.swift */,
 				1336B60520A0D0F3002DAA6E /* Controllers */,
 				1336B60620A0D0FE002DAA6E /* Models */,
 				1336B60420A0D0E9002DAA6E /* Views */,
 				13DD8F2E210B40B300F9A370 /* Extensions */,
 				13741ADB210C519B0037723A /* Localization */,
 				1336B5DD20A0D07C002DAA6E /* Assets.xcassets */,
+				13AD6B182138593300162DC3 /* Info.plist */,
 				1336B5DF20A0D07C002DAA6E /* LaunchScreen.storyboard */,
-				1336B5E220A0D07C002DAA6E /* Info.plist */,
 				1336B5DA20A0D07B002DAA6E /* iPastach.xcdatamodeld */,
 			);
 			path = iPastach;
@@ -227,6 +233,7 @@
 				1336B60720A0D15D002DAA6E /* TagsViewController.swift */,
 				1336D7B320ACC7D800ECA0CE /* PasteViewController.swift */,
 				13A2092120B5EE4E00FA2428 /* MenuViewController.swift */,
+				131A8E172135DD6A00267CC5 /* PageViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -376,6 +383,7 @@
 			files = (
 				13741ACF210C43000037723A /* Localizable.strings in Resources */,
 				13741AD7210C51210037723A /* InfoPlist.strings in Resources */,
+				13AD6B192138593400162DC3 /* Info.plist in Resources */,
 				133277F020A562040014944E /* README.md in Resources */,
 				1336B5E120A0D07C002DAA6E /* LaunchScreen.storyboard in Resources */,
 				1336B5DE20A0D07C002DAA6E /* Assets.xcassets in Resources */,
@@ -404,6 +412,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13DD8F36210B415500F9A370 /* UIImageView.swift in Sources */,
+				131A8E182135DD6A00267CC5 /* PageViewController.swift in Sources */,
 				13DD8F32210B410800F9A370 /* CharacterSet.swift in Sources */,
 				133277EC20A465EA0014944E /* ApiManager.swift in Sources */,
 				133277EE20A473E80014944E /* Paste.swift in Sources */,
@@ -436,6 +445,7 @@
 				1336D7B420ACC7D800ECA0CE /* PasteViewController.swift in Sources */,
 				1336B5D420A0D07B002DAA6E /* AppDelegate.swift in Sources */,
 				13D83BB4212C68770057B322 /* Pages.swift in Sources */,
+				13AD6B132138366A00162DC3 /* LoadMoreButton.swift in Sources */,
 				13DD8F34210B413600F9A370 /* String.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -505,6 +515,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				API_ENDPOINT = "https://api.pastach.ru/";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -566,6 +577,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				API_ENDPOINT = "https://api.pastach.ru/";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;

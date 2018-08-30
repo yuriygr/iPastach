@@ -24,6 +24,9 @@ IPLike = "Like";
 
 IPPasteAddedToFavorits = "Paste added to favorites";
 IPSelectAnAction = "Select an action";
+IPComplaintSent = "Complaint sent";
+IPPasteLiked = "Liked";
+IPCopiedToClipboard = "Copied to clipboard";
 
 IPDateformat = "MM/dd/yyyy hh:mm a";
 IPVersion = "Version";

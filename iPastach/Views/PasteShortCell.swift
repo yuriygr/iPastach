@@ -14,57 +14,51 @@ class PasteShortCell: UITableViewCell {
 
     //MARK: - Properties
 
-    fileprivate lazy var titleLabel: UILabel = {
-        $0.font = UIFont.boldSystemFont(ofSize: 18)
-        $0.textColor = theme.textColor
+    private lazy var titleLabel: UILabel = {
+        $0.font = UIFont.boldSystemFont(ofSize: 19)
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
 
-    fileprivate lazy var idLabel: UILabel = {
-        $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = theme.tintColor
+    private lazy var idLabel: UILabel = {
+        $0.font = UIFont.systemFont(ofSize: 13)
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
 
-    fileprivate lazy var timeLabel: UILabel = {
-        $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = theme.secondTextColor
-        $0.lineBreakMode = .byWordWrapping
-        $0.numberOfLines = 0
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UILabel())
-    
-    fileprivate lazy var tagsLabel: UILabel = {
-        $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = theme.tintColor
-        $0.lineBreakMode = .byWordWrapping
-        $0.numberOfLines = 0
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UILabel())
-    
-    fileprivate lazy var descriptionLabel: UILabel = {
+    private lazy var timeLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 13)
-        $0.textColor = theme.textColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
     
-    fileprivate lazy var readmoreLabel: UILabel = {
+    private lazy var tagsLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 13)
-        $0.textColor = theme.tintColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
-        $0.text = "IPReadmore".translated(with: "Кнопка читать далее")
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(UILabel())
+    
+    private lazy var descriptionLabel: UILabel = {
+        $0.font = UIFont.systemFont(ofSize: 13)
+        $0.lineBreakMode = .byWordWrapping
+        $0.numberOfLines = 0
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(UILabel())
+    
+    private lazy var readmoreLabel: UILabel = {
+        $0.font = UIFont.systemFont(ofSize: 14)
+        $0.lineBreakMode = .byWordWrapping
+        $0.numberOfLines = 0
+        $0.text = "IPReadmore".localized
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
@@ -84,16 +78,22 @@ class PasteShortCell: UITableViewCell {
     //MARK: - Конфигурация ячейки
 
     func setupCell() {
-        self.backgroundColor = theme.backgroundColor
+        backgroundColor = theme.backgroundColor
         contentView.backgroundColor = theme.backgroundColor
-
+        titleLabel.textColor = theme.textColor
+        idLabel.textColor = theme.tintColor
+        timeLabel.textColor = theme.secondTextColor
+        tagsLabel.textColor = theme.tintColor
+        descriptionLabel.textColor = theme.textColor
+        readmoreLabel.textColor = theme.tintColor
+        
         contentView.addSubview(titleLabel)
         contentView.addSubview(idLabel)
         contentView.addSubview(timeLabel)
         contentView.addSubview(tagsLabel)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(readmoreLabel)
-        
+          
         var constraints = [NSLayoutConstraint]()
         
         let viewsDict = [

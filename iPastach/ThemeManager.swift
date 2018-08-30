@@ -12,6 +12,8 @@ struct Theme {
 
     let statusBarStyle: UIStatusBarStyle
     let barStyle: UIBarStyle
+    
+    let navigationBarColor: UIColor
 
     let backgroundColor: UIColor
     let secondBackgroundColor: UIColor
@@ -24,6 +26,7 @@ struct Theme {
     
     let selectColor: UIColor
     let separatorColor: UIColor
+    let shadowColor: UIColor
 }
 
 extension Theme: Equatable {
@@ -41,18 +44,20 @@ class ThemeManager: NSObject {
         let sharedApplication = UIApplication.shared
         sharedApplication.delegate?.window??.backgroundColor = theme.backgroundColor
         sharedApplication.statusBarStyle = theme.statusBarStyle
+        let titleTextAttributes = [
+            NSAttributedStringKey.foregroundColor: theme.textColor
+        ]
         
-        // Navigation bar
-        UINavigationBar.appearance().isTranslucent = false
-        UINavigationBar.appearance().shadowImage = UIImage()
-        UINavigationBar.appearance().barTintColor = theme.backgroundColor
-        UINavigationBar.appearance().backgroundColor = theme.backgroundColor
+        UINavigationBar.appearance().isTranslucent = true
+        UINavigationBar.appearance().shadowImage = theme.shadowColor.as1ptImage()
+        UINavigationBar.appearance().setBackgroundImage(theme.navigationBarColor.as1ptImage(), for: .default)
+        UINavigationBar.appearance().barTintColor = theme.navigationBarColor
         UINavigationBar.appearance().tintColor = theme.textColor
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: theme.textColor]
+        UINavigationBar.appearance().titleTextAttributes = titleTextAttributes
         if #available(iOS 11.0, *) {
-            UINavigationBar.appearance().largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: theme.textColor]
+            UINavigationBar.appearance().largeTitleTextAttributes = titleTextAttributes
         }
-        
+    
         // Navigation bar item
         UIBarButtonItem.appearance().tintColor = theme.tintColor
         

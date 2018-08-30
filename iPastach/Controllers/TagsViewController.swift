@@ -15,15 +15,13 @@ class TagsViewController: UIViewController {
     
     //MARK: - Properties
 
-    var canTransitionToLarge = false
-    var canTransitionToSmall = true
-
     lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: self.view.bounds, style: .plain)
+        let tableView = UITableView(frame: self.view.bounds, style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         tableView.refreshControl = refreshControl
+        tableView.registerCell(UITableViewCell.self, withIdentifier: "TagCell")
         return tableView
     }()
 
@@ -65,24 +63,22 @@ class TagsViewController: UIViewController {
     
     //MARK: - Setup view
 
-    fileprivate func setupController() {
-        navigationItem.title = "IPTags".translated()
+    private func setupController() {
+        navigationItem.title = "IPTags".localized
         extendedLayoutIncludesOpaqueBars = true
-        
-        tableView.registerCell(UITableViewCell.self, withIdentifier: "TagCell")
         view.addSubview(tableView)
     }
     
-    fileprivate func setupTheme() {
-        view.backgroundColor = theme.backgroundColor
-        refreshControl.tintColor = theme.tintColor
-        tableView.backgroundColor = theme.backgroundColor
+    private func setupTheme() {
+        view.backgroundColor = theme.secondBackgroundColor
+        tableView.backgroundColor = theme.secondBackgroundColor
         tableView.separatorColor = theme.separatorColor
+        refreshControl.tintColor = theme.textColor
     }
     
     //MARK: - Request to API
 
-    fileprivate func loadFromAPI(completion: (([Tag]?, Error?) -> ())? = nil) {
+    private func loadFromAPI(completion: (([Tag]?, Error?) -> ())? = nil) {
         api.tags([Tag].self, endpoint: .list) { (data, error) in
             if let error = error {
                 print(error)
@@ -108,7 +104,17 @@ class TagsViewController: UIViewController {
     }
 }
 
-//MARK: - TableView
+//MARK: - ScrollView Delegate
+
+extension TagsViewController: UIScrollViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+
+    }
+}
+
+//MARK: - TableView Delegate
+
 extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -125,6 +131,10 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
             tableView.backgroundView?.isHidden = false
             return 0
         }
+    }
+
+    func isNotEmptySection(_ tableView: UITableView, _ section: Int) -> Bool {
+        return self.tableView(tableView, numberOfRowsInSection: section) > 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -149,6 +159,8 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         self.navigationController?.popViewController(animated: true)
     }
     
+    // Norm koroche tak sdelat'
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
@@ -158,26 +170,34 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
+        if self.isNotEmptySection(tableView, section) {
             return tableView.sectionHeaderHeight
         } else {
             if #available(iOS 11.0, *) {
-                return 0
+                return 0.0
             } else {
                 return 0.001
             }
         }
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+    }
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
+        if self.isNotEmptySection(tableView, section) {
             return tableView.sectionFooterHeight
         } else {
             if #available(iOS 11.0, *) {
-                return 0
+                return 0.0
             } else {
                 return 0.001
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
     }
 }

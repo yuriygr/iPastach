@@ -24,6 +24,9 @@ IPLike = "Нравится";
 
 IPPasteAddedToFavorits = "Паста добавлена в избранное";
 IPSelectAnAction = "Выберите действие";
+IPComplaintSent = "Жалоба отправлена";
+IPPasteLiked = "Лайк засчитан";
+IPCopiedToClipboard = "Скопировано в буфер обмена";
 
 IPDateformat = "dd.MM.yyyy в HH:mm";
 IPVersion = "Версия";

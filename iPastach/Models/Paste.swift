@@ -22,7 +22,7 @@ struct Paste: Codable {
 
     func formatedTime() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "IPDateformat".translated()
+        dateFormatter.dateFormat = "IPDateformat".localized
         let dateFromTimestamp = Date(timeIntervalSince1970: self.time)
         
         return dateFormatter.string(from: dateFromTimestamp)

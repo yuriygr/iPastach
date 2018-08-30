@@ -15,7 +15,7 @@ class PasteViewController: UIViewController {
     private var theme = UserSettings.shared.currentTheme
     private let activity = NSUserActivity(activityType: "gr.yuriy.iPastach.openPastePage")
     private let toolbarFactory = ToolbarItemsFactory(items: [
-        .like, .favorites, .random, .copy, .report
+        .like, .favorites, .random, .copy, .complaint
     ])
 
     //MARK: - Properties
@@ -105,6 +105,7 @@ class PasteViewController: UIViewController {
         activity.isEligibleForHandoff = true
         activity.isEligibleForSearch = true
         activity.isEligibleForPublicIndexing = true
+        activity.becomeCurrent()
         userActivity = activity
     }
 
@@ -144,28 +145,37 @@ class PasteViewController: UIViewController {
 
         api.pastes(APIResponse.self, endpoint: .like, params: [ "paste_id": "\(paste.id)" ]) { (data, error) in
             if let error = error {
-                print(error.localizedDescription)
+                AlertsHelper.shared.alertOn(self, title: "IPError".localized, message: error.localizedDescription, actions: [
+                    UIAlertAction(title: "IPClose".localized, style: .default)
+                ])
             }
             if let data = data {
-                print(data)
+                if let error = data.error {
+                    AlertsHelper.shared.alertOn(self, title: "IPError".localized, message: error.errorMessage, actions: [
+                        UIAlertAction(title: "IPClose".localized, style: .default)
+                    ])
+                }
+                if let _ = data.success {
+                    AlertsHelper.shared.alertOn(self, title: "IPPasteLiked".localized, actions: [
+                        UIAlertAction(title: "IPClose".localized, style: .default)
+                    ])
+                }
             }
         }
     }
 
     func favoritButtonTapped(_ sender: UIBarButtonItem) {
         guard let paste = paste else { return }
-        let item = AlertStruct(
-            title: "IPPasteAddedToFavorits".translated()
-        )
-        let closeAction = UIAlertAction(title: "IPClose".translated(), style: .default)
-        let cancelAction = UIAlertAction(title: "IPCancel".translated(), style: .default) { action in
+
+        let closeAction = UIAlertAction(title: "IPClose".localized, style: .default)
+        let cancelAction = UIAlertAction(title: "IPCancel".localized, style: .default) { action in
             NotificationCenter.default.post(
                 name: .onPasteRemoveFromFavorite,
                 object: nil,
                 userInfo: ["paste": paste]
             )
         }
-        AlertsHelper.shared.alertOn(self, item: item, actions: [
+        AlertsHelper.shared.alertOn(self, title: "IPPasteAddedToFavorits".localized, actions: [
             closeAction,
             cancelAction
         ])
@@ -196,17 +206,36 @@ class PasteViewController: UIViewController {
     func copyButtonTapped(_ sender: UIBarButtonItem) {
         guard let paste = paste else { return }
         UIPasteboard.general.string = paste.content
+        
+        AlertsHelper.shared.alertOn(self, title: "IPCopiedToClipboard".localized, actions: [
+            UIAlertAction(title: "IPClose".localized, style: .default)
+        ])
     }
 
-    func reportButtonTapped(_ sender: UIBarButtonItem) {
+    func complaintButtonTapped(_ sender: UIBarButtonItem) {
         guard let paste = paste else { return }
     
-        api.pastes(APIResponse.self, endpoint: .report, params: [ "paste_id": "\(paste.id)" ]) { (data, error) in
+        api.pastes(APIResponse.self, endpoint: .complaint, params: [ "paste_id": "\(paste.id)" ]) { (data, error) in
             if let error = error {
-                print(error.localizedDescription)
+                AlertsHelper.shared.alertOn(self, title: "IPError".localized, message: error.localizedDescription, actions: [
+                    UIAlertAction(title: "IPClose".localized, style: .default)
+                ])
             }
             if let data = data {
-                print(data)
+                if let error = data.error {
+                    AlertsHelper.shared.alertOn(self, title: "IPError".localized, message: error.errorMessage, actions: [
+                        UIAlertAction(title: "IPClose".localized, style: .default)
+                    ])
+                }
+                if let _ = data.success {
+                    AlertsHelper.shared.alertOn(self, title: "IPComplaintSent".localized, actions: [
+                        UIAlertAction(title: "IPClose".localized, style: .default)
+                    ]) {
+                        DispatchQueue.main.async {
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                    }
+                }
             }
         }
     }
@@ -226,8 +255,8 @@ extension PasteViewController: ToolbarItemsFactoryDelegate {
             randomButtonTapped(barItem)
         case .copy:
             copyButtonTapped(barItem)
-        case .report:
-            reportButtonTapped(barItem)
+        case .complaint:
+            complaintButtonTapped(barItem)
         default:
             break
         }
@@ -237,21 +266,9 @@ extension PasteViewController: ToolbarItemsFactoryDelegate {
 //MARK: - ScrollView Delegate
 
 extension PasteViewController: UIScrollViewDelegate {
-    func changeNavigationBarOnScroll(_ scrollView: UIScrollView) -> Void {
-        guard let navigationBarHeight = self.navigationController?.navigationBar.bounds.height else { return }
-        if scrollView.contentOffset.y <= 0 - navigationBarHeight {
-            UIView.animate(withDuration: 0.5) {
-                self.navigationController?.navigationBar.isTranslucent = false
-            }
-        }
-        else if scrollView.contentOffset.y > 0 - navigationBarHeight {
-            UIView.animate(withDuration: 0.5) {
-                self.navigationController?.navigationBar.isTranslucent = true
-            }
-        }
-    }
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        changeNavigationBarOnScroll(scrollView)
+
     }
 }
 

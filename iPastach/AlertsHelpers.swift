@@ -8,24 +8,29 @@
 import UIKit
 
 struct AlertStruct {
-    let title: String
-    let message: String? = nil
+    let title: String?
+    let message: String?
+    
+    init(title: String? = nil, message: String? = nil) {
+        self.title = title
+        self.message = message
+    }
 }
 
 class AlertsHelper: NSObject {
 
     static let shared = AlertsHelper()
     
-    func alertOn(_ vc: UIViewController, item: AlertStruct, actions: [UIAlertAction] = []) -> Void {
-        let alertController = UIAlertController(title: item.title, message: item.message, preferredStyle: .alert)
+    func alertOn(_ vc: UIViewController, title: String? = nil, message: String? = nil, actions: [UIAlertAction] = [], completion: (() -> ())? = nil) -> Void {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         for action in actions {
             alertController.addAction(action)
         }
-        vc.present(alertController, animated: true, completion: nil)
+        vc.present(alertController, animated: true, completion: completion)
     }
     
-    func actionOn(_ vc: UIViewController, item: AlertStruct, actions: [UIAlertAction] = []) -> Void {
-        let alertController = UIAlertController(title: item.title, message: item.message, preferredStyle: .actionSheet)
+    func actionOn(_ vc: UIViewController, title: String? = nil, message: String? = nil, actions: [UIAlertAction] = []) -> Void {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         for action in actions {
             alertController.addAction(action)
         }

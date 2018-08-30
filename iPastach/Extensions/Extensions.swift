@@ -9,10 +9,37 @@
 import UIKit
 
 extension UINavigationItem {
-    func withoutNameBackButton() {
-        let backButton = UIBarButtonItem()
-        backButton.title = ""
-        self.backBarButtonItem = backButton
+    private static var _withoutTitleOnBackBarButton: Bool = false
+
+    var withoutTitleOnBackBarButton: Bool {
+        get {
+            return UINavigationItem._withoutTitleOnBackBarButton
+        }
+        set {
+            let backButton = UIBarButtonItem()
+            backButton.title = ""
+            self.backBarButtonItem = backButton
+            UINavigationItem._withoutTitleOnBackBarButton = newValue
+        }
+    }
+}
+
+extension UINavigationBar {
+
+    func addShadow(with color: UIColor) {
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = color.cgColor
+        self.layer.shadowOpacity = 0.85
+        self.layer.shadowOffset = CGSize(width: 0, height: 2.0)
+        self.layer.shadowRadius = 2
+    }
+    
+    func removeShadow() {
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = nil
+        self.layer.shadowOpacity = 0.0
+        self.layer.shadowOffset = .zero
+        self.layer.shadowRadius = 0.0
     }
 }
 
@@ -29,6 +56,15 @@ extension UIBarButtonItem {
     }
 }
 
+extension UITextView {
+    
+    func setHtmlText(_ html: String) {
+        if let attributedText = html.attributedHtmlString {
+            self.attributedText = attributedText
+        }
+    }
+}
+
 extension UIColor {
 
     /// Converts this `UIColor` instance to a 1x1 `UIImage` instance and returns it.
@@ -36,6 +72,7 @@ extension UIColor {
     /// - Returns: `self` as a 1x1 `UIImage`.
     func as1ptImage() -> UIImage {
         UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
+        self.setFill()
         UIGraphicsGetCurrentContext()?.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
         let image = UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
         UIGraphicsEndImageContext()
@@ -93,6 +130,12 @@ extension UITableView {
             fatalError("Unknown cell type (\(T.self)) for reuse identifier: \(reuseIdentifier)")
         }
         return cell
+    }
+    
+    public func scrollToTop() {
+        UIView.performWithoutAnimation {
+            self.setContentOffset(.zero, animated: false)
+        }
     }
     
     public func reload() {

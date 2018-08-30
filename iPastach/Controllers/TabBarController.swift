@@ -11,7 +11,7 @@ import UIKit
 class TabBarController: UITabBarController {
     
     private let tabBarItemsFactory = TabBarItemsFactory(items: [
-        .pastes, .menu
+        .pastes, .favorites, .menu
     ])
     
     override func viewDidLoad() {

@@ -27,9 +27,20 @@ extension String {
             return nil
         }
     }
+
+    var localized: String {
+        return NSLocalizedString(self, comment: "")
+    }
+
+    func truncate(to length: Int, trailing: String = "…") -> String {
+        if self.count > length {
+            return String(self.prefix(length)) + trailing
+        } else {
+            return self
+        }
+    }
     
-    /// For easy translate strings
-    func translated(with comment: String = "") -> String {
-        return NSLocalizedString(self, comment: comment)
+    static func +=(left: inout String?, right: String) {
+        left = (left ?? "") + right
     }
 }

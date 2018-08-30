@@ -23,6 +23,7 @@ class AddPasteViewController: UIViewController {
         tableView.allowsSelection = false
         return tableView
     }()
+
     lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(handleCancelPressed))
 
     //MARK: - Data
@@ -55,16 +56,18 @@ class AddPasteViewController: UIViewController {
     
     //MARK: - Setup's
     
-    fileprivate func setupController() {
-        navigationItem.title = "IPAddPaste".translated()
+    private func setupController() {
+        navigationItem.title = "IPAddPaste".localized
+        if #available(iOS 11.0, *) {
+            navigationItem.largeTitleDisplayMode = .never
+        }
         navigationItem.leftBarButtonItem = cancelButton
         extendedLayoutIncludesOpaqueBars = true
-    
         view.addSubview(tableView)
     }
     
-    fileprivate func setupTheme() {
-        view.backgroundColor = theme.backgroundColor
+    private func setupTheme() {
+        view.backgroundColor = theme.secondBackgroundColor
         tableView.backgroundColor = theme.secondBackgroundColor
         tableView.separatorColor = theme.separatorColor
     }
@@ -72,6 +75,15 @@ class AddPasteViewController: UIViewController {
     @objc
     func handleCancelPressed() {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: - ScrollView Delegate
+
+extension AddPasteViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
     }
 }
 
@@ -102,6 +114,11 @@ extension AddPasteViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.accessoryView = UIInputView()
+        cell.backgroundColor = theme.backgroundColor
+        cell.contentView.backgroundColor = theme.backgroundColor
+        cell.selectionStyle = .none
         return UITableViewCell()
     }
     
