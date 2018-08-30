@@ -19,21 +19,36 @@ struct APIResponse: Codable {
 
 typealias APIParams = [String: String]
 
-enum APIEndpoints {
-    enum pastes: String {
-        case add = "pastes.add"
-        case list = "pastes.list"
-        case item = "pastes.item"
-        case like = "pastes.like"
-        case complaint = "pastes.complaint"
-        case random = "pastes.random"
+// Методы для работы с API
+//  - pastes: Пасты
+//  - tags: Теги
+//  - pages: Страницы
+enum APIMethods {
+    
+    case pastes(PastesEndpoint)
+    enum PastesEndpoint: String {
+        case add, list, item, like, complaint, random
     }
-    enum tags: String {
-        case list = "tags.list"
+    
+    case tags(TagsEndpoint)
+    enum TagsEndpoint: String {
+        case list
     }
-    enum pages: String {
-        case list = "pages.list"
-        case item = "pages.item"
+    
+    case pages(PagesEndpoint)
+    enum PagesEndpoint: String {
+        case list, item
+    }
+    
+    var value: String {
+        switch self {
+        case .pastes(let value):
+            return "pastes." + value.rawValue
+        case .tags(let value):
+            return "tags." + value.rawValue
+        case .pages(let value):
+            return "pages." + value.rawValue
+        }
     }
 }
 
@@ -75,15 +90,15 @@ class APIManager: NSObject {
     /// - Parameter completion: Кложур для работы с данными
     ///
     /// - Returns: Nothing to return
-    private func fetch<T>(_ type: T.Type, endpoint: String, params: APIParams = [:], method: HTTPMethods = .POST, completion: @escaping (T?, Error?) -> Void) where T: Decodable {
-
-        guard let url = URL(string: APIBase + endpoint) else {
+    func fetch<T>(_ type: T.Type, method APIMethod: APIMethods, params APIParams: APIParams = [:], HTTPMethod: HTTPMethods = .POST, completion: @escaping (T?, Error?) -> Void) where T: Decodable {
+        
+        guard let url = URL(string: APIBase + APIMethod.value) else {
             return completion(nil, APIErrors.invalidURL)
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = method.rawValue
-        request.setBodyContent(params)
+        request.httpMethod = HTTPMethod.rawValue
+        request.setBodyContent(APIParams)
 
         URLSession.dataTask(with: request) { (data, response, error) in
             if error != nil {
@@ -101,18 +116,5 @@ class APIManager: NSObject {
                 }
             }
         }.resume()
-    }
-
-    //MARK: - Временные постоянные решения
-    func pastes<T>(_ type: T.Type, endpoint: APIEndpoints.pastes, params: APIParams = [:], completion: @escaping (T?, Error?) -> Void) where T: Decodable {
-        fetch(type, endpoint: endpoint.rawValue, params: params, completion: completion)
-    }
-
-    func tags<T>(_ type: T.Type, endpoint: APIEndpoints.tags, params: APIParams = [:], completion: @escaping (T?, Error?) -> Void) where T: Decodable {
-        fetch(type, endpoint: endpoint.rawValue, params: params, completion: completion)
-    }
-
-    func pages<T>(_ type: T.Type, endpoint: APIEndpoints.pages, params: APIParams = [:], completion: @escaping (T?, Error?) -> Void) where T: Decodable {
-        fetch(type, endpoint: endpoint.rawValue, params: params, completion: completion)
     }
 }

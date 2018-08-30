@@ -79,7 +79,7 @@ class TagsViewController: UIViewController {
     //MARK: - Request to API
 
     private func loadFromAPI(completion: (([Tag]?, Error?) -> ())? = nil) {
-        api.tags([Tag].self, endpoint: .list) { (data, error) in
+        api.fetch([Tag].self, method: .tags(.list)) { (data, error) in
             if let error = error {
                 print(error)
             }

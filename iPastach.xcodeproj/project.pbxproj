@@ -37,7 +37,6 @@
 		138D2F9420C0741000BF1141 /* PasteFullHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */; };
 		13A2092220B5EE4E00FA2428 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A2092120B5EE4E00FA2428 /* MenuViewController.swift */; };
 		13AD6B132138366A00162DC3 /* LoadMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AD6B122138366A00162DC3 /* LoadMoreButton.swift */; };
-		13AD6B192138593400162DC3 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13AD6B182138593300162DC3 /* Info.plist */; };
 		13C029AB2115A051003FA91A /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C029AA2115A051003FA91A /* Theme.swift */; };
 		13C044F2210E195C00C4F9AE /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C044F1210E195C00C4F9AE /* Pagination.swift */; };
 		13C67A602111BC31000338F6 /* AlertsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */; };
@@ -339,7 +338,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Юрий Гринев";
 				TargetAttributes = {
 					1336B5CF20A0D07B002DAA6E = {
@@ -383,7 +382,6 @@
 			files = (
 				13741ACF210C43000037723A /* Localizable.strings in Resources */,
 				13741AD7210C51210037723A /* InfoPlist.strings in Resources */,
-				13AD6B192138593400162DC3 /* Info.plist in Resources */,
 				133277F020A562040014944E /* README.md in Resources */,
 				1336B5E120A0D07C002DAA6E /* LaunchScreen.storyboard in Resources */,
 				1336B5DE20A0D07C002DAA6E /* Assets.xcassets in Resources */,

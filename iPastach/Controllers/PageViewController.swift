@@ -35,7 +35,7 @@ class PageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
-        api.pages(Page.self, endpoint: .item) { (data, error) in
+        api.fetch(Page.self, method: .pages(.item)) { (data, error) in
             if let error = error {
                 print(error.localizedDescription)
             }

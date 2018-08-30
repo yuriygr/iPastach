@@ -138,7 +138,7 @@ class PastesViewController: UIViewController {
         if let page = page, page > 0 {
             apiParams["page"] = "\(page)"
         }
-        api.pastes(PastesListPaginated.self, endpoint: .list, params: apiParams) { (data, error) in
+        api.fetch(PastesListPaginated.self, method: .pastes(.list), params: apiParams) { (data, error) in
             if let error = error {
                 print(error)
             }

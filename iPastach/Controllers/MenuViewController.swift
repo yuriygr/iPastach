@@ -53,7 +53,7 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
-        api.pages([Page].self, endpoint: .list) { (data, error) in
+        api.fetch([Page].self, method: .pastes(.list)) { (data, error) in
             if let error = error {
                 print(error.localizedDescription)
             }
@@ -111,7 +111,7 @@ class MenuViewController: UIViewController {
 
     @objc
     func handleRefresh(_ refreshControl: UIRefreshControl) {
-        api.pages([Page].self, endpoint: .list) { (data, error) in
+        api.fetch([Page].self, method: .pages(.list)) { (data, error) in
             if let error = error {
                 print(error.localizedDescription)
             }

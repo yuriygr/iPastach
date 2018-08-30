@@ -86,7 +86,7 @@ class PasteViewController: UIViewController {
             apiParams = [ "paste_id": "\(paste.id)" ]
         }
         
-        api.pastes(Paste.self, endpoint: .item, params: apiParams) { (data, error) in
+        api.fetch(Paste.self, method: .pastes(.item), params: apiParams) { (data, error) in
             if let error = error {
                 print(error)
             }
@@ -143,7 +143,7 @@ class PasteViewController: UIViewController {
     func likeButtonTapped(_ sender: UIBarButtonItem) {
         guard let paste = paste else { return }
 
-        api.pastes(APIResponse.self, endpoint: .like, params: [ "paste_id": "\(paste.id)" ]) { (data, error) in
+        api.fetch(APIResponse.self, method: .pastes(.like), params: [ "paste_id": "\(paste.id)" ]) { (data, error) in
             if let error = error {
                 AlertsHelper.shared.alertOn(self, title: "IPError".localized, message: error.localizedDescription, actions: [
                     UIAlertAction(title: "IPClose".localized, style: .default)
@@ -189,7 +189,7 @@ class PasteViewController: UIViewController {
 
     func randomButtonTapped(_ sender: UIBarButtonItem) {
         IJProgressView.shared.showProgressView()
-        api.pastes(Paste.self, endpoint: .random) { (data, error) in
+        api.fetch(Paste.self, method: .pastes(.random)) { (data, error) in
             if let error = error {
                 print(error.localizedDescription)
             }
@@ -215,7 +215,7 @@ class PasteViewController: UIViewController {
     func complaintButtonTapped(_ sender: UIBarButtonItem) {
         guard let paste = paste else { return }
     
-        api.pastes(APIResponse.self, endpoint: .complaint, params: [ "paste_id": "\(paste.id)" ]) { (data, error) in
+        api.fetch(APIResponse.self, method: .pastes(.complaint), params: [ "paste_id": "\(paste.id)" ]) { (data, error) in
             if let error = error {
                 AlertsHelper.shared.alertOn(self, title: "IPError".localized, message: error.localizedDescription, actions: [
                     UIAlertAction(title: "IPClose".localized, style: .default)
