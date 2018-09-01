@@ -14,9 +14,6 @@ class MenuViewController: UIViewController {
     private var theme = UserSettings.shared.currentTheme
     
     //MARK: - Properties
-
-    var canTransitionToLarge = false
-    var canTransitionToSmall = true
     
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: self.view.bounds, style: .grouped)
@@ -26,6 +23,7 @@ class MenuViewController: UIViewController {
         tableView.registerCell(UITableViewCell.self, withIdentifier: "settingCell")
         tableView.registerCell(UITableViewCell.self, withIdentifier: "informationCell")
         tableView.registerCell(UITableViewCell.self, withIdentifier: "applicationCell")
+        tableView.registerCell(SwitchCell.self)
         return tableView
     }()
     
@@ -101,16 +99,6 @@ class MenuViewController: UIViewController {
     }
     
     @objc
-    func switchChanged(_ sender: UISwitch) {
-        if sender.tag == 0 {
-            UserSettings.shared.currentTheme = sender.isOn ? .darkmode : .normal
-        }
-        if sender.tag == 1 {
-            UserSettings.shared.showTitlesOnTabbar = sender.isOn
-        }
-    }
-
-    @objc
     func handleRefresh(_ refreshControl: UIRefreshControl) {
         api.fetch([Page].self, method: .pages(.list)) { (data, error) in
             if let error = error {
@@ -133,6 +121,20 @@ extension MenuViewController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
+    }
+}
+
+//MARK: - Switch Delegate
+
+extension MenuViewController: SwitchCellDelegate {
+    
+    func switchChanged(_ sender: UISwitch) {
+        if sender.tag == 0 {
+            UserSettings.shared.currentTheme = sender.isOn ? .darkmode : .normal
+        }
+        if sender.tag == 1 {
+            UserSettings.shared.showTitlesOnTabbar = sender.isOn
+        }
     }
 }
 
@@ -178,32 +180,33 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 0 {
-            let cell = UITableViewCell(style: .default, reuseIdentifier: "settingCell")
             
             switch SettingsSection(rawValue: indexPath.row)! {
             case .theme:
-                let switchView = UISwitch(frame: .zero)
-                switchView.tag = indexPath.row
-                switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
-                switchView.setOn(theme == .darkmode, animated: false)
-                cell.accessoryView = switchView
-                cell.textLabel?.text = "IPDarkmode".localized
+                let cell = tableView.dequeueCell(SwitchCell.self)
+                cell.delegate = self
+                cell.setTitle("IPDarkmode".localized)
+                cell.setTag(indexPath.row)
+                cell.setState(theme == .darkmode)
+                cell.setupTheme()
+                return cell
             case .titles:
-                let switchView = UISwitch(frame: .zero)
-                switchView.tag = indexPath.row
-                switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
-                switchView.setOn(UserSettings.shared.showTitlesOnTabbar, animated: false)
-                cell.accessoryView = switchView
-                cell.textLabel?.text = "Show titles on tabbar".localized
+                let cell = tableView.dequeueCell(SwitchCell.self)
+                cell.delegate = self
+                cell.setTitle("Show titles on tabbar".localized)
+                cell.setTag(indexPath.row)
+                cell.setState(UserSettings.shared.showTitlesOnTabbar)
+                cell.setupTheme()
+                return cell
             case .font:
+                let cell = UITableViewCell(style: .default, reuseIdentifier: "settingCell")
                 cell.accessoryView = nil
                 cell.textLabel?.text = "Размер шрифта".localized
+                cell.textLabel?.textColor = theme.textColor
+                cell.backgroundColor = theme.backgroundColor
+                cell.selectionStyle = .none
+                return cell
             }
-
-            cell.textLabel?.textColor = theme.textColor
-            cell.backgroundColor = theme.backgroundColor
-            cell.selectionStyle = .none
-            return cell
         }
         if indexPath.section == 1 {
             let cell = UITableViewCell(style: .default, reuseIdentifier: "informationCell")

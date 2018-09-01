@@ -69,6 +69,8 @@ class APIManager: NSObject {
     private let URLSession: URLSession = .shared
     
     private var base: String = ""
+    
+    private var headers: [String: String] = [:]
 
     /// HTTP Methods
     enum HTTPMethods: String {
@@ -99,6 +101,7 @@ class APIManager: NSObject {
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.rawValue
         request.setBodyContent(params)
+        request.setHeaders(headers)
 
         URLSession.dataTask(with: request) { (data, response, error) in
             if let error = error {

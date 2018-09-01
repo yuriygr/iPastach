@@ -10,6 +10,7 @@ IPPastes = "Pastes";
 IPMenu = "Menu";
 IPFavorites = "Favorites";
 
+IPSendPaste = "Post";
 IPTags = "Tags";
 IPReset = "Reset";
 IPClose = "Close";
@@ -21,12 +22,17 @@ IPReadmore = "Read more...";
 IPShare = "Share";
 IPFavorite = "Add to favorites";
 IPLike = "Like";
+IPСomplaint = "Сomplaint";
 
+// Alerts
 IPPasteAddedToFavorits = "Paste added to favorites";
 IPSelectAnAction = "Select an action";
 IPComplaintSent = "Complaint sent";
 IPPasteLiked = "Liked";
 IPCopiedToClipboard = "Copied to clipboard";
+
+// Settings
+IPDarkmode = "Darkmode";
 
 IPDateformat = "MM/dd/yyyy hh:mm a";
 IPVersion = "Version";

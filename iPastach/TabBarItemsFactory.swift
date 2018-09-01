@@ -33,9 +33,9 @@ class TabBarItemsFactory: NSObject {
     ]
     
     private static let titles: [TabBarItem: String] = [
-        .pastes: "IPPastes",
-        .favorites: "IPFavorites",
-        .menu: "IPMenu"
+        .pastes: "IPPastes".localized,
+        .favorites: "IPFavorites".localized,
+        .menu: "IPMenu".localized
     ]
     
     init(items: [TabBarItem]) {

@@ -15,7 +15,7 @@ class AddPasteViewController: UIViewController {
     
     //MARK: - Properties
     
-    lazy var tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: self.view.bounds, style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
@@ -24,7 +24,8 @@ class AddPasteViewController: UIViewController {
         return tableView
     }()
 
-    lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(handleCancelPressed))
+    private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(handleCancelPressed))
+    private lazy var postButton = UIBarButtonItem(title: "IPSendPaste".localized, style: .plain, target: self, action: #selector(handlePostPressed))
 
     //MARK: - Data
 
@@ -62,6 +63,7 @@ class AddPasteViewController: UIViewController {
             navigationItem.largeTitleDisplayMode = .never
         }
         navigationItem.leftBarButtonItem = cancelButton
+        navigationItem.rightBarButtonItem = postButton
         extendedLayoutIncludesOpaqueBars = true
         view.addSubview(tableView)
     }
@@ -75,6 +77,11 @@ class AddPasteViewController: UIViewController {
     @objc
     func handleCancelPressed() {
         self.dismiss(animated: true, completion: nil)
+    }
+
+    @objc
+    func handlePostPressed() {
+        
     }
 }
 

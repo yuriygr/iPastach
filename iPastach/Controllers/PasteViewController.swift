@@ -100,7 +100,7 @@ class PasteViewController: UIViewController {
     }
     
     private func setupActivity() {
-        guard let url = URL(string: paste!.url) else { return }
+        guard let url = paste?.url else { return }
         activity.webpageURL = url
         activity.isEligibleForHandoff = true
         activity.isEligibleForSearch = true
@@ -124,9 +124,7 @@ class PasteViewController: UIViewController {
     
     @objc
     func shareButtonPressed(_ sender: UIButton) {
-        guard
-            let paste = paste,
-            let url = URL(string: paste.url) else { return }
+        guard let paste = paste, let url = paste.url else { return }
         let items = [
             paste.title, url
         ] as [Any]

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		131A8E182135DD6A00267CC5 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131A8E172135DD6A00267CC5 /* PageViewController.swift */; };
 		131E2CEC213AB04500F548F9 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131E2CEB213AB04500F548F9 /* TagCell.swift */; };
+		131E2CEE213B046200F548F9 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131E2CED213B046200F548F9 /* SwitchCell.swift */; };
 		132EFF2E20C5C99A001B57EA /* PasteFullContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */; };
 		133277EC20A465EA0014944E /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277EB20A465EA0014944E /* ApiManager.swift */; };
 		133277EE20A473E80014944E /* Paste.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277ED20A473E80014944E /* Paste.swift */; };
@@ -73,6 +74,7 @@
 /* Begin PBXFileReference section */
 		131A8E172135DD6A00267CC5 /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		131E2CEB213AB04500F548F9 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
+		131E2CED213B046200F548F9 /* SwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullContentCell.swift; sourceTree = "<group>"; };
 		133277EB20A465EA0014944E /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		133277ED20A473E80014944E /* Paste.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paste.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				133277F920A703CF0014944E /* PasteShortCell.swift */,
 				131E2CEB213AB04500F548F9 /* TagCell.swift */,
+				131E2CED213B046200F548F9 /* SwitchCell.swift */,
 				138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */,
 				132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */,
 			);
@@ -446,6 +449,7 @@
 				13873AB721305043001617F6 /* TabBarItemsFactory.swift in Sources */,
 				13C67A622113144E000338F6 /* AddPasteViewController.swift in Sources */,
 				138D2F9420C0741000BF1141 /* PasteFullHeaderCell.swift in Sources */,
+				131E2CEE213B046200F548F9 /* SwitchCell.swift in Sources */,
 				13DD8F38210B419400F9A370 /* UIImage.swift in Sources */,
 				132EFF2E20C5C99A001B57EA /* PasteFullContentCell.swift in Sources */,
 				1336B5DC20A0D07B002DAA6E /* iPastach.xcdatamodeld in Sources */,

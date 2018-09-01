@@ -18,7 +18,7 @@ struct Paste: Codable {
     let nsfw: Bool
     let views: Int
     let tags: [Tag]
-    let url: String
+    let link: String
 
     func formatedTime() -> String {
         let dateFormatter = DateFormatter()
@@ -26,6 +26,10 @@ struct Paste: Codable {
         let dateFromTimestamp = Date(timeIntervalSince1970: self.time)
         
         return dateFormatter.string(from: dateFromTimestamp)
+    }
+
+    var url: URL? {
+        return URL(string: link)
     }
 }
 

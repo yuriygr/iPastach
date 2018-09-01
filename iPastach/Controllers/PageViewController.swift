@@ -10,10 +10,10 @@ import UIKit
 
 class PageViewController: UIViewController {
 
-    var api: APIManager = .shared
-    var alertsHelper = AlertsHelper.shared
-    var theme: Theme = UserSettings.shared.currentTheme
-    
+    private let api: APIManager = .shared
+    private let theme: Theme = UserSettings.shared.currentTheme
+    private let activity = NSUserActivity(activityType: "gr.yuriy.iPastach.openPage")
+
     //MARK: - Properties
 
     lazy var textView: UITextView = {
@@ -54,11 +54,13 @@ class PageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        setupActivity()
         setupTheme()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
+        activity.invalidate()
     }
     
     override func viewDidLayoutSubviews() {
@@ -75,6 +77,16 @@ class PageViewController: UIViewController {
         view.addSubview(textView)
     }
 
+    private func setupActivity() {
+        guard let url = page?.url else { return }
+        activity.webpageURL = url
+        activity.isEligibleForHandoff = true
+        activity.isEligibleForSearch = true
+        activity.isEligibleForPublicIndexing = true
+        activity.becomeCurrent()
+        userActivity = activity
+    }
+    
     private func setupTheme() {
         view.backgroundColor = theme.secondBackgroundColor
         textView.backgroundColor = theme.secondBackgroundColor
@@ -82,9 +94,14 @@ class PageViewController: UIViewController {
     }
 
     //MARK: - Actions
-
+    
     @objc
-    private func shareButtonPressed() {
-
+    func shareButtonPressed(_ sender: UIButton) {
+        guard let page = page, let url = page.url else { return }
+        let items = [
+            page.title, url
+        ] as [Any]
+        
+        AlertsHelper.shared.shareOn(self, items: items)
     }
 }

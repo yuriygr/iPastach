@@ -10,6 +10,7 @@ IPPastes = "Пасты";
 IPMenu = "Меню";
 IPFavorites = "Избранное";
 
+IPSendPaste = "Отправить";
 IPTags = "Теги";
 IPReset = "Сбросить";
 IPClose = "Закрыть";
@@ -21,12 +22,17 @@ IPReadmore = "Читать далее...";
 IPShare = "Поделиться";
 IPFavorite = "Добавить в избранное";
 IPLike = "Нравится";
+IPСomplaint = "Пожаловаться";
 
+// Alerts
 IPPasteAddedToFavorits = "Паста добавлена в избранное";
 IPSelectAnAction = "Выберите действие";
 IPComplaintSent = "Жалоба отправлена";
 IPPasteLiked = "Лайк засчитан";
 IPCopiedToClipboard = "Скопировано в буфер обмена";
+
+// Settings
+IPDarkmode = "Темная тема";
 
 IPDateformat = "dd.MM.yyyy в HH:mm";
 IPVersion = "Версия";

@@ -23,4 +23,10 @@ extension URLRequest {
             .joined(separator: "&")
             .data(using: .utf8)
     }
+    
+    mutating func setHeaders(_ headers: [String: String]) {
+        for (key, value) in headers {
+            setValue(key, forHTTPHeaderField: value)
+        }
+    }
 }

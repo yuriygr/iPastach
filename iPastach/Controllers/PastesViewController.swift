@@ -15,9 +15,6 @@ class PastesViewController: UIViewController {
     
     //MARK: - Properties
 
-    var canTransitionToLarge = false
-    var canTransitionToSmall = true
-
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: self.view.bounds, style: .grouped)
         tableView.delegate = self
@@ -43,14 +40,12 @@ class PastesViewController: UIViewController {
         return refreshControl
     }()
 
-    lazy var addPasteButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleAddPastePressed))
+    private lazy var addPasteButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleAddPastePressed))
+    private lazy var tagResetButton = UIBarButtonItem(title: "IPReset".localized, style: .plain, target: self, action: #selector(handleResetTagPressed))
+    private lazy var tagsSelectButton = UIBarButtonItem(title: "IPTags".localized, style: .plain, target: self, action: #selector(handleSelectTagPressed))
 
-    lazy var tagResetButton = UIBarButtonItem(title: "IPReset".localized, style: .plain, target: self, action: #selector(handleResetTagPressed))
-
-    lazy var tagsSelectButton = UIBarButtonItem(title: "IPTags".localized, style: .plain, target: self, action: #selector(handleSelectTagPressed))
-
-    lazy var tagsViewController = TagsViewController()
-    lazy var addPasteViewController = UINavigationController(rootViewController: AddPasteViewController())
+    private lazy var tagsViewController = TagsViewController()
+    private lazy var addPasteViewController = UINavigationController(rootViewController: AddPasteViewController())
     
     //MARK: - Data
 

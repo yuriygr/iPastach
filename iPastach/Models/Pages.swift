@@ -9,7 +9,14 @@
 import UIKit
 
 struct Page: Codable {
-    var id: String
-    var slug: String
-    var title: String
+    let id: Int
+    let slug: String
+    let title: String
+    let content: String?
+    let time: Double
+    let link: String
+    
+    var url: URL? {
+        return URL(string: link)
+    }
 }
