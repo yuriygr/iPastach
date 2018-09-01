@@ -21,7 +21,7 @@ class TagsViewController: UIViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         tableView.refreshControl = refreshControl
-        tableView.registerCell(UITableViewCell.self, withIdentifier: "TagCell")
+        tableView.registerCell(TagCell.self)
         return tableView
     }()
 
@@ -40,7 +40,13 @@ class TagsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
-        loadFromAPI() { (data, error) in
+        api.fetch([Tag].self, method: .tags(.list)) { (data, error) in
+            if let error = error {
+                print(error)
+            }
+            if let data = data {
+                self.tags = data
+            }
             DispatchQueue.main.async {
                 self.tableView.reload()
             }
@@ -75,10 +81,11 @@ class TagsViewController: UIViewController {
         tableView.separatorColor = theme.separatorColor
         refreshControl.tintColor = theme.textColor
     }
-    
-    //MARK: - Request to API
 
-    private func loadFromAPI(completion: (([Tag]?, Error?) -> ())? = nil) {
+    //MARK: - Actions
+
+    @objc
+    func handleRefresh(_ refreshControl: UIRefreshControl) {
         api.fetch([Tag].self, method: .tags(.list)) { (data, error) in
             if let error = error {
                 print(error)
@@ -86,16 +93,6 @@ class TagsViewController: UIViewController {
             if let data = data {
                 self.tags = data
             }
-            if let completion = completion {
-                completion(data, error)
-            }
-        }
-    }
-    
-    //MARK: - Actions
-    @objc
-    func handleRefresh(_ refreshControl: UIRefreshControl) {
-        loadFromAPI() { (data, error) in
             DispatchQueue.main.async {
                 refreshControl.endRefreshing()
                 self.tableView.reload()
@@ -141,12 +138,10 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         return self.tags.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueCell(withIdentifier: "TagCell")
-        cell.textLabel?.text = self.tags[indexPath.row].title
-        cell.textLabel?.textColor = theme.textColor
-        cell.backgroundColor = theme.backgroundColor
-        cell.customSelectColor(theme.selectColor)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {        
+        let cell = tableView.dequeueCell(TagCell.self)
+        cell.bind(data: tags[indexPath.row])
+        cell.setupTheme()
         return cell
     }
     

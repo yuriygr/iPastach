@@ -8,7 +8,7 @@
 
 CFBundleDisplayName = "Паста.ч";
 CFBundleName = "Паста.ч";
-CFNewPasteTitle = "Добавить пасту";
-CFFavoritesTitle = "Избранное";
 
-CFAPIEndpoint = "Конечная точка API";
+IPNewPasteTitle = "Добавить пасту";
+IPFavoritesTitle = "Избранное";
+IPAPIEndpoint = "Конечная точка API";

@@ -59,7 +59,7 @@ enum APIMethods {
 enum APIErrors: Error {
     case invalidURL
     case invalidParams
-    case undefined
+    case undefined(error: Error)
 }
 
 class APIManager: NSObject {
@@ -68,7 +68,7 @@ class APIManager: NSObject {
 
     private let URLSession: URLSession = .shared
     
-    private var APIBase: String = ""
+    private var base: String = ""
 
     /// HTTP Methods
     enum HTTPMethods: String {
@@ -79,7 +79,7 @@ class APIManager: NSObject {
     }
     
     func setBase(_ base: String) {
-        APIBase = base
+        self.base = base
     }
     
     /// Получение данных путём POST запроса с параметрами
@@ -90,19 +90,20 @@ class APIManager: NSObject {
     /// - Parameter completion: Кложур для работы с данными
     ///
     /// - Returns: Nothing to return
-    func fetch<T>(_ type: T.Type, method APIMethod: APIMethods, params APIParams: APIParams = [:], HTTPMethod: HTTPMethods = .POST, completion: @escaping (T?, Error?) -> Void) where T: Decodable {
+    func fetch<T>(_ type: T.Type, method: APIMethods, params: APIParams = [:], HTTPMethod: HTTPMethods = .POST, completion: @escaping (T?, Error?) -> Void) where T: Decodable {
         
-        guard let url = URL(string: APIBase + APIMethod.value) else {
+        guard let url = URL(string: base + method.value) else {
             return completion(nil, APIErrors.invalidURL)
         }
 
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.rawValue
-        request.setBodyContent(APIParams)
+        request.setBodyContent(params)
 
         URLSession.dataTask(with: request) { (data, response, error) in
-            if error != nil {
-                return completion(nil, APIErrors.undefined)
+            if let error = error {
+                print(error.localizedDescription)
+                return completion(nil, APIErrors.undefined(error: error))
             }
             if let data = data {
                 let decoder = JSONDecoder()
@@ -111,8 +112,8 @@ class APIManager: NSObject {
                     let decoded = try decoder.decode(T.self, from: data)
                     return completion(decoded, nil)
                 } catch {
-                    print(error)
-                    return completion(nil, APIErrors.undefined)
+                    print(error.localizedDescription)
+                    return completion(nil, APIErrors.undefined(error: error))
                 }
             }
         }.resume()

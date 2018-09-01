@@ -42,6 +42,7 @@ class MenuViewController: UIViewController {
         TableSection(header: "Помощь", content: nil, footer: "По любым другим вопросам обращаться на info@pastach.ru"),
         TableSection(header: "Приложение", content: nil, footer: nil)
     ]
+
     var pages = [Page]()
     var application: [String] = [
         "IPVersion".localized + ": " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String),
@@ -53,7 +54,7 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
-        api.fetch([Page].self, method: .pastes(.list)) { (data, error) in
+        api.fetch([Page].self, method: .pages(.list)) { (data, error) in
             if let error = error {
                 print(error.localizedDescription)
             }
@@ -178,27 +179,27 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 0 {
             let cell = UITableViewCell(style: .default, reuseIdentifier: "settingCell")
-        
-            if indexPath.row == 0 {
+            
+            switch SettingsSection(rawValue: indexPath.row)! {
+            case .theme:
                 let switchView = UISwitch(frame: .zero)
                 switchView.tag = indexPath.row
                 switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
                 switchView.setOn(theme == .darkmode, animated: false)
                 cell.accessoryView = switchView
-                cell.textLabel?.text = "Dark mode".localized
-            }
-            if indexPath.row == 1 {
+                cell.textLabel?.text = "IPDarkmode".localized
+            case .titles:
                 let switchView = UISwitch(frame: .zero)
                 switchView.tag = indexPath.row
                 switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
                 switchView.setOn(UserSettings.shared.showTitlesOnTabbar, animated: false)
                 cell.accessoryView = switchView
                 cell.textLabel?.text = "Show titles on tabbar".localized
-            }
-            if indexPath.row == 2 {
+            case .font:
                 cell.accessoryView = nil
                 cell.textLabel?.text = "Размер шрифта".localized
             }
+
             cell.textLabel?.textColor = theme.textColor
             cell.backgroundColor = theme.backgroundColor
             cell.selectionStyle = .none

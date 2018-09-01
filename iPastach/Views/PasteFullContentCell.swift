@@ -11,7 +11,7 @@ import UIKit
 class PasteFullContentCell: UITableViewCell {
 
     //MARK: - Properties
-    lazy var textView: UILabel = {
+    private var textView: UILabel = {
         var label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15)
         label.lineBreakMode = .byWordWrapping
@@ -34,8 +34,7 @@ class PasteFullContentCell: UITableViewCell {
     }
     
     //MARK: - Конфигурация ячейки
-    func setupCell() {
-        contentView.backgroundColor = theme.backgroundColor
+    private func setupCell() {
         contentView.addSubview(textView)
         
         textView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
@@ -44,11 +43,18 @@ class PasteFullContentCell: UITableViewCell {
         textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16).isActive = true
     }
     
-    func configure(with paste: Paste) {
+    func bind(data paste: Paste) {
         if let content = paste.content {
             self.textView.setHtmlText(content)
             self.textView.font = .systemFont(ofSize: 15)
             self.textView.textColor = theme.textColor
         }
+    }
+    
+    func setupTheme() {
+        backgroundColor = theme.backgroundColor
+        contentView.backgroundColor = theme.backgroundColor
+        textView.textColor = theme.textColor
+        customSelectColor(theme.selectColor)
     }
 }

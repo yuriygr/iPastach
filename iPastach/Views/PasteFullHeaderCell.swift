@@ -14,36 +14,32 @@ class PasteFullHeaderCell: UITableViewCell {
     
     //MARK: - Properties
 
-    fileprivate lazy var titleLabel: UILabel = {
+    private var titleLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 22)
-        $0.textColor = theme.textColor
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
 
-    fileprivate lazy var idLabel: UILabel = {
-        $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = theme.tintColor
+    private var idLabel: UILabel = {
+        $0.font = UIFont.systemFont(ofSize: 13)
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
 
-    fileprivate lazy var timeLabel: UILabel = {
-        $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = theme.secondTextColor
+    private var timeLabel: UILabel = {
+        $0.font = UIFont.systemFont(ofSize: 13)
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())
     
-    fileprivate lazy var tagsLabel: UILabel = {
-        $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = theme.tintColor
+    private var tagsLabel: UILabel = {
+        $0.font = UIFont.systemFont(ofSize: 13)
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -63,14 +59,11 @@ class PasteFullHeaderCell: UITableViewCell {
     
     //MARK: - Конфигурация ячейки
 
-    func setupCell() {
-        contentView.backgroundColor = theme.backgroundColor
-
+    private func setupCell() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(idLabel)
         contentView.addSubview(timeLabel)
         contentView.addSubview(tagsLabel)
-        
         
         titleLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
@@ -89,10 +82,20 @@ class PasteFullHeaderCell: UITableViewCell {
         tagsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
     }
     
-    func configure(with paste: Paste) {
+    func bind(data paste: Paste) {
         titleLabel.text = paste.title
         idLabel.text = "#\(paste.id)"
         timeLabel.text = paste.formatedTime()
         tagsLabel.text = paste.tags.count > 0 ? paste.tags.asString() : nil
+    }
+    
+    func setupTheme() {
+        backgroundColor = theme.backgroundColor
+        contentView.backgroundColor = theme.backgroundColor
+        customSelectColor(theme.selectColor)
+        titleLabel.textColor = theme.textColor
+        idLabel.textColor = theme.tintColor
+        timeLabel.textColor = theme.secondTextColor
+        tagsLabel.textColor = theme.tintColor
     }
 }

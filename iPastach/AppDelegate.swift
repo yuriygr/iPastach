@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = TabBarController()
         window?.makeKeyAndVisible()
     
-        APIManager.shared.setBase(Bundle.main.infoDictionary?["CFAPIEndpoint"] as! String)
+        APIManager.shared.setBase(Bundle.main.infoDictionary?["IPAPIEndpoint"] as! String)
         ThemeManager.shared.apply(theme: UserSettings.shared.currentTheme)
 
         return true

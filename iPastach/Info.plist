@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFAPIEndpoint</key>
-	<string>${API_ENDPOINT}</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -24,6 +22,8 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>IPAPIEndpoint</key>
+	<string>${API_ENDPOINT}</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>gr.yuriy.iPastach.openPastePage</string>
@@ -34,7 +34,7 @@
 			<key>UIApplicationShortcutItemIconType</key>
 			<string>UIApplicationShortcutIconTypeCompose</string>
 			<key>UIApplicationShortcutItemTitle</key>
-			<string>CFNewPasteTitle</string>
+			<string>IPNewPasteTitle</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>gr.yuriy.iPastach.addPaste</string>
 		</dict>
@@ -42,7 +42,7 @@
 			<key>UIApplicationShortcutItemIconType</key>
 			<string>UIApplicationShortcutIconTypeFavorite</string>
 			<key>UIApplicationShortcutItemTitle</key>
-			<string>CFFavoritesTitle</string>
+			<string>IPFavoritesTitle</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>gr.yuriy.iPastach.openFavorites</string>
 		</dict>

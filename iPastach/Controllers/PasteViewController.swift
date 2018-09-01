@@ -298,14 +298,17 @@ extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let paste = self.paste else { return UITableViewCell() }
-        switch PasteTableSection(rawValue: indexPath.row) {
-        case .header?:
+
+        switch PasteSection(rawValue: indexPath.row)! {
+        case .header:
             let cell = tableView.dequeueCell(PasteFullHeaderCell.self)
-            cell.configure(with: paste)
+            cell.bind(data: paste)
+            cell.setupTheme()
             return cell
-        case .content?, nil:
+        case .content:
             let cell = tableView.dequeueCell(PasteFullContentCell.self)
-            cell.configure(with: paste)
+            cell.bind(data: paste)
+            cell.setupTheme()
             return cell
         }
     }

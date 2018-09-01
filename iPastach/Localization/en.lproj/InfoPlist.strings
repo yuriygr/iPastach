@@ -8,7 +8,7 @@
 
 CFBundleDisplayName = "iPastach";
 CFBundleName = "iPastach";
-CFNewPasteTitle = "Add paste";
-CFFavoritesTitle = "Faforites";
 
-CFAPIEndpoint = "API Endpoint";
+IPNewPasteTitle = "Add paste";
+IPFavoritesTitle = "Faforites";
+IPAPIEndpoint = "API Endpoint";

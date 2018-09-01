@@ -370,8 +370,8 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(PasteShortCell.self)
-        cell.configure(with: pastes[indexPath.section])
-        cell.customSelectColor(theme.selectColor)
+        cell.bind(data: pastes[indexPath.section])
+        cell.setupTheme()
         return cell
     }
     

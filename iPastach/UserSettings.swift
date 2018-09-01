@@ -16,9 +16,19 @@ class UserSettings {
     
     init() {
         defaults.register(defaults: [
+            "CURRENT_LANGUAGE": "ru",
             "TITLES_ON_TABBAR": false,
             "CURRENT_THEME": "Normal"
         ])
+    }
+    
+    var currentLanguage: String {
+        get {
+            return defaults.string(forKey: "CURRENT_LANGUAGE") ?? "ru"
+        }
+        set {
+            defaults.set(newValue, forKey: "CURRENT_LANGUAGE")
+        }
     }
     
     var showTitlesOnTabbar: Bool {
@@ -34,7 +44,6 @@ class UserSettings {
         get {
             return Theme.by(string: defaults.string(forKey: "CURRENT_THEME") ?? "Normal")
         }
-        
         set {
             defaults.set(newValue.identifier, forKey: "CURRENT_THEME")
         }
