@@ -10,7 +10,7 @@ import UIKit
 
 class AddPasteViewController: UIViewController {
     
-    private var api: APIManager = .shared
+    private var api: APIClient = .shared
     private var theme = UserSettings.shared.currentTheme
     
     //MARK: - Properties
@@ -21,6 +21,7 @@ class AddPasteViewController: UIViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         tableView.allowsSelection = false
+        tableView.registerCell(InputFieldCell.self)
         return tableView
     }()
 
@@ -81,7 +82,29 @@ class AddPasteViewController: UIViewController {
 
     @objc
     func handlePostPressed() {
-        
+        api.fetch(APIResponse.self, method: .pastes(.add), params: [:]) { (data, error) in
+            if let error = error {
+                AlertsHelper.shared.alertOn(self, title: "IPError".localized, message: error.localizedDescription, actions: [
+                    UIAlertAction(title: "IPClose".localized, style: .default)
+                ])
+            }
+            if let data = data {
+                if let error = data.error {
+                    AlertsHelper.shared.alertOn(self, title: "IPError".localized, message: error.errorMessage, actions: [
+                        UIAlertAction(title: "IPClose".localized, style: .default)
+                    ])
+                }
+                if let _ = data.success {
+                    AlertsHelper.shared.alertOn(self, title: "IPSuccess".localized, message: "Паста отправлена", actions: [
+                        UIAlertAction(title: "IPClose".localized, style: .default)
+                    ]) {
+                        DispatchQueue.main.async {
+                            self.dismiss(animated: true)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -90,6 +113,15 @@ class AddPasteViewController: UIViewController {
 extension AddPasteViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+    }
+}
+
+//MARK: - TextField Delegate
+
+extension AddPasteViewController: InputFieldCellDelegate {
+    
+    func switchChanged(_ sender: UITextField) {
         
     }
 }
@@ -121,12 +153,11 @@ extension AddPasteViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.accessoryView = UIInputView()
-        cell.backgroundColor = theme.backgroundColor
-        cell.contentView.backgroundColor = theme.backgroundColor
-        cell.selectionStyle = .none
-        return UITableViewCell()
+        let cell = tableView.dequeueCell(InputFieldCell.self)
+        cell.delegate = self
+        cell.configure(placeholder: "Title please my lord")
+        cell.setupTheme()
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

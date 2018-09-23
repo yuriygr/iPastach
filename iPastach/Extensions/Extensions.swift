@@ -139,9 +139,9 @@ extension UITableView {
     }
     
     public func reload() {
-        self.reloadData()
-        self.layoutIfNeeded()
-        self.setContentOffset(self.contentOffset, animated: false)
+        reloadData()
+        layoutIfNeeded()
+        setContentOffset(self.contentOffset, animated: false)
     }
     
     public func reload(section: Int, with: UITableViewRowAnimation) {
@@ -158,7 +158,7 @@ extension UITableViewCell {
     public func customSelectColor(_ selectColor: UIColor = .mainSelectColor) {
         let backgroundView = UIView()
         backgroundView.backgroundColor = selectColor
-        self.selectedBackgroundView = backgroundView
+        selectedBackgroundView = backgroundView
     }
 }
 

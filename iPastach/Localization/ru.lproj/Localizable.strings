@@ -22,17 +22,19 @@ IPReadmore = "Читать далее...";
 IPShare = "Поделиться";
 IPFavorite = "Добавить в избранное";
 IPLike = "Нравится";
-IPСomplaint = "Пожаловаться";
+IPComplaint = "Пожаловаться";
+IPError = "Ошибка";
 
-// Alerts
 IPPasteAddedToFavorits = "Паста добавлена в избранное";
 IPSelectAnAction = "Выберите действие";
 IPComplaintSent = "Жалоба отправлена";
 IPPasteLiked = "Лайк засчитан";
 IPCopiedToClipboard = "Скопировано в буфер обмена";
 
-// Settings
 IPDarkmode = "Темная тема";
+IPShowTitlesOnTabBar = "Заголовки во вкладках";
+IPFulltextFontsize = "Размер шрифта полного текста";
 
 IPDateformat = "dd.MM.yyyy в HH:mm";
 IPVersion = "Версия";
+IPResetData = "Сбросить данные";

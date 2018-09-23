@@ -10,7 +10,7 @@ import UIKit
 
 class PageViewController: UIViewController {
 
-    private let api: APIManager = .shared
+    private let api: APIClient = .shared
     private let theme: Theme = UserSettings.shared.currentTheme
     private let activity = NSUserActivity(activityType: "gr.yuriy.iPastach.openPage")
 
@@ -79,12 +79,13 @@ class PageViewController: UIViewController {
 
     private func setupActivity() {
         guard let url = page?.url else { return }
+        activity.title = "page"
         activity.webpageURL = url
         activity.isEligibleForHandoff = true
         activity.isEligibleForSearch = true
         activity.isEligibleForPublicIndexing = true
-        activity.becomeCurrent()
         userActivity = activity
+        userActivity?.becomeCurrent()
     }
     
     private func setupTheme() {

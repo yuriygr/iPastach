@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.9</string>
+	<string>1.1.10</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>IPAPIEndpoint</key>
@@ -26,7 +26,8 @@
 	<true/>
 	<key>NSUserActivityTypes</key>
 	<array>
-		<string>gr.yuriy.iPastach.openPastePage</string>
+		<string>gr.yuriy.iPastach.openPaste</string>
+		<string>gr.yuriy.iPastach.openPage</string>
 	</array>
 	<key>UIApplicationShortcutItems</key>
 	<array>

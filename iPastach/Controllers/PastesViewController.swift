@@ -10,7 +10,7 @@ import UIKit
 
 class PastesViewController: UIViewController {
     
-    private var api: APIManager = .shared
+    private var api: APIClient = .shared
     private var theme = UserSettings.shared.currentTheme
     
     //MARK: - Properties
@@ -307,7 +307,7 @@ extension PastesViewController: UIGestureRecognizerDelegate {
             let favoritAction = UIAlertAction(title: "IPFavorite".localized, style: .default) { action in
                 print(indexPath)
             }
-            let complaintAction = UIAlertAction(title: "IPСomplaint".localized, style: .default) { action in
+            let complaintAction = UIAlertAction(title: "IPComplaint".localized, style: .default) { action in
                 print(indexPath)
             }
             let cancelAction = UIAlertAction(title: "IPCancel".localized, style: .cancel) { action in

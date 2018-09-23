@@ -10,7 +10,7 @@ import UIKit
 
 class TagsViewController: UIViewController {
 
-    private var api: APIManager = .shared
+    private var api: APIClient = .shared
     private var theme = UserSettings.shared.currentTheme
     
     //MARK: - Properties

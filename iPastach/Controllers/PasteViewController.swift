@@ -11,9 +11,9 @@ import UIKit
 
 class PasteViewController: UIViewController {
     
-    private var api: APIManager = .shared
+    private var api: APIClient = .shared
     private var theme = UserSettings.shared.currentTheme
-    private let activity = NSUserActivity(activityType: "gr.yuriy.iPastach.openPastePage")
+    private let activity = NSUserActivity(activityType: "gr.yuriy.iPastach.openPaste")
     private let toolbarFactory = ToolbarItemsFactory(items: [
         .like, .favorites, .random, .copy, .complaint
     ])
@@ -101,12 +101,13 @@ class PasteViewController: UIViewController {
     
     private func setupActivity() {
         guard let url = paste?.url else { return }
+        activity.title = "paste"
         activity.webpageURL = url
         activity.isEligibleForHandoff = true
         activity.isEligibleForSearch = true
         activity.isEligibleForPublicIndexing = true
-        activity.becomeCurrent()
         userActivity = activity
+        userActivity?.becomeCurrent()
     }
 
     private func setupTheme() {

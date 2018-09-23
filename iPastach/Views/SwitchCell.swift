@@ -13,7 +13,7 @@ class SwitchCell: UITableViewCell {
     lazy var theme: Theme = UserSettings.shared.currentTheme  
     
     lazy var switchView: UISwitch = {
-       let switchView = UISwitch(frame: .zero)
+        let switchView = UISwitch(frame: .zero)
         switchView.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
         return switchView
     }()

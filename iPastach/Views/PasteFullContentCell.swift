@@ -13,7 +13,7 @@ class PasteFullContentCell: UITableViewCell {
     //MARK: - Properties
     private var textView: UILabel = {
         var label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.systemFont(ofSize: CGFloat(UserSettings.shared.fontSize))
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +46,7 @@ class PasteFullContentCell: UITableViewCell {
     func bind(data paste: Paste) {
         if let content = paste.content {
             self.textView.setHtmlText(content)
-            self.textView.font = .systemFont(ofSize: 15)
+            self.textView.font = .systemFont(ofSize: CGFloat(UserSettings.shared.fontSize))
             self.textView.textColor = theme.textColor
         }
     }

@@ -42,6 +42,7 @@ extension UIImage {
         
         return UIGraphicsGetImageFromCurrentImageContext()
     }
+
     /// Painting an image
     ///
     /// Example:

@@ -22,17 +22,19 @@ IPReadmore = "Read more...";
 IPShare = "Share";
 IPFavorite = "Add to favorites";
 IPLike = "Like";
-IPСomplaint = "Сomplaint";
+IPComplaint = "Сomplaint";
+IPError = "Error";
 
-// Alerts
 IPPasteAddedToFavorits = "Paste added to favorites";
 IPSelectAnAction = "Select an action";
 IPComplaintSent = "Complaint sent";
 IPPasteLiked = "Liked";
 IPCopiedToClipboard = "Copied to clipboard";
 
-// Settings
 IPDarkmode = "Darkmode";
+IPShowTitlesOnTabBar = "Titles on tabbar";
+IPFulltextFontsize = "Full text font size";
 
 IPDateformat = "MM/dd/yyyy hh:mm a";
 IPVersion = "Version";
+IPResetData = "Reset data";

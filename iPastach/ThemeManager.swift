@@ -48,7 +48,7 @@ class ThemeManager: NSObject {
             NSAttributedStringKey.foregroundColor: theme.textColor
         ]
         
-        UINavigationBar.appearance().isTranslucent = true
+        UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().shadowImage = theme.shadowColor.as1ptImage()
         UINavigationBar.appearance().setBackgroundImage(theme.navigationBarColor.as1ptImage(), for: .default)
         UINavigationBar.appearance().barTintColor = theme.navigationBarColor

@@ -10,7 +10,7 @@ import UIKit
 
 class MenuViewController: UIViewController {
 
-    private var api: APIManager = .shared
+    private var api: APIClient = .shared
     private var theme = UserSettings.shared.currentTheme
     
     //MARK: - Properties
@@ -83,9 +83,6 @@ class MenuViewController: UIViewController {
 
     private func setupController() {
         navigationItem.title = "IPMenu".localized
-        if #available(iOS 11.0, *) {
-            navigationItem.largeTitleDisplayMode = .never
-        }
         navigationItem.withoutTitleOnBackBarButton = true
         extendedLayoutIncludesOpaqueBars = true
         view.addSubview(tableView)
@@ -101,11 +98,13 @@ class MenuViewController: UIViewController {
     @objc
     func handleRefresh(_ refreshControl: UIRefreshControl) {
         api.fetch([Page].self, method: .pages(.list)) { (data, error) in
-            if let error = error {
-                print(error.localizedDescription)
-            }
-            if let data = data {
-                self.pages = data
+            DispatchQueue.init(label: "gr.yuriy.iPastach.pages").async {
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                if let data = data {
+                    self.pages = data
+                }
             }
             DispatchQueue.main.async {
                 refreshControl.endRefreshing()
@@ -193,18 +192,19 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
             case .titles:
                 let cell = tableView.dequeueCell(SwitchCell.self)
                 cell.delegate = self
-                cell.setTitle("Show titles on tabbar".localized)
+                cell.setTitle("IPShowTitlesOnTabBar".localized)
                 cell.setTag(indexPath.row)
                 cell.setState(UserSettings.shared.showTitlesOnTabbar)
                 cell.setupTheme()
                 return cell
             case .font:
-                let cell = UITableViewCell(style: .default, reuseIdentifier: "settingCell")
-                cell.accessoryView = nil
-                cell.textLabel?.text = "Размер шрифта".localized
+                let cell = UITableViewCell(style: .value1, reuseIdentifier: "settingCell")
+                cell.textLabel?.text = "IPFulltextFontsize".localized
                 cell.textLabel?.textColor = theme.textColor
                 cell.backgroundColor = theme.backgroundColor
-                cell.selectionStyle = .none
+                cell.detailTextLabel?.text = String(UserSettings.shared.fontSize)
+                cell.accessoryType = .disclosureIndicator
+                cell.customSelectColor(theme.selectColor)
                 return cell
             }
         }
@@ -229,7 +229,10 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if  indexPath.section == 1 {
+        if indexPath.section == 0 {
+            
+        }
+        if indexPath.section == 1 {
             let pageViewController = PageViewController()
             pageViewController.page = pages[indexPath.row]
             pageViewController.hidesBottomBarWhenPushed = true

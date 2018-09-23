@@ -1,5 +1,5 @@
 //
-//  APIManager.swift
+//  APIClient.swift
 //  iPastach
 //
 //  Created by Юрий Гринев on 11.03.2018.
@@ -16,6 +16,15 @@ struct APIResponse: Codable {
         let errorType, errorMessage: String?
     }
 }
+
+/*enum Response<T> {
+    case success(T)
+    case error(ResponseError)
+    
+    struct ResponseError: Codable {
+        let errorType, errorMessage: String?
+    }
+}*/
 
 typealias APIParams = [String: String]
 
@@ -52,32 +61,24 @@ enum APIMethods {
     }
 }
 
-/// API Errors
-/// - invalidURL
-/// - invalidParams
-/// - undefined
-enum APIErrors: Error {
-    case invalidURL
-    case invalidParams
-    case undefined(error: Error)
-}
+class APIClient: NSObject {
 
-class APIManager: NSObject {
-
-    static let shared = APIManager()
-
+    static let shared = APIClient()
     private let URLSession: URLSession = .shared
-    
     private var base: String = ""
-    
     private var headers: [String: String] = [:]
 
-    /// HTTP Methods
     enum HTTPMethods: String {
         case POST
         case GET
         case PUT
         case DELETE
+    }
+    
+    enum APIErrors: Error {
+        case invalidURL
+        case invalidParams
+        case undefined(Error)
     }
     
     func setBase(_ base: String) {
@@ -92,10 +93,10 @@ class APIManager: NSObject {
     /// - Parameter completion: Кложур для работы с данными
     ///
     /// - Returns: Nothing to return
-    func fetch<T>(_ type: T.Type, method: APIMethods, params: APIParams = [:], HTTPMethod: HTTPMethods = .POST, completion: @escaping (T?, Error?) -> Void) where T: Decodable {
+    func fetch<T>(_ type: T.Type, method: APIMethods, params: APIParams = [:], HTTPMethod: HTTPMethods = .POST, completion: @escaping (T?, APIErrors?) -> Void) where T: Decodable {
         
         guard let url = URL(string: base + method.value) else {
-            return completion(nil, APIErrors.invalidURL)
+            return completion(nil, .invalidURL)
         }
 
         var request = URLRequest(url: url)
@@ -105,8 +106,7 @@ class APIManager: NSObject {
 
         URLSession.dataTask(with: request) { (data, response, error) in
             if let error = error {
-                print(error.localizedDescription)
-                return completion(nil, APIErrors.undefined(error: error))
+                return completion(nil, .undefined(error))
             }
             if let data = data {
                 let decoder = JSONDecoder()
@@ -115,8 +115,7 @@ class APIManager: NSObject {
                     let decoded = try decoder.decode(T.self, from: data)
                     return completion(decoded, nil)
                 } catch {
-                    print(error.localizedDescription)
-                    return completion(nil, APIErrors.undefined(error: error))
+                    return completion(nil, .undefined(error))
                 }
             }
         }.resume()

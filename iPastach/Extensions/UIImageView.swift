@@ -11,16 +11,14 @@ import UIKit
 let imageCache = NSCache<NSString, UIImage>()
 extension UIImageView {
     func downloadFrom(url: URL, contentMode mode: UIViewContentMode = .scaleAspectFit) {
-        // Setup content mode
+
         contentMode = mode
-        
-        // Check for caching
+
         if let imageFromCache = imageCache.object(forKey: url.absoluteString as NSString) {
             self.image = imageFromCache
             return
         }
         
-        // Fetch if needed
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard
                 let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
@@ -29,7 +27,6 @@ extension UIImageView {
                 let image = UIImage(data: data)
                 else { return }
             
-            // Caching image
             imageCache.setObject(image, forKey: url.absoluteString as NSString)
             
             DispatchQueue.main.async() {

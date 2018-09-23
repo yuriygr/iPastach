@@ -20,36 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = TabBarController()
         window?.makeKeyAndVisible()
     
-        APIManager.shared.setBase(Bundle.main.infoDictionary?["IPAPIEndpoint"] as! String)
+        APIClient.shared.setBase(Bundle.main.infoDictionary?["IPAPIEndpoint"] as! String)
         ThemeManager.shared.apply(theme: UserSettings.shared.currentTheme)
 
         return true
     }
 
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        guard let rootTabBar = window?.rootViewController as? UITabBarController else {
-            completionHandler(false)
-            return
-        }
-        
-        switch shortcutItem.type {
-        case "gr.yuriy.iPastach.openFavorites":
-            guard let navController = rootTabBar.viewControllers?[1] as? UINavigationController else { break }
-            navController.popToRootViewController(animated: false)
-            rootTabBar.selectedIndex = 1
-            completionHandler(true)
-            break
-        case "gr.yuriy.iPastach.addPaste":
-            guard let navController = rootTabBar.viewControllers?[0] as? UINavigationController else { break }
-            navController.popToRootViewController(animated: false)
-            rootTabBar.selectedIndex = 0
-            completionHandler(true)
-            break
-        default:
-            break
-        }
-        
-        completionHandler(false)
+        let handled = handleShortcutItem(shortcutItem)
+        completionHandler(handled)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -76,6 +55,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.saveContext()
     }
 
+    // MARK: - Shortcut handle
+    func handleShortcutItem(_ shortcutItem: UIApplicationShortcutItem) -> Bool {
+        guard let rootTabBar = window?.rootViewController as? UITabBarController else {
+            return true
+        }
+        
+        switch shortcutItem.type {
+        case "gr.yuriy.iPastach.openFavorites":
+            guard let navController = rootTabBar.viewControllers?[1] as? UINavigationController else { break }
+            navController.popToRootViewController(animated: false)
+            rootTabBar.selectedIndex = 1
+            break
+        case "gr.yuriy.iPastach.addPaste":
+            guard let navController = rootTabBar.viewControllers?[0] as? UINavigationController else { break }
+            navController.popToRootViewController(animated: false)
+            rootTabBar.selectedIndex = 0
+            break
+        default:
+            break
+        }
+        
+        return true
+    }
+    
 
     // MARK: - Core Data stack
 

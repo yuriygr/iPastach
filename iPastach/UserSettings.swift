@@ -18,7 +18,8 @@ class UserSettings {
         defaults.register(defaults: [
             "CURRENT_LANGUAGE": "ru",
             "TITLES_ON_TABBAR": false,
-            "CURRENT_THEME": "Normal"
+            "CURRENT_THEME": "Normal",
+            "FONT_SIZE": 14
         ])
     }
     
@@ -46,6 +47,15 @@ class UserSettings {
         }
         set {
             defaults.set(newValue.identifier, forKey: "CURRENT_THEME")
+        }
+    }
+    
+    var fontSize: Int {
+        get {
+            return defaults.integer(forKey: "FONT_SIZE")
+        }
+        set {
+            defaults.set(newValue, forKey: "FONT_SIZE")
         }
     }
     

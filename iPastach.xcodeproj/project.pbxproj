@@ -11,7 +11,7 @@
 		131E2CEC213AB04500F548F9 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131E2CEB213AB04500F548F9 /* TagCell.swift */; };
 		131E2CEE213B046200F548F9 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131E2CED213B046200F548F9 /* SwitchCell.swift */; };
 		132EFF2E20C5C99A001B57EA /* PasteFullContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */; };
-		133277EC20A465EA0014944E /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277EB20A465EA0014944E /* ApiManager.swift */; };
+		133277EC20A465EA0014944E /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277EB20A465EA0014944E /* APIClient.swift */; };
 		133277EE20A473E80014944E /* Paste.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277ED20A473E80014944E /* Paste.swift */; };
 		133277F020A562040014944E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 133277EF20A562040014944E /* README.md */; };
 		133277F220A5BEAF0014944E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133277F120A5BEAF0014944E /* Extensions.swift */; };
@@ -39,10 +39,12 @@
 		138D2F9420C0741000BF1141 /* PasteFullHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */; };
 		13A2092220B5EE4E00FA2428 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A2092120B5EE4E00FA2428 /* MenuViewController.swift */; };
 		13AD6B132138366A00162DC3 /* LoadMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AD6B122138366A00162DC3 /* LoadMoreButton.swift */; };
+		13B45F8A213F0E7C00DB8ABD /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B45F89213F0E7C00DB8ABD /* DataManager.swift */; };
 		13C029AB2115A051003FA91A /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C029AA2115A051003FA91A /* Theme.swift */; };
 		13C044F2210E195C00C4F9AE /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C044F1210E195C00C4F9AE /* Pagination.swift */; };
 		13C67A602111BC31000338F6 /* AlertsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */; };
 		13C67A622113144E000338F6 /* AddPasteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C67A612113144E000338F6 /* AddPasteViewController.swift */; };
+		13D466DC213C1BFA006D5282 /* InputFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D466DB213C1BFA006D5282 /* InputFieldCell.swift */; };
 		13D83BB2212ABF1A0057B322 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D83BB1212ABF1A0057B322 /* UserSettings.swift */; };
 		13D83BB4212C68770057B322 /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D83BB3212C68770057B322 /* Pages.swift */; };
 		13DD8F30210B40E100F9A370 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F2F210B40E100F9A370 /* URLRequest.swift */; };
@@ -51,6 +53,7 @@
 		13DD8F36210B415500F9A370 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F35210B415500F9A370 /* UIImageView.swift */; };
 		13DD8F38210B419400F9A370 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DD8F37210B419400F9A370 /* UIImage.swift */; };
 		13F432362127453000D9A7C7 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F432352127453000D9A7C7 /* TableSection.swift */; };
+		13F7A9CB2157F29600FB9189 /* Helpers in Resources */ = {isa = PBXBuildFile; fileRef = 13F7A9CA2157F29500FB9189 /* Helpers */; };
 		13FC72E3212042BF00FFEC07 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FC72E2212042BF00FFEC07 /* UIDevice.swift */; };
 /* End PBXBuildFile section */
 
@@ -76,7 +79,7 @@
 		131E2CEB213AB04500F548F9 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
 		131E2CED213B046200F548F9 /* SwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteFullContentCell.swift; sourceTree = "<group>"; };
-		133277EB20A465EA0014944E /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
+		133277EB20A465EA0014944E /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		133277ED20A473E80014944E /* Paste.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paste.swift; sourceTree = "<group>"; };
 		133277EF20A562040014944E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		133277F120A5BEAF0014944E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -112,10 +115,12 @@
 		13A2092120B5EE4E00FA2428 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		13AD6B122138366A00162DC3 /* LoadMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreButton.swift; sourceTree = "<group>"; };
 		13AD6B182138593300162DC3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		13B45F89213F0E7C00DB8ABD /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		13C029AA2115A051003FA91A /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		13C044F1210E195C00C4F9AE /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
 		13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsHelpers.swift; sourceTree = "<group>"; };
 		13C67A612113144E000338F6 /* AddPasteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPasteViewController.swift; sourceTree = "<group>"; };
+		13D466DB213C1BFA006D5282 /* InputFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldCell.swift; sourceTree = "<group>"; };
 		13D83BB1212ABF1A0057B322 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		13D83BB3212C68770057B322 /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
 		13DD8F2F210B40E100F9A370 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
@@ -124,6 +129,7 @@
 		13DD8F35210B415500F9A370 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		13DD8F37210B419400F9A370 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		13F432352127453000D9A7C7 /* TableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSection.swift; sourceTree = "<group>"; };
+		13F7A9CA2157F29500FB9189 /* Helpers */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Helpers; path = ../../YGWork/Helpers; sourceTree = "<group>"; };
 		13FC72E2212042BF00FFEC07 /* UIDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -155,9 +161,10 @@
 		131E2CEA213AA94900F548F9 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				131E2CED213B046200F548F9 /* SwitchCell.swift */,
+				13D466DB213C1BFA006D5282 /* InputFieldCell.swift */,
 				133277F920A703CF0014944E /* PasteShortCell.swift */,
 				131E2CEB213AB04500F548F9 /* TagCell.swift */,
-				131E2CED213B046200F548F9 /* SwitchCell.swift */,
 				138D2F9320C0741000BF1141 /* PasteFullHeaderCell.swift */,
 				132EFF2D20C5C99A001B57EA /* PasteFullContentCell.swift */,
 			);
@@ -188,9 +195,11 @@
 		1336B5D220A0D07B002DAA6E /* iPastach */ = {
 			isa = PBXGroup;
 			children = (
+				13F7A9CA2157F29500FB9189 /* Helpers */,
 				1336B5D320A0D07B002DAA6E /* AppDelegate.swift */,
-				133277EB20A465EA0014944E /* ApiManager.swift */,
+				133277EB20A465EA0014944E /* APIClient.swift */,
 				13741ACA210BA6D70037723A /* ThemeManager.swift */,
+				13B45F89213F0E7C00DB8ABD /* DataManager.swift */,
 				13D83BB1212ABF1A0057B322 /* UserSettings.swift */,
 				13C67A5F2111BC31000338F6 /* AlertsHelpers.swift */,
 				1377AED8210B9A970010107A /* IJProgressView.swift */,
@@ -394,6 +403,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13F7A9CB2157F29600FB9189 /* Helpers in Resources */,
 				13741ACF210C43000037723A /* Localizable.strings in Resources */,
 				13741AD7210C51210037723A /* InfoPlist.strings in Resources */,
 				133277F020A562040014944E /* README.md in Resources */,
@@ -424,9 +434,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				13DD8F36210B415500F9A370 /* UIImageView.swift in Sources */,
+				13B45F8A213F0E7C00DB8ABD /* DataManager.swift in Sources */,
 				131A8E182135DD6A00267CC5 /* PageViewController.swift in Sources */,
 				13DD8F32210B410800F9A370 /* CharacterSet.swift in Sources */,
-				133277EC20A465EA0014944E /* ApiManager.swift in Sources */,
+				133277EC20A465EA0014944E /* APIClient.swift in Sources */,
 				133277EE20A473E80014944E /* Paste.swift in Sources */,
 				13C67A602111BC31000338F6 /* AlertsHelpers.swift in Sources */,
 				1336B5D620A0D07B002DAA6E /* PastesViewController.swift in Sources */,
@@ -440,6 +451,7 @@
 				133277F220A5BEAF0014944E /* Extensions.swift in Sources */,
 				135D8F8F21234E200032C841 /* TableSections.swift in Sources */,
 				13741ACB210BA6D70037723A /* ThemeManager.swift in Sources */,
+				13D466DC213C1BFA006D5282 /* InputFieldCell.swift in Sources */,
 				13C029AB2115A051003FA91A /* Theme.swift in Sources */,
 				13C044F2210E195C00C4F9AE /* Pagination.swift in Sources */,
 				133277FA20A703CF0014944E /* PasteShortCell.swift in Sources */,
