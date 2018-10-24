@@ -66,12 +66,12 @@ class MenuViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         setupTheme()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+        super.viewWillDisappear(animated)
     }
 
     override func viewDidLayoutSubviews() {
@@ -145,10 +145,6 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         return self.sections.count
     }
 
-    func isNotEmptySection(_ tableView: UITableView, _ section: Int) -> Bool {
-        return self.tableView(tableView, numberOfRowsInSection: section) > 0
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 3
@@ -213,6 +209,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
             cell.textLabel?.text = self.pages[indexPath.row].title
             cell.textLabel?.textColor = theme.textColor
             cell.backgroundColor = theme.backgroundColor
+            cell.accessoryType = .disclosureIndicator
             cell.customSelectColor(theme.selectColor)
             return cell
         }
@@ -243,7 +240,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     // Norm koroche tak sdelat'
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -254,11 +251,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         if self.isNotEmptySection(tableView, section) {
             return tableView.sectionHeaderHeight
         } else {
-            if #available(iOS 11.0, *) {
-                return 0.0
-            } else {
-                return 0.001
-            }
+            return CGFloat.leastNormalMagnitude
         }
     }
     
@@ -270,11 +263,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         if self.isNotEmptySection(tableView, section) {
             return tableView.sectionFooterHeight
         } else {
-            if #available(iOS 11.0, *) {
-                return 0.0
-            } else {
-                return 0.001
-            }
+            return CGFloat.leastNormalMagnitude
         }
     }
     

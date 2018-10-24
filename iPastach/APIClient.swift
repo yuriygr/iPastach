@@ -17,6 +17,15 @@ struct APIResponse: Codable {
     }
 }
 
+struct Response<T>: Codable where T: Codable {
+    let response: T?
+    let error: ResponseError?
+    
+    struct ResponseError: Codable {
+        let errorType, errorMessage: String?
+    }
+}
+
 /*enum Response<T> {
     case success(T)
     case error(ResponseError)
@@ -28,11 +37,17 @@ struct APIResponse: Codable {
 
 typealias APIParams = [String: String]
 
+// Протокол методов API
+protocol APIMethodsProtocol {
+    // Должно возвращать строку
+    var value: String { get }
+}
+
 // Методы для работы с API
 //  - pastes: Пасты
 //  - tags: Теги
 //  - pages: Страницы
-enum APIMethods {
+enum APIMethods: APIMethodsProtocol {
     
     case pastes(PastesEndpoint)
     enum PastesEndpoint: String {
@@ -61,10 +76,9 @@ enum APIMethods {
     }
 }
 
-class APIClient: NSObject {
+class APIClient {
 
     static let shared = APIClient()
-    private let URLSession: URLSession = .shared
     private var base: String = ""
     private var headers: [String: String] = [:]
 
@@ -92,7 +106,7 @@ class APIClient: NSObject {
     /// - Parameter params: Параметры для запроса
     /// - Parameter completion: Кложур для работы с данными
     ///
-    /// - Returns: Nothing to return
+    /// - Returns: completion
     func fetch<T>(_ type: T.Type, method: APIMethods, params: APIParams = [:], HTTPMethod: HTTPMethods = .POST, completion: @escaping (T?, APIErrors?) -> Void) where T: Decodable {
         
         guard let url = URL(string: base + method.value) else {
@@ -104,7 +118,7 @@ class APIClient: NSObject {
         request.setBodyContent(params)
         request.setHeaders(headers)
 
-        URLSession.dataTask(with: request) { (data, response, error) in
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
                 return completion(nil, .undefined(error))
             }

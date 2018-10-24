@@ -53,13 +53,13 @@ class PageViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         setupActivity()
         setupTheme()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+        super.viewWillDisappear(animated)
         activity.invalidate()
     }
     

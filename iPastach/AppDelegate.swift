@@ -8,18 +8,19 @@
 
 import UIKit
 import CoreData
+import YGKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = TabBarController()
         window?.makeKeyAndVisible()
-    
+            
         APIClient.shared.setBase(Bundle.main.infoDictionary?["IPAPIEndpoint"] as! String)
         ThemeManager.shared.apply(theme: UserSettings.shared.currentTheme)
 

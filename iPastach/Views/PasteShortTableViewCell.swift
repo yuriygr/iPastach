@@ -1,5 +1,5 @@
 //
-//  PasteShortCell.swift
+//  PasteShortTableViewCell.swift
 //  iPastach
 //
 //  Created by Юрий Гринев on 12.05.2018.
@@ -7,10 +7,9 @@
 //
 
 import UIKit
+import YGKit
 
-class PasteShortCell: UITableViewCell {
-
-    lazy var theme: Theme = UserSettings.shared.currentTheme
+class PasteShortTableViewCell: UITableViewCell, PasteTableViewCellProtocol {
 
     //MARK: - Properties
 
@@ -66,7 +65,7 @@ class PasteShortCell: UITableViewCell {
 
     //MARK: - Life Cycle
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
     }
@@ -77,7 +76,7 @@ class PasteShortCell: UITableViewCell {
     
     //MARK: - Конфигурация ячейки
 
-    private func setupCell() {
+    func setupCell() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(idLabel)
         contentView.addSubview(timeLabel)
@@ -145,15 +144,15 @@ class PasteShortCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func bind(data paste: Paste) {
+    func bind(with paste: Paste) {
         titleLabel.text = paste.title
         idLabel.text = "#\(paste.id)"
-        timeLabel.text = paste.formatedTime()
+        timeLabel.text = paste.time.asString(format: "IPDateformat".localized)
         tagsLabel.text = paste.tags.count > 0 ? paste.tags.asString() : nil
         descriptionLabel.text = paste.description
     }
     
-    func setupTheme() {
+    func setup(theme: Theme) {
         backgroundColor = theme.backgroundColor
         contentView.backgroundColor = theme.backgroundColor
         customSelectColor(theme.selectColor)

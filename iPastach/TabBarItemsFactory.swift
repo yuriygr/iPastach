@@ -42,16 +42,16 @@ class TabBarItemsFactory: NSObject {
         self.items = items
     }
     
-    func makeItems() -> [UIViewController] {
+    func makeBarItems() -> [UIViewController] {
         var result = [UIViewController]()
         for (_, item) in items.enumerated() {
-            result.append(createItem(for: item))
+            result.append(createBarItem(for: item))
         }
         
         return result
     }
     
-    private func createItem(for item: TabBarItem) -> UIViewController {
+    private func createBarItem(for item: TabBarItem) -> UIViewController {
         let viewController = UINavigationController(rootViewController: item.viewController)
         
         viewController.tabBarItem.image = TabBarItemsFactory.images[item]
@@ -59,10 +59,9 @@ class TabBarItemsFactory: NSObject {
         if UserSettings.shared.showTitlesOnTabbar {
             viewController.tabBarItem.title = TabBarItemsFactory.titles[item]
         } else {
-            viewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
+            viewController.tabBarItem.imageInsets = UIEdgeInsets.init(top: 6, left: 0, bottom: -6, right: 0)
         }
 
         return viewController
     }
-    
 }

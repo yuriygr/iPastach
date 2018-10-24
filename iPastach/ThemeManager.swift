@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import YGKit
 
 struct Theme {
     let identifier: String
@@ -44,8 +45,9 @@ class ThemeManager: NSObject {
         let sharedApplication = UIApplication.shared
         sharedApplication.delegate?.window??.backgroundColor = theme.backgroundColor
         sharedApplication.statusBarStyle = theme.statusBarStyle
+  
         let titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: theme.textColor
+            NSAttributedString.Key.foregroundColor: theme.textColor
         ]
         
         UINavigationBar.appearance().isTranslucent = false
@@ -61,11 +63,6 @@ class ThemeManager: NSObject {
         // Navigation bar item
         UIBarButtonItem.appearance().tintColor = theme.tintColor
         
-        // Tabbar
-        UITabBar.appearance().barStyle = theme.barStyle
-        UITabBar.appearance().barTintColor = theme.backgroundColor
-        UITabBar.appearance().tintColor = theme.tintColor
-        
         // Toolbar
         UIToolbar.appearance().barTintColor = theme.backgroundColor
         UIToolbar.appearance().backgroundColor = theme.backgroundColor
@@ -76,5 +73,9 @@ class ThemeManager: NSObject {
         if #available(iOS 11.0, *) {
             UINavigationBar.appearance().prefersLargeTitles = true
         }
+    }
+    
+    func subscribe(_ view: UIViewController) {
+        
     }
 }

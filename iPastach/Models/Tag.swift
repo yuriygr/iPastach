@@ -15,7 +15,7 @@ struct Tag: Codable {
 }
 
 extension Array where Element == Tag {
-    func asString() -> String {
-        return self.map({"\($0.title)"}).joined(separator: ", ")
+    func asString(separator: String = ", ") -> String {
+        return self.map({"\($0.title)"}).joined(separator: separator)
     }
 }

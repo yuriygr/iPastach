@@ -11,6 +11,7 @@ import UIKit
 class PasteFullContentCell: UITableViewCell {
 
     //MARK: - Properties
+
     private var textView: UILabel = {
         var label = UILabel()
         label.font = UIFont.systemFont(ofSize: CGFloat(UserSettings.shared.fontSize))
@@ -20,11 +21,9 @@ class PasteFullContentCell: UITableViewCell {
         return label
     }()
     
-    //MARK:  Theme
-    lazy var theme: Theme = UserSettings.shared.currentTheme
-
     //MARK: - Life Cycle
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
     }
@@ -34,6 +33,14 @@ class PasteFullContentCell: UITableViewCell {
     }
     
     //MARK: - Конфигурация ячейки
+
+    func bind(data paste: Paste) {
+        if let content = paste.content {
+            self.textView.setHtmlText(content)
+            self.textView.font = .systemFont(ofSize: CGFloat(UserSettings.shared.fontSize))
+        }
+    }
+    
     private func setupCell() {
         contentView.addSubview(textView)
         
@@ -43,15 +50,7 @@ class PasteFullContentCell: UITableViewCell {
         textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16).isActive = true
     }
     
-    func bind(data paste: Paste) {
-        if let content = paste.content {
-            self.textView.setHtmlText(content)
-            self.textView.font = .systemFont(ofSize: CGFloat(UserSettings.shared.fontSize))
-            self.textView.textColor = theme.textColor
-        }
-    }
-    
-    func setupTheme() {
+    func setup(theme: Theme) {
         backgroundColor = theme.backgroundColor
         contentView.backgroundColor = theme.backgroundColor
         textView.textColor = theme.textColor

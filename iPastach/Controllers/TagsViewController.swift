@@ -33,7 +33,7 @@ class TagsViewController: UIViewController {
 
     //MARK: - Data
 
-    var tags: [Tag] = []
+    var tags = [Tag]()
 
     //MARK: - Life Cycle
 
@@ -54,12 +54,12 @@ class TagsViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         setupTheme()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+        super.viewWillDisappear(animated)
     }
 
     override func viewDidLayoutSubviews() {
@@ -130,10 +130,6 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 
-    func isNotEmptySection(_ tableView: UITableView, _ section: Int) -> Bool {
-        return self.tableView(tableView, numberOfRowsInSection: section) > 0
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.tags.count
     }
@@ -141,7 +137,7 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {        
         let cell = tableView.dequeueCell(TagCell.self)
         cell.bind(data: tags[indexPath.row])
-        cell.setupTheme()
+        cell.setup(theme: theme)
         return cell
     }
     
@@ -157,7 +153,7 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     // Norm koroche tak sdelat'
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -168,11 +164,7 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         if self.isNotEmptySection(tableView, section) {
             return tableView.sectionHeaderHeight
         } else {
-            if #available(iOS 11.0, *) {
-                return 0.0
-            } else {
-                return 0.001
-            }
+            return CGFloat.leastNormalMagnitude
         }
     }
     
@@ -184,11 +176,7 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         if self.isNotEmptySection(tableView, section) {
             return tableView.sectionFooterHeight
         } else {
-            if #available(iOS 11.0, *) {
-                return 0.0
-            } else {
-                return 0.001
-            }
+            return CGFloat.leastNormalMagnitude
         }
     }
     

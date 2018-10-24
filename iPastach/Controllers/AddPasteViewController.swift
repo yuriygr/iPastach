@@ -43,12 +43,12 @@ class AddPasteViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         setupTheme()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+        super.viewWillDisappear(animated)
     }
 
     override func viewDidLayoutSubviews() {
@@ -60,9 +60,6 @@ class AddPasteViewController: UIViewController {
     
     private func setupController() {
         navigationItem.title = "IPAddPaste".localized
-        if #available(iOS 11.0, *) {
-            navigationItem.largeTitleDisplayMode = .never
-        }
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = postButton
         extendedLayoutIncludesOpaqueBars = true
@@ -74,6 +71,8 @@ class AddPasteViewController: UIViewController {
         tableView.backgroundColor = theme.secondBackgroundColor
         tableView.separatorColor = theme.separatorColor
     }
+    
+    //MARK: - Actions
     
     @objc
     func handleCancelPressed() {
@@ -167,7 +166,7 @@ extension AddPasteViewController: UITableViewDelegate, UITableViewDataSource {
     // Tak norm delat'
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -178,11 +177,7 @@ extension AddPasteViewController: UITableViewDelegate, UITableViewDataSource {
         if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
             return tableView.sectionHeaderHeight
         } else {
-            if #available(iOS 11.0, *) {
-                return 0
-            } else {
-                return 0.001
-            }
+            return CGFloat.leastNormalMagnitude
         }
     }
     
@@ -190,11 +185,7 @@ extension AddPasteViewController: UITableViewDelegate, UITableViewDataSource {
         if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
             return tableView.sectionFooterHeight
         } else {
-            if #available(iOS 11.0, *) {
-                return 0
-            } else {
-                return 0.001
-            }
+            return CGFloat.leastNormalMagnitude
         }
     }
 }

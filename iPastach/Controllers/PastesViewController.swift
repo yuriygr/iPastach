@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import YGKit
 
 class PastesViewController: UIViewController {
     
@@ -22,12 +23,12 @@ class PastesViewController: UIViewController {
         tableView.tableFooterView = loadMoarButton
         tableView.refreshControl = refreshControl
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        tableView.registerCell(PasteShortCell.self)
+        tableView.registerCell(PasteShortTableViewCell.self)
         return tableView
     }()
 
-    lazy var loadMoarButton: LoadMoreButton = {
-        let loadMoarButton = LoadMoreButton(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50))
+    lazy var loadMoarButton: YGLoadMoreButton = {
+        let loadMoarButton = YGLoadMoreButton(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50))
         loadMoarButton.setTitle("IPLoadmore".localized, for: .normal)
         loadMoarButton.titleLabel?.font = .systemFont(ofSize: 13)
         loadMoarButton.addTarget(self, action: #selector(handleLoadMore(_:)), for: .touchUpInside)
@@ -50,17 +51,8 @@ class PastesViewController: UIViewController {
     //MARK: - Data
 
     var currentTag: Tag?
-    var pastes: [Paste] = []
-    var pagination: Pagination = Pagination(
-        first: 0,
-        before: 0,
-        current: 0,
-        last: 0,
-        next: 0,
-        total_pages: 0,
-        total_items: 0,
-        limit: "0"
-    )
+    var pastes = [Paste]()
+    var pagination = Pagination()
     
     //MARK: - Life Cycle
 
@@ -69,13 +61,13 @@ class PastesViewController: UIViewController {
         setupNotifications()
         setupLongPressGesture()
         setupController()
-        IJProgressView.shared.showProgressView()
+        YGProgressView.shared.showProgressView()
         loadFromAPI() { (data, error) in
             if let newPastes = data?.items {
                 self.pastes = newPastes
             }
             DispatchQueue.main.async {
-                IJProgressView.shared.hideProgressView()
+                YGProgressView.shared.hideProgressView()
                 if self.pagination.current == self.pagination.last {
                     self.tableView.tableFooterView = UIView()
                 } else {
@@ -88,12 +80,13 @@ class PastesViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
+        ThemeManager.shared.subscribe(self)
         setupTheme()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+        super.viewWillDisappear(animated)
     }
 
     override func viewDidLayoutSubviews() {
@@ -125,7 +118,7 @@ class PastesViewController: UIViewController {
     
     //MARK: - Request to API
 
-    private func loadFromAPI(by page: Int? = 1, completion: ((PastesListPaginated?, Error?) -> ())? = nil) {
+    private func loadFromAPI(by page: Int? = 1, completion: ((PaginationFor<Paste>?, Error?) -> ())? = nil) {
         var apiParams: APIParams = [:]
         if let currentTag = currentTag {
             apiParams["tag"] = "\(currentTag.slug)"
@@ -133,7 +126,7 @@ class PastesViewController: UIViewController {
         if let page = page, page > 0 {
             apiParams["page"] = "\(page)"
         }
-        api.fetch(PastesListPaginated.self, method: .pastes(.list), params: apiParams) { (data, error) in
+        api.fetch(PaginationFor<Paste>.self, method: .pastes(.list), params: apiParams) { (data, error) in
             if let error = error {
                 print(error)
             }
@@ -196,7 +189,7 @@ class PastesViewController: UIViewController {
     }
     
     @objc
-    func handleLoadMore(_ sender: LoadMoreButton) {
+    func handleLoadMore(_ sender: YGLoadMoreButton) {
         sender.showLoading()
         loadFromAPI(by: pagination.next) { (data, error) in
             if let newPastes = data?.items {
@@ -237,7 +230,7 @@ extension PastesViewController {
     func tagSelected(notification: Notification) {
         guard let tag = notification.userInfo?["tag"] as? Tag else { return }
         currentTag = tag
-        IJProgressView.shared.showProgressView()
+        YGProgressView.shared.showProgressView()
         loadFromAPI() { (data, error) in
             if let newPastes = data?.items {
                 self.pastes = newPastes
@@ -245,7 +238,7 @@ extension PastesViewController {
             DispatchQueue.main.async {
                 self.navigationItem.title = tag.title
                 self.tagResetButton.isHidden = false
-                IJProgressView.shared.hideProgressView()
+                YGProgressView.shared.hideProgressView()
                 if self.pagination.current == self.pagination.last {
                     self.loadMoarButton.isHidden = true
                 } else {
@@ -260,7 +253,7 @@ extension PastesViewController {
     @objc
     func tagReseted(notification: Notification) {
         currentTag = nil
-        IJProgressView.shared.showProgressView()
+        YGProgressView.shared.showProgressView()
         loadFromAPI() { (data, error) in
             if let newPastes = data?.items {
                 self.pastes = newPastes
@@ -268,7 +261,7 @@ extension PastesViewController {
             DispatchQueue.main.async {
                 self.navigationItem.title = "IPApptitle".localized
                 self.tagResetButton.isHidden = true
-                IJProgressView.shared.hideProgressView()
+                YGProgressView.shared.hideProgressView()
                 if self.pagination.current == self.pagination.last {
                     self.loadMoarButton.isHidden = true
                 } else {
@@ -355,18 +348,14 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 
-    func isNotEmptySection(_ tableView: UITableView, _ section: Int) -> Bool {
-        return self.tableView(tableView, numberOfRowsInSection: section) > 0
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueCell(PasteShortCell.self)
-        cell.bind(data: pastes[indexPath.section])
-        cell.setupTheme()
+        let cell = tableView.dequeueCell(PasteShortTableViewCell.self)
+        cell.bind(with: pastes[indexPath.section])
+        cell.setup(theme: theme)
         return cell
     }
     
@@ -377,11 +366,10 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.pushViewController(pasteViewController, animated: true)
     }
     
-    
     // Norm koroche tak sdelat'
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -392,11 +380,7 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
         if self.isNotEmptySection(tableView, section) {
             return tableView.sectionHeaderHeight
         } else {
-            if #available(iOS 11.0, *) {
-                return 0.0
-            } else {
-                return 0.001
-            }
+            return CGFloat.leastNormalMagnitude
         }
     }
     
@@ -405,11 +389,7 @@ extension PastesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if #available(iOS 11.0, *) {
-            return 0.0
-        } else {
-            return 0.001
-        }
+        return CGFloat.leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

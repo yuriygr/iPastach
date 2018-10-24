@@ -9,8 +9,6 @@
 import UIKit
 
 class PasteFullHeaderCell: UITableViewCell {
-
-    lazy var theme: Theme = UserSettings.shared.currentTheme
     
     //MARK: - Properties
 
@@ -48,7 +46,7 @@ class PasteFullHeaderCell: UITableViewCell {
 
     //MARK: - Life Cycle
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
     }
@@ -85,11 +83,11 @@ class PasteFullHeaderCell: UITableViewCell {
     func bind(data paste: Paste) {
         titleLabel.text = paste.title
         idLabel.text = "#\(paste.id)"
-        timeLabel.text = paste.formatedTime()
+        timeLabel.text = paste.time.asString(format: "IPDateformat".localized)
         tagsLabel.text = paste.tags.count > 0 ? paste.tags.asString() : nil
     }
     
-    func setupTheme() {
+    func setup(theme: Theme) {
         backgroundColor = theme.backgroundColor
         contentView.backgroundColor = theme.backgroundColor
         customSelectColor(theme.selectColor)

@@ -8,6 +8,7 @@
 //TODO: https://stackoverflow.com/questions/30849030/swift-how-to-execute-an-action-when-uitabbaritem-is-pressed/30849225
 
 import UIKit
+import YGKit
 
 class PasteViewController: UIViewController {
     
@@ -51,7 +52,7 @@ class PasteViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         setupActivity()
         setupTheme()
         setupToolbar()
@@ -59,7 +60,7 @@ class PasteViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+        super.viewWillDisappear(animated)
         activity.invalidate()
         navigationController?.setToolbarHidden(true, animated: true)
     }
@@ -73,9 +74,6 @@ class PasteViewController: UIViewController {
 
     func setupController() {
         navigationItem.rightBarButtonItem = shareButton
-        if #available(iOS 11.0, *) {
-            navigationItem.largeTitleDisplayMode = .never
-        }
         extendedLayoutIncludesOpaqueBars = true
         view.addSubview(tableView)
     }
@@ -187,7 +185,7 @@ class PasteViewController: UIViewController {
     }
 
     func randomButtonTapped(_ sender: UIBarButtonItem) {
-        IJProgressView.shared.showProgressView()
+        YGProgressView.shared.showProgressView()
         api.fetch(Paste.self, method: .pastes(.random)) { (data, error) in
             if let error = error {
                 print(error.localizedDescription)
@@ -196,7 +194,7 @@ class PasteViewController: UIViewController {
                 self.paste = data
             }
             DispatchQueue.main.async {
-                IJProgressView.shared.hideProgressView()
+                YGProgressView.shared.hideProgressView()
                 self.tableView.reload()
             }
         }
@@ -302,18 +300,18 @@ extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
         case .header:
             let cell = tableView.dequeueCell(PasteFullHeaderCell.self)
             cell.bind(data: paste)
-            cell.setupTheme()
+            cell.setup(theme: theme)
             return cell
         case .content:
             let cell = tableView.dequeueCell(PasteFullContentCell.self)
             cell.bind(data: paste)
-            cell.setupTheme()
+            cell.setup(theme: theme)
             return cell
         }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -324,11 +322,7 @@ extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
         if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
             return tableView.sectionHeaderHeight
         } else {
-            if #available(iOS 11.0, *) {
-                return 0
-            } else {
-                return 0.001
-            }
+            return CGFloat.leastNormalMagnitude
         }
     }
 
@@ -336,11 +330,7 @@ extension PasteViewController: UITableViewDelegate, UITableViewDataSource {
         if self.tableView(tableView, numberOfRowsInSection: section) > 0 {
             return tableView.sectionFooterHeight
         } else {
-            if #available(iOS 11.0, *) {
-                return 0
-            } else {
-                return 0.001
-            }
+            return CGFloat.leastNormalMagnitude
         }
     }
 }
